@@ -1,9 +1,12 @@
-import Image from "next/image";
+"use client";
+
 import React from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper";
+import "swiper/css/pagination";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 const Hero = () => {
   const slides = [
@@ -23,7 +26,14 @@ const Hero = () => {
     <div className="hero relative w-full h-screen overflow-hidden">
       <Swiper
         navigation={true}
-        modules={[Navigation]}
+        pagination={{
+          clickable: true, 
+        }}
+        autoplay={{
+          delay: 3000, 
+          disableOnInteraction: false, 
+        }}
+        modules={[Navigation, Pagination, Autoplay]}
         className="w-full h-full"
         loop={true}
       >
@@ -35,8 +45,8 @@ const Hero = () => {
                 <Image
                   src={slide.desktop}
                   alt={slide.alt}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                   priority
                 />
               </div>
@@ -46,8 +56,8 @@ const Hero = () => {
                 <Image
                   src={slide.mobile}
                   alt={slide.alt}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                   priority
                 />
               </div>
