@@ -39,9 +39,9 @@ const Hero = () => {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-screen">
+            <div className="relative w-full h-full">
               {/* Desktop Image */}
-              <div className="hidden lg:block absolute inset-0">
+              <div className="hidden lg:block  inset-0">
                 <Image
                   src={slide.desktop}
                   alt={slide.alt}
@@ -52,7 +52,7 @@ const Hero = () => {
               </div>
 
               {/* Mobile Image */}
-              <div className="block lg:hidden absolute inset-0">
+              <div className="block lg:hidden inset-0">
                 <Image
                   src={slide.mobile}
                   alt={slide.alt}
