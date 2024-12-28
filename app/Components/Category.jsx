@@ -10,8 +10,8 @@ const categories = [
 
 export default function Category() {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10">
-      <h2 className="text-center text-3xl md:text-4xl my-8 font-thin mb-6 crimson">SHOP BY CATEGORY</h2>
+    <div className="max-w-6xl mx-auto px-4 py-10 pt-0">
+      <h2 className="text-center text-3xl md:text-4xl my-10 font-thin  crimson green">SHOP BY CATEGORY</h2>
       <div className="flex flex-wrap justify-center gap-4 md:gap-6">
         {categories.map((category) => (
           <div

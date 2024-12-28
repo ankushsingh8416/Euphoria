@@ -13,6 +13,9 @@ body {
 .crimson {
   font-family: "Crimson Pro", serif;
 }
+.green{
+  color: #1E381E;
+}
 header {
   background-color: #faf8f0;
 }
