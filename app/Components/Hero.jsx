@@ -19,10 +19,15 @@ const Hero = () => {
       mobile: "/images/banner2-mob.jpg",
       alt: "Banner 2",
     },
+    {
+      desktop: "/images/banner3.jpg",
+      mobile: "/images/banner3-mob.jpg",
+      alt: "Banner 3",
+    },
   ];
 
   return (
-    <div className="hero relative w-full h-screen overflow-hidden">
+    <div className="hero relative w-full overflow-hidden">
       <Swiper
         pagination={{
           clickable: true,
@@ -37,26 +42,32 @@ const Hero = () => {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-screen">
+            <div className="relative w-full h-full">
               {/* Desktop Image */}
-              <div className="hidden lg:block w-full h-full">
+              <div className="hidden md:block w-full h-full">
                 <Image
                   src={slide.desktop}
                   alt={slide.alt}
-                  layout="fill"
-                  objectFit="cover" 
-                  objectPosition="center" 
+                  fill
+                  sizes="100vw"
+                  style={{
+                    objectFit: "cover", 
+                    objectPosition: "top",
+                  }}
                 />
               </div>
 
               {/* Mobile Image */}
-              <div className="block lg:hidden w-full h-full">
+              <div className="block md:hidden w-full h-full">
                 <Image
                   src={slide.mobile}
                   alt={slide.alt}
-                  layout="fill"
-                  objectFit="cover" 
-                  objectPosition="center" 
+                  fill
+                  sizes="100vw"
+                  style={{
+                    objectFit: "cover", 
+                    objectPosition: "top",
+                  }}
                 />
               </div>
             </div>

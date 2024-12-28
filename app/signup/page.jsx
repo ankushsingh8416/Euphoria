@@ -25,7 +25,7 @@ export default function SignUp() {
           <div className="space-y-4 mb-6">
             <button className="w-full flex items-center justify-center space-x-3 bg-gray-100 border border-gray-300 py-2 rounded-lg hover:shadow-md">
               <img
-                src="./images/google.png"
+                src="./images/google-icon.png"
                 alt="Google"
                 className="h-5"
               />
