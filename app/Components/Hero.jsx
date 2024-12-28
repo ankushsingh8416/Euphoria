@@ -46,7 +46,6 @@ const Hero = () => {
                   layout="fill"
                   objectFit="cover" 
                   objectPosition="center" 
-                  priority
                 />
               </div>
 
@@ -58,7 +57,6 @@ const Hero = () => {
                   layout="fill"
                   objectFit="cover" 
                   objectPosition="center" 
-                  priority
                 />
               </div>
             </div>

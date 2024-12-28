@@ -4,9 +4,9 @@ import Link from "next/link";
 export default function Navbar() {
   return (
     <header className="shadow-xl  z-50">
-      {/* Top Section */}
+     
       <div className="bg-[#1E381E] text-white text-center py-2">
-        <Link href="#" className="text-sm font-medium hover:underline">
+        <Link href="#" className="text-sm font-medium">
           Shop At Special Prices |
           <Link href="/" className="underline"> Discover Now</Link>
         </Link>
@@ -27,7 +27,7 @@ export default function Navbar() {
         <div className="logo">
           {/* Logo */}
           <Link href="#" className="font-semibold text-lg text-gray-800">
-            <Image src="/images/logo.png" alt="Anita Dongre" width={80} height={64} />
+            <Image src="/images/euphoria.png" alt="Anita Dongre" width={80} height={64} />
           </Link>
         </div>
 
