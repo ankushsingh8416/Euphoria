@@ -32,13 +32,13 @@ export default function Navbar() {
         </div>
 
         {/* Right Section (Icons) */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2 lg:space-x-4">
           {/* Search Icon */}
           <Image src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
 
           {/* User Icon */}
           <Link href="/login">
-            <Image src="/images/user-icon.svg" alt="User" width={24} height={24} className="hidden lg:block cursor-pointer" />
+            <Image src="/images/user-icon.svg" alt="User" width={24} height={24} className="cursor-pointer" />
           </Link>
           {/* Heart Icon */}
           <Image src="/images/wishlist-icon.svg" alt="Wishlist" width={24} height={24} className="hidden lg:block cursor-pointer" />

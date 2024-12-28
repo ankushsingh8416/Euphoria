@@ -4,9 +4,8 @@ import React from "react";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 
 const Hero = () => {
   const slides = [
@@ -25,39 +24,40 @@ const Hero = () => {
   return (
     <div className="hero relative w-full h-screen overflow-hidden">
       <Swiper
-        navigation={true}
         pagination={{
-          clickable: true, 
+          clickable: true,
         }}
         autoplay={{
-          delay: 3000, 
-          disableOnInteraction: false, 
+          delay: 3000,
+          disableOnInteraction: false,
         }}
-        modules={[Navigation, Pagination, Autoplay]}
+        modules={[Pagination, Autoplay]}
         className="w-full h-full"
         loop={true}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-full">
+            <div className="relative w-full h-screen">
               {/* Desktop Image */}
-              <div className="hidden lg:block  inset-0">
+              <div className="hidden lg:block w-full h-full">
                 <Image
                   src={slide.desktop}
                   alt={slide.alt}
-                  fill
-                  style={{ objectFit: "cover" }}
+                  layout="fill"
+                  objectFit="cover" 
+                  objectPosition="center" 
                   priority
                 />
               </div>
 
               {/* Mobile Image */}
-              <div className="block lg:hidden inset-0">
+              <div className="block lg:hidden w-full h-full">
                 <Image
                   src={slide.mobile}
                   alt={slide.alt}
-                  fill
-                  style={{ objectFit: "cover" }}
+                  layout="fill"
+                  objectFit="cover" 
+                  objectPosition="center" 
                   priority
                 />
               </div>
