@@ -1,10 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaArrowRight } from 'react-icons/fa';
 import Image from 'next/image';
 
 export default function Mens() {
     return (
-        <div className="max-w-6xl mx-auto px-4 py-10">
-            <h2 className="text-center text-3xl md:text-4xl my-10 font-thin crimson green">MENSWEAR</h2>
+         <div className="max-w-6xl mx-auto px-4 py-10 pt-0 pb-0 md:pt-10">
+      <h2 className="text-center text-3xl md:text-4xl my-10 font-thin  crimson green">MENSWEAR</h2>
             <div className="flex flex-wrap justify-center gap-6">
                 {/* Menswear Images */}
                 <div className="w-full sm:w-[48%] overflow-hidden shadow-md">
@@ -31,8 +31,9 @@ export default function Mens() {
 
             {/* Button */}
             <div className="text-center mt-10">
-                <button className="inline-flex items-center px-8 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300">
-                    SHOP THE COLLECTION <FontAwesomeIcon icon="arrow-right" />
+                <button className="group inline-flex items-center text-[#1E381E] px-8 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300">
+                    SHOP THE COLLECTION
+                    <FaArrowRight className="ml-2 transition-all  group-hover:ml-4" />
                 </button>
             </div>
         </div>
