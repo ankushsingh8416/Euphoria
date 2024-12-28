@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <header className="shadow-xl  z-50">
+    <header className="shadow-xl z-50">
      
       <div className="bg-[#1E381E] text-white text-center py-2">
         <Link href="#" className="text-sm font-medium">
