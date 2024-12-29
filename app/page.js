@@ -4,6 +4,7 @@ import Hero from "./Components/Hero";
 import Mens from "./Components/Mens";
 import ProductList from "./Components/ProductList ";
 import Ship from "./Components/Ship";
+import Spotlight from "./Components/Spotlight";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Craft />
       <ProductList />
       <Ship />
+      <Spotlight />
     </>
   );
 }

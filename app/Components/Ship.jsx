@@ -3,7 +3,7 @@ import React from 'react'
 
 const Ship = () => {
   return (
-    <div className="w-full ship h-[700px] mx-auto py-10 pt-0 pb-0 md:pt-10">
+    <div className="w-full ship  mx-auto py-10 pt-0 pb-0 md:pt-6">
     
       <div className="relative w-full h-full desktop__img hidden md:block">
         <Image 
