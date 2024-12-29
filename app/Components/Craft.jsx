@@ -3,7 +3,7 @@ import React from 'react';
 const Craft = () => {
     return (
         <div className=" mx-auto  py-10 pt-0 pb-0 md:pt-10">
-            <h2 className="text-center text-3xl md:text-4xl my-10 font-thin crimson green">CARTS OF INDIA</h2>
+            <h2 className="text-center text-3xl md:text-4xl my-10 font-thin crimson green tracking-wider">CARFTS OF INDIA</h2>
 
             <div className="flex flex-wrap justify-center gap-6">
                 {/* Video for web */}

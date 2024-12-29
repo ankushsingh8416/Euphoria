@@ -2,6 +2,7 @@ import Category from "./Components/Category";
 import Craft from "./Components/Craft";
 import Hero from "./Components/Hero";
 import Mens from "./Components/Mens";
+import ProductList from "./Components/ProductList ";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Category />
       <Mens />
       <Craft />
+      <ProductList />
     </>
   );
 }

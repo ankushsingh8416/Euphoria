@@ -3,8 +3,8 @@ import Image from 'next/image';
 
 export default function Mens() {
     return (
-         <div className="max-w-6xl mx-auto px-4 py-10 pt-0 pb-0 md:pt-10">
-      <h2 className="text-center text-3xl md:text-4xl my-10 font-thin  crimson green">MENSWEAR</h2>
+         <div className="max-w-6xl mx-auto px-4 py-10 pt-0 pb-0 md:pt-10 ">
+      <h2 className="text-center text-3xl md:text-4xl my-10 font-thin  crimson green tracking-wider">MENSWEAR</h2>
             <div className="flex flex-wrap justify-center gap-6">
                 {/* Menswear Images */}
                 <div className="w-full sm:w-[48%] overflow-hidden shadow-md">
