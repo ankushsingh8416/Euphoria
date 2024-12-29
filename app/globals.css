@@ -7,14 +7,13 @@ body {
   font-family: "Montserrat", serif;
   font-weight: 600;
   background-color: #faf8f0;
-
 }
 
 .crimson {
   font-family: "Crimson Pro", serif;
 }
-.green{
-  color: #1E381E;
+.green {
+  color: #1e381e;
 }
 header {
   background-color: #faf8f0;
@@ -22,22 +21,42 @@ header {
 .hero {
   height: 510px !important;
 }
- .swiper-pagination-bullet{
-  border: 2px solid #1E381E !important;
+.ship {
+  height: 100vh !important;
+}
+.swiper-pagination-bullet {
+  border: 2px solid #1e381e !important;
   background: #fff !important;
-
 }
- .swiper-pagination-bullet-active{
-  background-color: #1E381E !important;
+.swiper-pagination-bullet-active {
+  background-color: #1e381e !important;
 }
 
+
+@media (max-width: 766px) {
+  .ship {
+    height: 1000px !important;
+  }
+}
 @media (max-width: 700px) {
   .hero {
     height: 800px !important;
+  }
+  .ship {
+    height: 860px !important;
   }
 }
 @media (max-width: 500px) {
   .hero {
     height: 650px !important;
+  }
+  .ship {
+    height: 700px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .ship {
+    height: 580px !important;
   }
 }

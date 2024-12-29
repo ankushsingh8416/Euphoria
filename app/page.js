@@ -3,6 +3,7 @@ import Craft from "./Components/Craft";
 import Hero from "./Components/Hero";
 import Mens from "./Components/Mens";
 import ProductList from "./Components/ProductList ";
+import Ship from "./Components/Ship";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Mens />
       <Craft />
       <ProductList />
+      <Ship />
     </>
   );
 }

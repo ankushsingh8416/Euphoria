@@ -2,10 +2,11 @@
 
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css"; 
-import "swiper/css/navigation"; 
-import "swiper/css/pagination"; 
-import {  Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Pagination } from "swiper/modules";
+import { FaArrowRight } from "react-icons/fa";
 
 const products = [
     {
@@ -48,12 +49,12 @@ const ProductList = () => {
                 }}
                 spaceBetween={16}
                 breakpoints={{
-                    1024: { slidesPerView: 4 },  
-                    642: { slidesPerView: 2 },    
-                    0: { slidesPerView: 2 },     
+                    1024: { slidesPerView: 4 },
+                    642: { slidesPerView: 2 },
+                    0: { slidesPerView: 2 },
                 }}
                 className="product-slider"
-                loop={true} 
+                loop={true}
             >
                 {products.map((product) => (
                     <SwiperSlide key={product.id}>
@@ -84,21 +85,14 @@ const ProductList = () => {
                 ))}
             </Swiper>
 
-            {/* Add Custom Swiper Styles */}
-            <style jsx>{`
-                .swiper-pagination-bullet {
-                    background-color: #b18e35;
-                    opacity: 1;
-                }
 
-                .swiper-pagination-bullet-active {
-                    background-color: #000;
-                }
-
-                .swiper-pagination {
-                    margin-top: 40px;
-                }
-            `}</style>
+            {/* Button */}
+            <div className="text-center my-6">
+                <button className="group inline-flex items-center text-[#1E381E] px-8 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300">
+                    SHOP THE COLLECTION
+                    <FaArrowRight className="ml-2 transition-all  group-hover:ml-4" />
+                </button>
+            </div>
         </div>
     );
 };
