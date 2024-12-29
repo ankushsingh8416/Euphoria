@@ -22,7 +22,14 @@ header {
 .hero {
   height: 510px !important;
 }
+ .swiper-pagination-bullet{
+  border: 2px solid #1E381E !important;
+  background: #fff !important;
 
+}
+ .swiper-pagination-bullet-active{
+  background-color: #1E381E !important;
+}
 
 @media (max-width: 700px) {
   .hero {

@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css"; // Import Swiper styles
-import "swiper/css/navigation"; // Import navigation styles
-import "swiper/css/pagination"; // Import pagination styles
-import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css"; 
+import "swiper/css/navigation"; 
+import "swiper/css/pagination"; 
+import {  Pagination } from "swiper/modules";
 
 const products = [
     {
@@ -42,23 +42,22 @@ const ProductList = () => {
     return (
         <div className="p-4 lg:px-16">
             <Swiper
-                modules={[Navigation, Pagination]}
-                navigation
+                modules={[Pagination]}
                 pagination={{
                     clickable: true,
                 }}
                 spaceBetween={16}
                 breakpoints={{
-                    1024: { slidesPerView: 4 }, // 4 products for 1024px and above
-                    642: { slidesPerView: 2 }, // 2 products for 642px and above
-                    0: { slidesPerView: 2 }, // 2 products for screens smaller than 642px
+                    1024: { slidesPerView: 4 },  
+                    642: { slidesPerView: 2 },    
+                    0: { slidesPerView: 2 },     
                 }}
                 className="product-slider"
-                loop={true} // Enable looping
+                loop={true} 
             >
                 {products.map((product) => (
                     <SwiperSlide key={product.id}>
-                        <div className="group">
+                        <div className="group mb-8">
                             <div className="relative overflow-hidden">
                                 {/* Default Image */}
                                 <img
