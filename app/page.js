@@ -23,7 +23,6 @@ export default function Home() {
       <Gifting />
       <Celebrate />
       <FooterBanner />
-      <Footer/>
     </>
   );
 }
