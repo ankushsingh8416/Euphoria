@@ -1,9 +1,12 @@
+"use client"
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Navbar() {
-  return (
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  return (
     <>
       <div className="bg-[#1E381E] text-white text-center py-2">
         <Link href="#" className="text-sm font-medium">
@@ -13,18 +16,20 @@ export default function Navbar() {
       </div>
 
       <header className="shadow-xl z-50 sticky top-0">
-
-
-
         {/* Main Header Section */}
-        <div className="flex items-center  justify-between px-4 md:px-6 py-3">
+        <div className="flex items-center justify-between px-4 md:px-6 py-3">
           {/* Left Section */}
           <div className="flex items-center">
             <Link href="#" className="hidden lg:block text-sm font-medium text-gray-700 hover:underline">
               Language :
             </Link>
-            <button className="block lg:hidden">
-              <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/menu--v3.png" alt="menu--v3" />
+            <button onClick={() => setIsMenuOpen(true)} className="block lg:hidden">
+              <img
+                width="30"
+                height="30"
+                src="https://img.icons8.com/ios-glyphs/30/menu--v3.png"
+                alt="menu--v3"
+              />
             </button>
           </div>
 
@@ -53,72 +58,40 @@ export default function Navbar() {
         </div>
 
         {/* Navigation Links */}
-        <nav className="hidden lg:flex justify-center space-x-8 py-4 text-gray-700">
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
+        <div
+          className={`fixed top-0 left-0 bg-[#faf8f0] w-[320px] h-screen z-40 transition-transform duration-300 ${
+            isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          } lg:static lg:translate-x-0 lg:flex lg:h-auto lg:w-auto`}
+        >
+          <button
+            onClick={() => setIsMenuOpen(false)}
+            className="absolute top-8 right-8 lg:hidden"
           >
-            Women
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Men
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Wedding
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Jewelry
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Accessories
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Gifting
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Discover
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Celebrity Closet
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link
-            href="#"
-            className="relative group hover:text-[#B18E35] transition-all duration-300"
-          >
-            Sale
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-        </nav>
+            <Image src="/images/cancel-icon.png" alt="Close" width={30} height={30} />
+          </button>
+          <nav className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-center w-full space-y-4 lg:space-y-0 lg:space-x-8 py-12 lg:py-4 px-4 lg:px-0 text-gray-700">
+            {[
+              "Women",
+              "Men",
+              "Wedding",
+              "Jewelry",
+              "Accessories",
+              "Gifting",
+              "Discover",
+              "Celebrity Closet",
+              "Sale",
+            ].map((item, index) => (
+              <Link
+                key={index}
+                href="#"
+                className="relative group hover:text-[#B18E35] transition-all duration-300"
+              >
+                {item}
+                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            ))}
+          </nav>
+        </div>
       </header>
     </>
   );
