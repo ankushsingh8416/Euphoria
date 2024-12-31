@@ -1,5 +1,6 @@
 import Category from "./Components/Category";
 import Craft from "./Components/Craft";
+import Gifting from "./Components/Gifting";
 import Hero from "./Components/Hero";
 import Mens from "./Components/Mens";
 import ProductList from "./Components/ProductList ";
@@ -16,6 +17,7 @@ export default function Home() {
       <ProductList />
       <Ship />
       <Spotlight />
+      <Gifting />
     </>
   );
 }
