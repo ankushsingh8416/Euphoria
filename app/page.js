@@ -1,4 +1,5 @@
 import Category from "./Components/Category";
+import Celebrate from "./Components/Celebrate";
 import Craft from "./Components/Craft";
 import Gifting from "./Components/Gifting";
 import Hero from "./Components/Hero";
@@ -18,6 +19,7 @@ export default function Home() {
       <Ship />
       <Spotlight />
       <Gifting />
+      <Celebrate />
     </>
   );
 }
