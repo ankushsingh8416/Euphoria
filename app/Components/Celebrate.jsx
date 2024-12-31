@@ -41,7 +41,7 @@ const products = [
 
 const Celebrate = () => {
     return (
-        <div className="p-4 py-8 lg:px-16">
+        <div className="p-4 lg:py-8 lg:px-16">
             <h2 className="text-center text-3xl md:text-4xl my-10 font-thin crimson green tracking-wider">
             CELEBS IN EUPHORIA
             </h2>

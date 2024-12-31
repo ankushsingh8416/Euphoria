@@ -45,6 +45,9 @@ header {
   .ship {
     height: 860px !important;
   }
+  .footer-banner-mob{
+    height: 700px !important;
+  }
 }
 @media (max-width: 500px) {
   .hero {
@@ -53,10 +56,16 @@ header {
   .ship {
     height: 700px !important;
   }
+  .footer-banner-mob{
+    height: 600px !important;
+  }
 }
 
 @media (max-width: 400px) {
   .ship {
     height: 580px !important;
+  }
+  .footer-banner-mob{
+    height: 500px !important;
   }
 }
