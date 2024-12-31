@@ -8,7 +8,7 @@ const Footer = () => {
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-5 gap-6 text-sm">
                     {/* Customer Care */}
                     <div>
-                        <h3 className="font-bold mb-4 text-[1.1rem]">Customer Care</h3>
+                        <h3 className="font-bold mb-4 text-[1rem]">Customer Care</h3>
                         <ul>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Orders & Shipment</li>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Returns & Exchange</li>
@@ -19,7 +19,7 @@ const Footer = () => {
                     </div>
                     {/* About Us */}
                     <div>
-                        <h3 className="font-bold mb-4 text-[1.1rem]">About Us</h3>
+                        <h3 className="font-bold mb-4 text-[1rem]">About Us</h3>
                         <ul>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Anita Dongre Foundation</li>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Sustainability</li>
@@ -28,7 +28,7 @@ const Footer = () => {
                     </div>
                     {/* Categories */}
                     <div>
-                        <h3 className="font-bold mb-4 text-[1.1rem]">Categories</h3>
+                        <h3 className="font-bold mb-4 text-[1rem]">Categories</h3>
                         <ul>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Women</li>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Men</li>
@@ -37,7 +37,7 @@ const Footer = () => {
                     </div>
                     {/* Legal */}
                     <div>
-                        <h3 className="font-bold mb-4 text-[1.1rem]">Legal</h3>
+                        <h3 className="font-bold mb-4 text-[1rem]">Legal</h3>
                         <ul>
                             <li className="my-2 text-[.8rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Corporate Information</li>
                             <li className="my-2 text-[.8rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Terms & Conditions</li>
@@ -48,7 +48,7 @@ const Footer = () => {
                     </div>
                     {/* Need Help */}
                     <div>
-                        <h3 className="font-bold mb-4">Need Help?</h3>
+                        <h3 className="font-bold mb-4 text-[1rem]">Need Help?</h3>
                         <ul>
                             <li className="flex items-center my-2 text-[.8rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E] gap-2">
                                 <Image src="/images/location.svg" width={24} height={24} alt="location" /> Store Locator
