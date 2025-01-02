@@ -36,7 +36,7 @@ export default function Navbar() {
           <div className="logo">
             {/* Logo */}
             <Link href="/">
-              <Image src="/images/euphoria.png" alt="Anita Dongre" width={80} height={64} className="object-cover" />
+              <Image src="/images/euphoria.webp" alt="Anita Dongre" width={80} height={64} className="object-cover" />
             </Link>
           </div>
 

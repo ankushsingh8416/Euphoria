@@ -8,7 +8,7 @@ const Gifting = () => {
       {/* Image Section */}
       <div className="w-full md:w-1/2 px-4 mb-6 md:mb-0">
         <Image
-          src="/images/gifting.png"
+          src="/images/gifting.webp"
           alt="Thoughtfully Crafted Gifts"
           width={500}
           height={500}

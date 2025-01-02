@@ -2,10 +2,10 @@
 import Image from 'next/image';
 
 const categories = [
-  { id: 1, name: 'SAREES', imagePath: '/images/category1.jpg' },
-  { id: 2, name: 'LEHENGA SETS', imagePath: '/images/category2.jpg' },
-  { id: 3, name: 'KURTA SETS', imagePath: '/images/category3.jpg' },
-  { id: 4, name: 'CO-ORD SETS', imagePath: '/images/category4.jpg' },
+  { id: 1, name: 'SAREES', imagePath: '/images/category1.webp' },
+  { id: 2, name: 'LEHENGA SETS', imagePath: '/images/category2.webp' },
+  { id: 3, name: 'KURTA SETS', imagePath: '/images/category3.webp' },
+  { id: 4, name: 'CO-ORD SETS', imagePath: '/images/category4.avif' },
 ];
 
 export default function Category() {

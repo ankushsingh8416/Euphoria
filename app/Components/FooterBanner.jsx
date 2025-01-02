@@ -8,7 +8,7 @@ const FooterBanner = () => {
 
             <div className="relative w-full h-full desktop__img hidden md:block">
                 <Image
-                    src="/images/mid-banner.jpg"
+                    src="/images/mid-banner.webp"
                     alt="ship"
                     layout="fill"
                     objectFit="cover"
@@ -17,7 +17,7 @@ const FooterBanner = () => {
             </div>
             <div className="relative w-full  h-full mob__img footer-banner-mob block md:hidden">
                 <Image
-                    src="/images/mid-banner_mob.jpg"
+                    src="/images/mid-banner_mob.webp"
                     alt="ship"
                     layout="fill"
                     objectFit="cover"

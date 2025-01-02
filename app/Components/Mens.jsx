@@ -9,7 +9,7 @@ export default function Mens() {
                 {/* Menswear Images */}
                 <div className="w-full sm:w-[48%] overflow-hidden shadow-md">
                     <Image
-                        src="/images/men1.jpg"
+                        src="/images/men1.webp"
                         alt="Menswear 1"
                         layout="responsive"
                         width={500}
@@ -19,7 +19,7 @@ export default function Mens() {
                 </div>
                 <div className="w-full sm:w-[48%] overflow-hidden shadow-md">
                     <Image
-                        src="/images/men2.jpg"
+                        src="/images/men2.webp"
                         alt="Menswear 2"
                         layout="responsive"
                         width={500}

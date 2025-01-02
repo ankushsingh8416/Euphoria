@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
 const categories = [
-  { id: 1, name: 'READY TO SHIP', imagePath: '/images/spotlight1.jpg' },
-  { id: 2, name: 'MORDERN HEIRLOOMS', imagePath: '/images/spotlight2.jpg' },
-  { id: 3, name: 'TIMELESS REDS', imagePath: '/images/spotlight3.jpg' },
-  { id: 4, name: 'VEGAN ACCESSORIES', imagePath: '/images/spotlight4.jpg' },
+  { id: 1, name: 'READY TO SHIP', imagePath: '/images/spotlight1.webp' },
+  { id: 2, name: 'MORDERN HEIRLOOMS', imagePath: '/images/spotlight2.webp' },
+  { id: 3, name: 'TIMELESS REDS', imagePath: '/images/spotlight3.webp' },
+  { id: 4, name: 'VEGAN ACCESSORIES', imagePath: '/images/spotlight4.webp' },
 ];
 
 export default function Spotlight() {

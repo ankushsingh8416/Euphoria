@@ -9,7 +9,7 @@ export default function Login() {
         {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
           <img
-            src="./images/login.png"
+            src="./images/login.webp"
             alt="Login Illustration"
             className="object-cover w-full h-52 md:h-64 lg:h-full object-top"
           />
@@ -28,7 +28,7 @@ export default function Login() {
           <div className="space-y-4 mb-6">
             <button className="w-full flex items-center justify-center space-x-3 bg-gray-100 border border-gray-300 py-2 rounded-lg hover:shadow-md">
               <img
-                src="./images/google-icon.png"
+                src="./images/google-icon.webp"
                 alt="Google"
                 className="h-5"
               />
@@ -36,7 +36,7 @@ export default function Login() {
             </button>
             <button className="w-full flex items-center justify-center space-x-3 bg-gray-100 border border-gray-300 py-2 rounded-lg hover:shadow-md">
               <img
-                src="./images/twitter.png"
+                src="./images/twitter.webp"
                 alt="Twitter"
                 className="h-5"
               />
