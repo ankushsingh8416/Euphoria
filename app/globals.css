@@ -31,7 +31,14 @@ header {
 .swiper-pagination-bullet-active {
   background-color: #1e381e !important;
 }
+.searchpannel {
+  z-index: 999999999 !important;
+  scrollbar-width: none; 
 
+}
+.searchpannel::-webkit-scrollbar {
+  display: none; 
+}
 
 @media (max-width: 766px) {
   .ship {
@@ -45,7 +52,7 @@ header {
   .ship {
     height: 860px !important;
   }
-  .footer-banner-mob{
+  .footer-banner-mob {
     height: 700px !important;
   }
 }
@@ -56,7 +63,7 @@ header {
   .ship {
     height: 700px !important;
   }
-  .footer-banner-mob{
+  .footer-banner-mob {
     height: 600px !important;
   }
 }
@@ -65,7 +72,7 @@ header {
   .ship {
     height: 580px !important;
   }
-  .footer-banner-mob{
+  .footer-banner-mob {
     height: 500px !important;
   }
 }

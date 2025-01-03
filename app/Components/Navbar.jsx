@@ -43,7 +43,7 @@ export default function Navbar() {
           {/* Right Section (Icons) */}
           <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Search Icon */}
-            <Image src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
+            <Image onClick={() => alert("Ankush")} src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
 
             {/* User Icon */}
             <Link href="/login">
@@ -59,9 +59,8 @@ export default function Navbar() {
 
         {/* Navigation Links */}
         <div
-          className={`fixed top-0 left-0 bg-[#faf8f0] w-[320px] h-screen z-40 transition-transform duration-300 ${
-            isMenuOpen ? "translate-x-0" : "-translate-x-full"
-          } lg:static lg:translate-x-0 lg:flex lg:h-auto lg:w-auto`}
+          className={`fixed top-0 left-0 bg-[#faf8f0] w-[320px] h-screen z-40 transition-transform duration-300 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+            } lg:static lg:translate-x-0 lg:flex lg:h-auto lg:w-auto`}
         >
           <button
             onClick={() => setIsMenuOpen(false)}
