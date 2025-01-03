@@ -3,8 +3,13 @@ import { FaSearch } from "react-icons/fa";
 import Spotlight from "./Spotlight";
 import Link from "next/link";
 import { FaArrowLeftLong } from "react-icons/fa6";
+import { useContext } from "react";
+import { cartContext } from "../context/cartContext";
 
 const SearchPanel = () => {
+  const { isSearchOpen, setIsSearchOpen } = useContext(cartContext);
+  if (!isSearchOpen) return null;
+
   return (
     <div className="fixed top-0 left-0 h-screen overflow-auto w-full searchpannel bg-white z-50">
       {/* Top Notification Bar */}
@@ -16,9 +21,9 @@ const SearchPanel = () => {
       </div>
 
       {/* Back Button */}
-      <button
+      <button 
         className="absolute top-12 lg:top-16  sm:top-20 left-4 sm:left-6 text-lg sm:text-xl md:text-2xl text-[#1E381E] hover:text-gray-600 cursor-pointer"
-        onClick={() => console.log("Close button clicked")}
+        onClick={() => setIsSearchOpen(false)}
       >
         <FaArrowLeftLong />
       </button>
@@ -34,7 +39,7 @@ const SearchPanel = () => {
               className="flex-grow px-4 py-3 sm:px-6 sm:py-4 text-sm sm:text-lg md:text-xl font-medium text-gray-800 bg-transparent focus:outline-none"
             />
             <button className="px-4 sm:px-5 text-gray-500 transition-all rounded-full">
-              <FaSearch className="text-lg sm:text-2xl md:text-3xl" />
+              <FaSearch className="text-lg sm:text-2xl " />
             </button>
           </div>
         </div>
@@ -53,7 +58,7 @@ const SearchPanel = () => {
         </div>
 
         {/* Spotlight Section */}
-        <div className="mt-8 sm:mt-10 md:mt-12">
+        <div className="mt-8 lg:mt-2 sm:mt-10 md:mt-12">
           <Spotlight />
         </div>
       </div>
