@@ -3,10 +3,12 @@ import { useContext, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { cartContext } from "../context/cartContext";
+import SearchPanel from "./SearchPannel";
+
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { setIsSearchOpen } = useContext(cartContext);
+  const { setIsSearchOpen, isSearchOpen } = useContext(cartContext);
 
   return (
     <>
@@ -46,8 +48,11 @@ export default function Navbar() {
           <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Search Icon */}
             <Image onClick={() => setIsSearchOpen(true)}
-              src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
-
+              src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" 
+              />
+        {
+          isSearchOpen ? <SearchPanel /> :null
+        }
             {/* User Icon */}
             <Link href="/login">
               <Image src="/images/user-icon.svg" alt="User" width={24} height={24} className="cursor-pointer" />
