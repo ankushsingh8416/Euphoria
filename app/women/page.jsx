@@ -1,126 +1,77 @@
 "use client";
 
 import React from "react";
-import { FaArrowRight } from "react-icons/fa";
+import { SlHeart } from "react-icons/sl";
 import FilterSection from "../Components/FilterSection";
 
 const products = [
     {
         id: 1,
-        title: "Kirsa Ajrakh Hand-block Printed Silk Sharara Set - Red",
-        price: "₹185,000",
+        title: "Rann Handcrafted Bandhani Silk Lehenga",
+        price: "₹150,000",
         defaultImage: "/images/product1.webp",
         hoverImage: "/images/product1-hover.webp",
+        readyToShip: true,
     },
     {
         id: 2,
-        title: "Cinnabar Handcrafted Bandhani Silk Suit Set - Red",
-        price: "₹110,000",
+        title: "Avis Printed Silk Kaftan - Blue",
+        price: "₹26,000",
         defaultImage: "/images/product2.webp",
         hoverImage: "/images/product2-hover.webp",
+        readyToShip: true,
     },
     {
         id: 3,
-        title: "Kasano Ajrakh Hand-block Printed Silk Suit Set - Mustard",
-        price: "₹130,000",
+        title: "Suramya Embroidered Zardozi Lehenga",
+        price: "₹600,000",
         defaultImage: "/images/product3.webp",
         hoverImage: "/images/product3-hover.webp",
+        readyToShip: true,
     },
     {
         id: 4,
-        title: "Khevna Handwoven Benarasi Silk Sharara Set - Red",
-        price: "₹145,000",
+        title: "Ranjika Handwoven Maheshwari Suit",
+        price: "₹45,000",
         defaultImage: "/images/product4.webp",
         hoverImage: "/images/product4-hover.webp",
-    },
-    {
-        id: 5,
-        title: "Kirsa Ajrakh Hand-block Printed Silk Sharara Set - Red",
-        price: "₹185,000",
-        defaultImage: "/images/product1.webp",
-        hoverImage: "/images/product1-hover.webp",
-    },
-    {
-        id: 6,
-        title: "Cinnabar Handcrafted Bandhani Silk Suit Set - Red",
-        price: "₹110,000",
-        defaultImage: "/images/product2.webp",
-        hoverImage: "/images/product2-hover.webp",
-    },
-    {
-        id: 7,
-        title: "Kasano Ajrakh Hand-block Printed Silk Suit Set - Mustard",
-        price: "₹130,000",
-        defaultImage: "/images/product3.webp",
-        hoverImage: "/images/product3-hover.webp",
-    },
-    {
-        id: 8,
-        title: "Khevna Handwoven Benarasi Silk Sharara Set - Red",
-        price: "₹145,000",
-        defaultImage: "/images/product4.webp",
-        hoverImage: "/images/product4-hover.webp",
+        readyToShip: true,
     },
     {
         id: 1,
-        title: "Kirsa Ajrakh Hand-block Printed Silk Sharara Set - Red",
-        price: "₹185,000",
+        title: "Rann Handcrafted Bandhani Silk Lehenga",
+        price: "₹150,000",
         defaultImage: "/images/product1.webp",
         hoverImage: "/images/product1-hover.webp",
+        readyToShip: true,
     },
     {
         id: 2,
-        title: "Cinnabar Handcrafted Bandhani Silk Suit Set - Red",
-        price: "₹110,000",
+        title: "Avis Printed Silk Kaftan - Blue",
+        price: "₹26,000",
         defaultImage: "/images/product2.webp",
         hoverImage: "/images/product2-hover.webp",
+        readyToShip: true,
     },
     {
         id: 3,
-        title: "Kasano Ajrakh Hand-block Printed Silk Suit Set - Mustard",
-        price: "₹130,000",
+        title: "Suramya Embroidered Zardozi Lehenga",
+        price: "₹600,000",
         defaultImage: "/images/product3.webp",
         hoverImage: "/images/product3-hover.webp",
+        readyToShip: true,
     },
     {
         id: 4,
-        title: "Khevna Handwoven Benarasi Silk Sharara Set - Red",
-        price: "₹145,000",
+        title: "Ranjika Handwoven Maheshwari Suit",
+        price: "₹45,000",
         defaultImage: "/images/product4.webp",
         hoverImage: "/images/product4-hover.webp",
+        readyToShip: true,
     },
-    {
-        id: 5,
-        title: "Kirsa Ajrakh Hand-block Printed Silk Sharara Set - Red",
-        price: "₹185,000",
-        defaultImage: "/images/product1.webp",
-        hoverImage: "/images/product1-hover.webp",
-    },
-    {
-        id: 6,
-        title: "Cinnabar Handcrafted Bandhani Silk Suit Set - Red",
-        price: "₹110,000",
-        defaultImage: "/images/product2.webp",
-        hoverImage: "/images/product2-hover.webp",
-    },
-    {
-        id: 7,
-        title: "Kasano Ajrakh Hand-block Printed Silk Suit Set - Mustard",
-        price: "₹130,000",
-        defaultImage: "/images/product3.webp",
-        hoverImage: "/images/product3-hover.webp",
-    },
-    {
-        id: 8,
-        title: "Khevna Handwoven Benarasi Silk Sharara Set - Red",
-        price: "₹145,000",
-        defaultImage: "/images/product4.webp",
-        hoverImage: "/images/product4-hover.webp",
-    },
-  
 ];
 
-const ProductList = () => {
+const Women = () => {
     return (
         <div className="p-4 lg:px-6">
             <FilterSection />
@@ -146,21 +97,28 @@ const ProductList = () => {
                                 {product.title}
                                 <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#B18E35] transition-all duration-500 group-hover:w-full"></span>
                             </h3>
-                            <p className="text-gray-600 mt-1">{product.price}</p>
+                            {/* Price and Heart Icon */}
+                            <div className="flex items-center justify-between mt-1">
+                                <p className="text-gray-600">{product.price}</p>
+                                <button
+                                    className="text-gray-500 hover:text-[#B18E35] transition duration-300"
+                                    aria-label="Add to Wishlist"
+                                >
+                                    <SlHeart size={18} />
+                                </button>
+                            </div>
+                            {/* Ready to Ship Label */}
+                            {product.readyToShip && (
+                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2  inline-block">
+                                    READY TO SHIP
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}
-            </div>
-
-            {/* Button */}
-            <div className="text-center my-6">
-                <button className="group inline-flex items-center text-[#1E381E] px-8 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300">
-                    SHOP THE COLLECTION
-                    <FaArrowRight className="ml-2 transition-all group-hover:ml-4" />
-                </button>
             </div>
         </div>
     );
 };
 
-export default ProductList;
+export default Women;
