@@ -22,9 +22,9 @@ export default function FilterSection() {
             </div>
 
             {/* Filters and Sorting */}
-            <div className="flex flex-col lg:flex-row lg:justify-between items-start lg:items-center border-b border-gray-300 pb-3 mb-4 gap-4">
+            <div className="flex justify-between items-center border-b w-full border-gray-300 pb-3 mb-4">
                 {/* Filters Section */}
-                <div className="flex flex-wrap gap-4">
+                <div className=" flex-wrap gap-4 hidden lg:flex">
                     {["Category", "Price", "Color", "Size", "Brand"].map((filter) => (
                         <div key={filter} className="relative">
                             <button
@@ -50,10 +50,35 @@ export default function FilterSection() {
                     ))}
                 </div>
 
+                <div className="relative block lg:hidden">
+                    <button
+                        onClick={() => setIsSortOpen(!isSortOpen)}
+                        className="flex items-center text-gray-700 text-sm"
+                    >
+                        Sort by:
+                        <RiArrowDropDownLine size={20} />
+                    </button>
+                    {isSortOpen && (
+                        <div className="absolute left-0 mt-2 bg-white border rounded-md shadow-md p-4 w-48 z-10">
+                            <ul className="space-y-2">
+                                {["Price: Low to High", "Price: High to Low", "Newest Arrivals"].map((option, idx) => (
+                                    <li key={idx} className="text-sm hover:bg-gray-100 p-1 cursor-pointer">
+                                        {option}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+
+
+
                 {/* Right Side: Sort and View Options */}
-                <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4 w-full lg:w-auto">
+                <div className="flex  items-center gap-4 lg:w-auto">
+                    {/* Results Count */}
                     <div className="text-sm text-gray-600">1,050 Results</div>
 
+                    {/* View Options */}
                     <div className="flex gap-2">
                         <button
                             onClick={() => setActiveView("grid")}
@@ -71,32 +96,21 @@ export default function FilterSection() {
                         </button>
                     </div>
 
-                    <div className="relative">
+                    {/* Sort Dropdown */}
+                    <div className="relative hidden lg:block">
                         <button
                             onClick={() => setIsSortOpen(!isSortOpen)}
-                            className="flex items-center border rounded-md px-3 py-2 bg-white text-sm"
+                            className="flex items-center text-gray-700 text-sm"
                         >
-                            Sort by: Relevance
+                            Sort by:
                             <RiArrowDropDownLine size={20} />
                         </button>
                         {isSortOpen && (
                             <div className="absolute right-0 mt-2 bg-white border rounded-md shadow-md p-4 w-48 z-10">
                                 <ul className="space-y-2">
-                                    {[
-                                        "Relevance",
-                                        "Price: Low to High",
-                                        "Price: High to Low",
-                                        "Newest Arrivals",
-                                    ].map((sortOption, idx) => (
-                                        <li
-                                            key={idx}
-                                            className="text-sm cursor-pointer hover:text-blue-600"
-                                            onClick={() => {
-                                                setIsSortOpen(false);
-                                                alert(`Sorted by: ${sortOption}`);
-                                            }}
-                                        >
-                                            {sortOption}
+                                    {["Price: Low to High", "Price: High to Low", "Newest Arrivals"].map((option, idx) => (
+                                        <li key={idx} className="text-sm hover:bg-gray-100 p-1 cursor-pointer">
+                                            {option}
                                         </li>
                                     ))}
                                 </ul>
