@@ -109,7 +109,7 @@ const Women = () => {
                             </div>
                             {/* Ready to Ship Label */}
                             {product.readyToShip && (
-                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2  inline-block">
+                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2 py-1  inline-block">
                                     READY TO SHIP
                                 </div>
                             )}

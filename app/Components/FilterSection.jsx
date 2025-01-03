@@ -14,7 +14,7 @@ export default function FilterSection() {
     };
 
     return (
-        <div className="p-4 bg-[#faf8f0] font-sans text-[#333]">
+        <div className="p-4 bg-[#faf8f0] text-[#333]">
             {/* Breadcrumb */}
             <div className="text-sm mb-4">
                 <span className="text-gray-500">Home</span> |{" "}
