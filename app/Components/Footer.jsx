@@ -8,7 +8,7 @@ const Footer = () => {
                 <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-center gap-6 md:gap-12 items-center">
                     {/* Title Section */}
                     <h2 className="text-lg font-semibold text-center md:text-left">
-                        Enter Into The World of Anita Dongre
+                        Enter Into The World of Euphoria
                     </h2>
 
                     {/* Form Section */}
@@ -44,7 +44,7 @@ const Footer = () => {
                     <div>
                         <h3 className="font-bold mb-4 text-[1rem]">About Us</h3>
                         <ul>
-                            <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Anita Dongre Foundation</li>
+                            <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Euphoria Foundation</li>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Sustainability</li>
                             <li className="my-2 text-[.9rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E]">Careers</li>
                         </ul>
@@ -91,7 +91,7 @@ const Footer = () => {
             <div className="bg-[#F5F5F5] text-gray-700 py-4">
                 <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
                     <p className="text-sm text-center md:text-left mb-6 md:mb-0">
-                        © 2024 House of Anita Dongre Private Limited. | All Rights Reserved.
+                        © 2024 House of Euphoria Private Limited. | All Rights Reserved.
                     </p>
                     <div className="flex space-x-4">
                         <FaFacebookF className="hover:text-[#1E381E] cursor-pointer" />

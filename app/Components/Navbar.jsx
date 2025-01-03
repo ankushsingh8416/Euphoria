@@ -45,8 +45,8 @@ export default function Navbar() {
           {/* Right Section (Icons) */}
           <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Search Icon */}
-            <Image     onClick={() => setIsSearchOpen(true)}
-            src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
+            <Image onClick={() => setIsSearchOpen(true)}
+              src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" />
 
             {/* User Icon */}
             <Link href="/login">
@@ -60,7 +60,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Navigation Links */}
         <div
           className={`fixed top-0 left-0 bg-[#faf8f0] w-[320px] h-screen z-40 transition-transform duration-300 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
             } lg:static lg:translate-x-0 lg:flex lg:h-auto lg:w-auto`}
@@ -69,7 +68,7 @@ export default function Navbar() {
             onClick={() => setIsMenuOpen(false)}
             className="absolute top-8 right-8 lg:hidden"
           >
-            <Image src="/images/cancel-icon.png" alt="Close" width={30} height={30} />
+            <Image src="/images/cancel-icon.webp" alt="Close" width={30} height={30} />
           </button>
           <nav className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-center w-full space-y-4 lg:space-y-0 lg:space-x-8 py-12 lg:py-4 px-4 lg:px-0 text-gray-700">
             {[
@@ -82,17 +81,22 @@ export default function Navbar() {
               "Discover",
               "Celebrity Closet",
               "Sale",
-            ].map((item, index) => (
-              <Link
-                key={index}
-                href="#"
-                className="relative group hover:text-[#B18E35] transition-all duration-300"
-              >
-                {item}
-                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            ))}
+            ].map((item, index) => {
+              const href = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+
+              return (
+                <Link
+                  key={index}
+                  href={href}
+                  className="relative group hover:text-[#B18E35] transition-all duration-300"
+                >
+                  {item}
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              );
+            })}
           </nav>
+
         </div>
       </header>
     </>
