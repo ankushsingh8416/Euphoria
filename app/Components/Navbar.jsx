@@ -93,6 +93,7 @@ export default function Navbar() {
                 <Link
                   key={index}
                   href={href}
+                  onClink={()=>setIsMenuOpen(false)}
                   className="relative group hover:text-[#B18E35] transition-all duration-300"
                 >
                   {item}
