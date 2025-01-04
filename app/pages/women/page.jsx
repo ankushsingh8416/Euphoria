@@ -2,7 +2,7 @@
 
 import React from "react";
 import { SlHeart } from "react-icons/sl";
-import FilterSection from "../Components/FilterSection";
+import FilterSection from "../../Components/FilterSection";
 
 const products = [
     {
@@ -73,8 +73,8 @@ const products = [
 
 const Women = () => {
     return (
-        <div className="p-4 lg:px-6">
-            <FilterSection />
+        <div >
+            {/* <FilterSection /> */}
             <div className="flex flex-wrap justify-between gap-2">
                 {products.map((product, index) => (
                     <div key={index} className="w-[48%] lg:w-[24%] mb-8 group">
