@@ -30,7 +30,7 @@ export default function FilterSection() {
                     <span className="font-semibold uppercase">{pathname.replace(/^\//, "")}</span>
                 </div>
                 <div className="relative block lg:hidden">
-                    <button
+                    <button 
                         onClick={() => setIsSortOpen(!isSortOpen)}
                         className="flex items-center text-gray-700 text-sm"
                     >
@@ -41,7 +41,7 @@ export default function FilterSection() {
                         <div className="absolute right-0 mt-2 bg-white border rounded-md shadow-md p-4 w-48 z-10">
                             <ul className="space-y-2">
                                 {["Price: Low to High", "Price: High to Low", "Newest Arrivals"].map((option, idx) => (
-                                    <li key={idx} className="text-sm hover:bg-gray-100 p-1 cursor-pointer">
+                                    <li key={idx} className="text-sm  hover:bg-gray-100 p-1 cursor-pointer">
                                         {option}
                                     </li>
                                 ))}
@@ -145,9 +145,9 @@ export default function FilterSection() {
                     <div key={filter} className="relative">
                         <button
                             onClick={() => toggleFilter(filter)}
-                            className="flex justify-between items-center w-full text-gray-700 text-sm font-medium p-3 bg-gray-100 rounded-md hover:bg-gray-200 transition"
+                            className="flex justify-between items-center w-full text-gray-700 text-sm font-medium p-3 bg-[#d5fed55f] rounded-md hover:bg-[#d5fed580] transition"
                         >
-                            {filter}
+                            {filter}   
                             <RiArrowDropDownLine size={20} />
                         </button>
                         {activeFilter === filter && (

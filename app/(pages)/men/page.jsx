@@ -81,7 +81,7 @@ const {productGrid } = useContext(cartContext)
         <div >
             <div className="flex flex-wrap justify-between gap-2">
                 {products.map((product, index) => (
-                    <div key={index} className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"}`}>
+                    <div key={index} className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[49%]"}`}>
                         <div className="relative overflow-hidden">
                             {/* Default Image */}
                             <img

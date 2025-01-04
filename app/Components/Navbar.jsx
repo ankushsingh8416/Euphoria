@@ -48,11 +48,11 @@ export default function Navbar() {
           <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Search Icon */}
             <Image onClick={() => setIsSearchOpen(true)}
-              src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer" 
-              />
-        {
-          isSearchOpen ? <SearchPanel /> :null
-        }
+              src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer"
+            />
+            {
+              isSearchOpen ? <SearchPanel /> : null
+            }
             {/* User Icon */}
             <Link href="/login">
               <Image src="/images/user-icon.svg" alt="User" width={24} height={24} className="cursor-pointer" />
@@ -93,8 +93,8 @@ export default function Navbar() {
                 <Link
                   key={index}
                   href={href}
-                  onClink={()=>setIsMenuOpen(false)}
                   className="relative group hover:text-[#B18E35] transition-all duration-300"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   {item}
                   <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
