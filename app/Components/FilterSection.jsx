@@ -16,9 +16,14 @@ export default function FilterSection() {
     return (
         <div className="p-4 bg-[#faf8f0] text-[#333]">
             {/* Breadcrumb */}
+            <div className="flex justify-between items-center mb-4">
             <div className="text-sm mb-4">
                 <span className="text-gray-500">Home</span> |{" "}
                 <span className="font-semibold">WOMEN</span>
+            </div>
+            <div className="filter-icon">
+                <p>Anmk</p>
+            </div>
             </div>
 
             {/* Filters and Sorting */}

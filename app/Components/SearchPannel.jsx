@@ -11,7 +11,7 @@ const SearchPanel = () => {
   if (!isSearchOpen) return null;
 
   return (
-    <div className="fixed top-0 left-0 h-screen overflow-auto w-full searchpannel bg-white z-50">
+    <div className="fixed top-0 left-0 h-screen overflow-auto w-full searchpannel space-x-0 bg-white z-50">
       {/* Top Notification Bar */}
       <div className="bg-[#1E381E] text-white text-center py-2 text-sm md:text-base">
         <Link href="#" className="font-medium">

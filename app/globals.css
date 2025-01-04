@@ -34,6 +34,7 @@ header {
 .searchpannel {
   z-index: 999999999 !important;
   scrollbar-width: none; 
+  margin: 0!important;
 
 }
 .searchpannel::-webkit-scrollbar {
