@@ -7,15 +7,21 @@ export const cartContext = createContext();
 
 export const Cartprovider = ({ children }) => {
 
-    const [data, setdata] = useState([])
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [activeView, setActiveView] = useState("grid");
+    const [productGrid, setproductGrid] = useState("four");
 
-    const addtoCart = (item) => {
-        setdata((prevCart) => [...prevCart, item]);
-
+    const fourGrid = () => {
+        setActiveView("grid")
+        setproductGrid("four")
     }
+    const twoGrid = () => {
+        setActiveView("list")
+        setproductGrid("two")
+    }
+
     return (
-        <cartContext.Provider value={{ addtoCart, data ,isSearchOpen, setIsSearchOpen }}>
+        <cartContext.Provider value={{ isSearchOpen, setIsSearchOpen, fourGrid, twoGrid, activeView, productGrid  }}>
             {children}
         </cartContext.Provider>
     )

@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import { cartContext } from "@/app/context/cartContext";
+import React, { useContext } from "react";
 import { SlHeart } from "react-icons/sl";
-import FilterSection from "../../Components/FilterSection";
 
 const products = [
     {
@@ -71,13 +71,17 @@ const products = [
     },
 ];
 
-const Women = () => {
+const Men = () => {
+
+const {productGrid } = useContext(cartContext)
+
+
+
     return (
         <div >
-            {/* <FilterSection /> */}
             <div className="flex flex-wrap justify-between gap-2">
                 {products.map((product, index) => (
-                    <div key={index} className="w-[48%] lg:w-[24%] mb-8 group">
+                    <div key={index} className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"}`}>
                         <div className="relative overflow-hidden">
                             {/* Default Image */}
                             <img
@@ -107,7 +111,6 @@ const Women = () => {
                                     <SlHeart size={18} />
                                 </button>
                             </div>
-                            {/* Ready to Ship Label */}
                             {product.readyToShip && (
                                 <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2 py-1  inline-block">
                                     READY TO SHIP
@@ -121,4 +124,4 @@ const Women = () => {
     );
 };
 
-export default Women;
+export default Men;
