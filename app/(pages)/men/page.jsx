@@ -1,5 +1,4 @@
 "use client";
-
 import { cartContext } from "@/app/context/cartContext";
 import React, { useContext } from "react";
 import { SlHeart } from "react-icons/sl";
@@ -74,8 +73,6 @@ const products = [
 const Men = () => {
 
 const {productGrid } = useContext(cartContext)
-
-
 
     return (
         <div >

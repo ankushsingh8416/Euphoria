@@ -1,11 +1,18 @@
 "use client"
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 export const cartContext = createContext();
 export const Cartprovider = ({ children }) => {
 
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [activeView, setActiveView] = useState("grid");
     const [productGrid, setproductGrid] = useState("four");
+    const [sortOption, setSortOption] = useState("Price:LowtoHigh");
+    const [products, setProducts] = useState([]);
+    const [totalProducts, setTotalProducts] = useState(0); 
+
+    useEffect(() => {
+        setTotalProducts(products.length);
+    }, [products]); 
 
     const fourGrid = () => {
         setActiveView("grid")
@@ -16,8 +23,10 @@ export const Cartprovider = ({ children }) => {
         setproductGrid("two")
     }
 
+
+
     return (
-        <cartContext.Provider value={{ isSearchOpen, setIsSearchOpen, fourGrid, twoGrid, activeView, productGrid  }}>
+        <cartContext.Provider value={{ isSearchOpen, setIsSearchOpen, fourGrid, twoGrid, activeView, productGrid, sortOption, setSortOption, products, setProducts , totalProducts }}>
             {children}
         </cartContext.Provider>
     )
