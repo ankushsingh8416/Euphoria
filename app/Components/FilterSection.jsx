@@ -45,7 +45,7 @@ export default function FilterSection() {
                         <div className="absolute right-0 mt-2 bg-white border rounded-md shadow-md p-4 w-48 z-10">
                             <ul className="space-y-2">
                                 {["Price: Low to High", "Price: High to Low", "Newest Arrivals"].map((option, idx) => (
-                                    <li key={idx} className="text-sm  hover:bg-gray-100 p-1 cursor-pointer">
+                                    <li key={idx} className="text-sm  hover:bg-gray-100 p-1 cursor-pointer" onClick={() => sorting(option)}>
                                         {option}
                                     </li>
                                 ))}
