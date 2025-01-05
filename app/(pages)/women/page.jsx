@@ -101,17 +101,17 @@ const Women = () => {
     useEffect(() => {
         if (products.length === 0) {
             setProducts(initialProducts);
+        } else {
+            const sortedProducts = [...products].sort((a, b) => {
+                if (sortOption === "Price:LowtoHigh") return a.price - b.price;
+                if (sortOption === "Price:HightoLow") return b.price - a.price;
+                if (sortOption === "NewestArrivals") return b.meta.isNewArrival - a.meta.isNewArrival;
+                return 0;
+            });
+            setProducts(sortedProducts);
         }
+    }, [sortOption, products.length, setProducts]);
 
-        const sortedProducts = [...products].sort((a, b) => {
-            if (sortOption === "Price:LowtoHigh") return a.price - b.price;
-            if (sortOption === "Price:HightoLow") return b.price - a.price;
-            if (sortOption === "NewestArrivals") return b.meta.isNewArrival - a.meta.isNewArrival;
-            return 0;
-        });
-
-        setProducts(sortedProducts);
-    }, [sortOption, products, setProducts]);
     return (
         <div>
             <div className="flex flex-wrap justify-between gap-2">
