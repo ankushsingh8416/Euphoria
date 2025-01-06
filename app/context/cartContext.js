@@ -8,11 +8,19 @@ export const Cartprovider = ({ children }) => {
     const [productGrid, setproductGrid] = useState("four");
     const [sortOption, setSortOption] = useState("Price:LowtoHigh");
     const [products, setProducts] = useState([]);
-    const [totalProducts, setTotalProducts] = useState(0); 
+    const [totalProducts, setTotalProducts] = useState(0);
+    const [selectedFilters, setSelectedFilters] = useState({
+        Category: [],
+        Price: [],
+        Color: [],
+        Size: [],
+        Brand: [],
+    });
+
 
     useEffect(() => {
         setTotalProducts(products.length);
-    }, [products]); 
+    }, [products]);
 
     const fourGrid = () => {
         setActiveView("grid")
@@ -23,10 +31,41 @@ export const Cartprovider = ({ children }) => {
         setproductGrid("two")
     }
 
+    const handleCheckboxChange = (filter, value) => {
+        setSelectedFilters((prev) => {
+            const isSelected = prev[filter].includes(value);
+            if (isSelected) {
+                return {
+                    ...prev,
+                    [filter]: prev[filter].filter((item) => item !== value)
+                };
+            } else {
+                return {
+                    ...prev,
+                    [filter]: [...prev[filter], value],
+                };
+            }
+        });
+    };
+
+
 
 
     return (
-        <cartContext.Provider value={{ isSearchOpen, setIsSearchOpen, fourGrid, twoGrid, activeView, productGrid, sortOption, setSortOption, products, setProducts , totalProducts }}>
+        <cartContext.Provider value={{
+            isSearchOpen,
+            setIsSearchOpen,
+            fourGrid,
+            twoGrid,
+            activeView,
+            productGrid,
+            sortOption,
+            setSortOption,
+            products,
+            setProducts,
+            totalProducts,
+            selectedFilters
+                    }}>
             {children}
         </cartContext.Provider>
     )

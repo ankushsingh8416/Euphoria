@@ -15,6 +15,10 @@ const initialProducts = [
             readyToShip: true,
             isNewArrival: false,
         },
+        color: "Red",
+        brand: "Manish Malhotra",
+        size: ["M", "L", "XL"],
+        category: "Lehenga",
     },
     {
         id: 2,
@@ -26,6 +30,10 @@ const initialProducts = [
             readyToShip: true,
             isNewArrival: false,
         },
+        color: "Blue",
+        brand: "FabIndia",
+        size: ["Free Size"],
+        category: "Kaftan",
     },
     {
         id: 3,
@@ -37,6 +45,10 @@ const initialProducts = [
             readyToShip: false,
             isNewArrival: true,
         },
+        color: "Gold",
+        brand: "Ritu Kumar",
+        size: ["M", "L"],
+        category: "Lehenga",
     },
     {
         id: 4,
@@ -48,6 +60,10 @@ const initialProducts = [
             readyToShip: true,
             isNewArrival: false,
         },
+        color: "Pink",
+        brand: "Biba",
+        size: ["S", "M", "L"],
+        category: "Suit",
     },
     {
         id: 5,
@@ -59,6 +75,10 @@ const initialProducts = [
             readyToShip: false,
             isNewArrival: true,
         },
+        color: "Beige",
+        brand: "Global Desi",
+        size: ["Free Size"],
+        category: "Saree",
     },
     {
         id: 6,
@@ -70,6 +90,10 @@ const initialProducts = [
             readyToShip: true,
             isNewArrival: false,
         },
+        color: "White",
+        brand: "Local Artisans",
+        size: ["M", "L", "XL"],
+        category: "Kurta",
     },
     {
         id: 7,
@@ -81,6 +105,10 @@ const initialProducts = [
             readyToShip: false,
             isNewArrival: true,
         },
+        color: "Purple",
+        brand: "Anita Dongre",
+        size: ["M", "L"],
+        category: "Lehenga",
     },
     {
         id: 8,
@@ -92,25 +120,75 @@ const initialProducts = [
             readyToShip: true,
             isNewArrival: false,
         },
+        color: "Yellow",
+        brand: "W for Women",
+        size: ["S", "M", "L"],
+        category: "Suit",
     },
 ];
 
 const Women = () => {
-    const { productGrid, sortOption, products, setProducts } = useContext(cartContext);
+    const { productGrid, sortOption, products, setProducts , selectedFilters } = useContext(cartContext);
 
     useEffect(() => {
-        if (products.length === 0) {
-            setProducts(initialProducts);
-        } else {
-            const sortedProducts = [...products].sort((a, b) => {
-                if (sortOption === "Price:LowtoHigh") return a.price - b.price;
-                if (sortOption === "Price:HightoLow") return b.price - a.price;
-                if (sortOption === "NewestArrivals") return b.meta.isNewArrival - a.meta.isNewArrival;
-                return 0;
-            });
-            setProducts(sortedProducts);
-        }
-    }, [sortOption, products.length, setProducts]);
+        const filters = {
+            Category: selectedFilters.Category || [],
+            Price: selectedFilters.Price || [],
+            Color: selectedFilters.Color || [],
+            Size: selectedFilters.Size || [],
+            Brand: selectedFilters.Brand || [],
+        };
+
+        // Apply filters based on selectedFilters
+        const filteredProducts = initialProducts.filter((product) => {
+            // Category Filter
+            if (filters.Category.length > 0 && !filters.Category.includes(product.category)) {
+                return false;
+            }
+
+            // Price Filter
+            if (filters.Price.length > 0) {
+                const priceRanges = {
+                    "Under ₹1,000": (price) => price <= 1000,
+                    "₹1,000 - ₹2,500": (price) => price > 1000 && price <= 2500,
+                    "₹2,500 - ₹5,000": (price) => price > 2500 && price <= 5000,
+                    "₹5,000 - ₹10,000": (price) => price > 5000 && price <= 10000,
+                    "Over ₹10,000": (price) => price > 10000,
+                };
+                const priceFilter = filters.Price.map((priceRange) => priceRanges[priceRange]);
+                if (!priceFilter.some((filter) => filter(Number(product.price)))) {
+                    return false;
+                }
+            }
+
+            // Color Filter
+            if (filters.Color.length > 0 && !filters.Color.includes(product.color)) {
+                return false;
+            }
+
+            // Size Filter
+            if (filters.Size.length > 0 && !product.size.some(size => filters.Size.includes(size))) {
+                return false;
+            }
+
+            // Brand Filter
+            if (filters.Brand.length > 0 && !filters.Brand.includes(product.brand)) {
+                return false;
+            }
+
+            return true;
+        });
+
+        // Sort the filtered products
+        const sortedProducts = filteredProducts.sort((a, b) => {
+            if (sortOption === "Price:LowtoHigh") return a.price - b.price;
+            if (sortOption === "Price:HightoLow") return b.price - a.price;
+            if (sortOption === "NewestArrivals") return b.meta.isNewArrival - a.meta.isNewArrival;
+            return 0;
+        });
+
+        setProducts(sortedProducts);
+    }, [selectedFilters, sortOption, setProducts]);
 
     return (
         <div>
@@ -118,8 +196,7 @@ const Women = () => {
                 {products.map((product, index) => (
                     <div
                         key={index}
-                        className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"
-                            }`}
+                        className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : "w-[100%] lg:w-[48%]"}`}
                     >
                         <div className="relative overflow-hidden">
                             {/* Default Image */}

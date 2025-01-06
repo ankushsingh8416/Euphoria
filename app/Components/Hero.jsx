@@ -51,7 +51,7 @@ const Hero = () => {
                   fill
                   sizes="100vw"
                   style={{
-                    objectFit: "cover", 
+                    objectFit: "cover",
                     objectPosition: "top",
                   }}
                 />
@@ -65,7 +65,7 @@ const Hero = () => {
                   fill
                   sizes="100vw"
                   style={{
-                    objectFit: "cover", 
+                    objectFit: "cover",
                     objectPosition: "top",
                   }}
                 />
