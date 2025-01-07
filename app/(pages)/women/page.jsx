@@ -128,68 +128,23 @@ const initialProducts = [
 ];
 
 const Women = () => {
-    const { productGrid, sortOption, products, setProducts , selectedFilters } = useContext(cartContext);
+    const { productGrid, sortOption, products, setProducts  } = useContext(cartContext);
 
     useEffect(() => {
-        const filters = {
-            Category: selectedFilters.Category || [],
-            Price: selectedFilters.Price || [],
-            Color: selectedFilters.Color || [],
-            Size: selectedFilters.Size || [],
-            Brand: selectedFilters.Brand || [],
-        };
-
-        // Apply filters based on selectedFilters
-        const filteredProducts = initialProducts.filter((product) => {
-            // Category Filter
-            if (filters.Category.length > 0 && !filters.Category.includes(product.category)) {
-                return false;
-            }
-
-            // Price Filter
-            if (filters.Price.length > 0) {
-                const priceRanges = {
-                    "Under ₹1,000": (price) => price <= 1000,
-                    "₹1,000 - ₹2,500": (price) => price > 1000 && price <= 2500,
-                    "₹2,500 - ₹5,000": (price) => price > 2500 && price <= 5000,
-                    "₹5,000 - ₹10,000": (price) => price > 5000 && price <= 10000,
-                    "Over ₹10,000": (price) => price > 10000,
-                };
-                const priceFilter = filters.Price.map((priceRange) => priceRanges[priceRange]);
-                if (!priceFilter.some((filter) => filter(Number(product.price)))) {
-                    return false;
-                }
-            }
-
-            // Color Filter
-            if (filters.Color.length > 0 && !filters.Color.includes(product.color)) {
-                return false;
-            }
-
-            // Size Filter
-            if (filters.Size.length > 0 && !product.size.some(size => filters.Size.includes(size))) {
-                return false;
-            }
-
-            // Brand Filter
-            if (filters.Brand.length > 0 && !filters.Brand.includes(product.brand)) {
-                return false;
-            }
-
-            return true;
+        const sortedProducts = [...initialProducts].sort((a, b) => {
+          const priceA = parseFloat(a.price);
+          const priceB = parseFloat(b.price);
+    
+          if (sortOption === "Price:LowtoHigh") return priceA - priceB;
+          if (sortOption === "Price:HightoLow") return priceB - priceA;
+          if (sortOption === "NewestArrivals") return b.meta.isNewArrival - a.meta.isNewArrival;
+    
+          return 0;
         });
-
-        // Sort the filtered products
-        const sortedProducts = filteredProducts.sort((a, b) => {
-            if (sortOption === "Price:LowtoHigh") return a.price - b.price;
-            if (sortOption === "Price:HightoLow") return b.price - a.price;
-            if (sortOption === "NewestArrivals") return b.meta.isNewArrival - a.meta.isNewArrival;
-            return 0;
-        });
-
+    
         setProducts(sortedProducts);
-    }, [selectedFilters, sortOption, setProducts]);
-
+      }, [sortOption, setProducts]);
+    
     return (
         <div>
             <div className="flex flex-wrap justify-between gap-2">

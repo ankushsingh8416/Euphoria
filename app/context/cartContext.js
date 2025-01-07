@@ -32,20 +32,7 @@ export const Cartprovider = ({ children }) => {
     }
 
     const handleCheckboxChange = (filter, value) => {
-        setSelectedFilters((prev) => {
-            const isSelected = prev[filter].includes(value);
-            if (isSelected) {
-                return {
-                    ...prev,
-                    [filter]: prev[filter].filter((item) => item !== value)
-                };
-            } else {
-                return {
-                    ...prev,
-                    [filter]: [...prev[filter], value],
-                };
-            }
-        });
+        alert(value)
     };
 
 
@@ -64,8 +51,8 @@ export const Cartprovider = ({ children }) => {
             products,
             setProducts,
             totalProducts,
-            selectedFilters
-                    }}>
+            handleCheckboxChange
+        }}>
             {children}
         </cartContext.Provider>
     )

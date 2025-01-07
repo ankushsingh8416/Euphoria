@@ -15,7 +15,7 @@ export default function FilterSection() {
 
     const toggleFilter = (filter) => {
         setActiveFilter(activeFilter === filter ? null : filter);
-    };
+    }; 
     const { fourGrid, twoGrid, activeView, setSortOption, totalProducts, handleCheckboxChange } = useContext(cartContext)
     const pathname = usePathname();
 
@@ -24,8 +24,6 @@ export default function FilterSection() {
         setSortOption(sanitizedOption)
         setIsSortOpen(false)
     };
-
-    
 
     return (
         <div className="p-4 relative bg-[#faf8f0] text-[#333]">
