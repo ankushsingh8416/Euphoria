@@ -32,6 +32,20 @@ const AddNewProduct = () => {
     }));
   };
 
+  const handleImageUpload = (e) => {
+    const { name, files } = e.target;
+    if (files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProduct({
+          ...product,
+          [name]: reader.result,
+        });
+      };
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(product);
@@ -42,160 +56,34 @@ const AddNewProduct = () => {
     <form onSubmit={handleSubmit} className="p-8 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Add New Product</h1>
 
+      {/* Other form fields here */}
+
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Product Name</label>
+        <label className="block text-sm font-medium text-gray-700">Default Image</label>
         <input
-          type="text"
-          name="title"
-          value={product.title}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Description</label>
-        <textarea
-          name="description"
-          value={product.description}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Category</label>
-        <input
-          type="text"
-          name="category"
-          value={product.category}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Brand Name</label>
-        <input
-          type="text"
-          name="brand"
-          value={product.brand}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">SKU</label>
-          <input
-            type="text"
-            name="sku"
-            value={product.sku || ''}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Stock Quantity</label>
-          <input
-            type="number"
-            name="stockQuantity"
-            value={product.stockQuantity || ''}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Regular Price</label>
-          <input
-            type="text"
-            name="regularPrice"
-            value={product.regularPrice || ''}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Sale Price</label>
-          <input
-            type="text"
-            name="price"
-            value={product.price}
-            onChange={handleChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-          />
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Color</label>
-        <input
-          type="text"
-          name="color"
-          value={product.color}
-          onChange={handleChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Size (comma separated)</label>
-        <input
-          type="text"
-          name="size"
-          value={product.size.join(', ')}
-          onChange={handleSizeChange}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            name="readyToShip"
-            checked={product.readyToShip}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <label className="ml-2 block text-sm text-gray-700">Ready to Ship</label>
-        </div>
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            name="isNewArrival"
-            checked={product.isNewArrival}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
-          />
-          <label className="ml-2 block text-sm text-gray-700">New Arrival</label>
-        </div>
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Default Image URL</label>
-        <input
-          type="text"
+          type="file"
           name="defaultImage"
-          value={product.defaultImage}
-          onChange={handleChange}
+          accept="image/*"
+          onChange={handleImageUpload}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
         />
+        {product.defaultImage && (
+          <img src={product.defaultImage} alt="Default" className="mt-2 h-32 w-32 object-cover" />
+        )}
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Hover Image URL</label>
+        <label className="block text-sm font-medium text-gray-700">Hover Image</label>
         <input
-          type="text"
+          type="file"
           name="hoverImage"
-          value={product.hoverImage}
-          onChange={handleChange}
+          accept="image/*"
+          onChange={handleImageUpload}
           className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
         />
+        {product.hoverImage && (
+          <img src={product.hoverImage} alt="Hover" className="mt-2 h-32 w-32 object-cover" />
+        )}
       </div>
 
       <div className="flex space-x-4">

@@ -1,84 +1,179 @@
 "use client";
+
 import { cartContext } from "@/app/context/cartContext";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { SlHeart } from "react-icons/sl";
 
-const products = [
+const initialProducts = [
     {
         id: 1,
         title: "Rann Handcrafted Bandhani Silk Lehenga",
-        price: "₹150,000",
+        price: "155000",
         defaultImage: "/images/product1.webp",
         hoverImage: "/images/product1-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: true,
+            isNewArrival: false,
+        },
+        color: "Red",
+        brand: "Manish Malhotra",
+        size: ["M", "L", "XL"],
+        category: "Lehenga",
     },
     {
         id: 2,
         title: "Avis Printed Silk Kaftan - Blue",
-        price: "₹26,000",
+        price: "27000",
         defaultImage: "/images/product2.webp",
         hoverImage: "/images/product2-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: true,
+            isNewArrival: false,
+        },
+        color: "Blue",
+        brand: "FabIndia",
+        size: ["Free Size"],
+        category: "Kaftan",
     },
     {
         id: 3,
         title: "Suramya Embroidered Zardozi Lehenga",
-        price: "₹600,000",
+        price: "610000",
         defaultImage: "/images/product3.webp",
         hoverImage: "/images/product3-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: false,
+            isNewArrival: true,
+        },
+        color: "Gold",
+        brand: "Ritu Kumar",
+        size: ["M", "L"],
+        category: "Lehenga",
     },
     {
         id: 4,
         title: "Ranjika Handwoven Maheshwari Suit",
-        price: "₹45,000",
+        price: "46000",
         defaultImage: "/images/product4.webp",
         hoverImage: "/images/product4-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: true,
+            isNewArrival: false,
+        },
+        color: "Pink",
+        brand: "Biba",
+        size: ["S", "M", "L"],
+        category: "Suit",
     },
     {
-        id: 1,
-        title: "Rann Handcrafted Bandhani Silk Lehenga",
-        price: "₹150,000",
+        id: 5,
+        title: "Ananya Designer Saree",
+        price: "80000",
         defaultImage: "/images/product1.webp",
         hoverImage: "/images/product1-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: false,
+            isNewArrival: true,
+        },
+        color: "Beige",
+        brand: "Global Desi",
+        size: ["Free Size"],
+        category: "Saree",
     },
     {
-        id: 2,
-        title: "Avis Printed Silk Kaftan - Blue",
-        price: "₹26,000",
+        id: 6,
+        title: "Tarun Textured Linen Kurta",
+        price: "34000",
         defaultImage: "/images/product2.webp",
         hoverImage: "/images/product2-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: true,
+            isNewArrival: false,
+        },
+        color: "White",
+        brand: "Local Artisans",
+        size: ["M", "L", "XL"],
+        category: "Kurta",
     },
     {
-        id: 3,
-        title: "Suramya Embroidered Zardozi Lehenga",
-        price: "₹600,000",
+        id: 7,
+        title: "Vrinda Zari Silk Lehenga",
+        price: "525000",
         defaultImage: "/images/product3.webp",
         hoverImage: "/images/product3-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: false,
+            isNewArrival: true,
+        },
+        color: "Purple",
+        brand: "Anita Dongre",
+        size: ["M", "L"],
+        category: "Lehenga",
     },
     {
-        id: 4,
-        title: "Ranjika Handwoven Maheshwari Suit",
-        price: "₹45,000",
+        id: 8,
+        title: "Kamya Embroidered Chikankari Suit",
+        price: "39000",
         defaultImage: "/images/product4.webp",
         hoverImage: "/images/product4-hover.webp",
-        readyToShip: true,
+        meta: {
+            readyToShip: true,
+            isNewArrival: false,
+        },
+        color: "Yellow",
+        brand: "W for Women",
+        size: ["S", "M", "L"],
+        category: "Suit",
     },
 ];
 
-const Men = () => {
+const Women = () => {
+    const { selectedFilters, sortOption, setProducts, totalProducts, products, productGrid } = useContext(cartContext);
 
-const {productGrid } = useContext(cartContext)
+    useEffect(() => {
+        let filteredProducts = [...initialProducts];
+
+        Object.keys(selectedFilters).forEach(filter => {
+            if (selectedFilters[filter].length > 0) {
+                filteredProducts = filteredProducts.filter(product => {
+                    if (filter === "Price") {
+                        return selectedFilters[filter].some(priceRange => {
+                            const [min, max] = priceRange.split("-").map(Number);
+                            return product.price >= min && product.price <= max;
+                        });
+                    } else if (Array.isArray(product[filter.toLowerCase()])) {
+                        return product[filter.toLowerCase()].some(size =>
+                            selectedFilters[filter].includes(size)
+                        );
+                    }
+                    return selectedFilters[filter].includes(product[filter.toLowerCase()]);
+                });
+            }
+        });
+
+        // Sorting logic
+        filteredProducts.sort((a, b) => {
+            const priceA = parseFloat(a.price);
+            const priceB = parseFloat(b.price);
+            if (sortOption === "Price:LowtoHigh") return priceA - priceB;
+            if (sortOption === "Price:HightoLow") return priceB - priceA;
+            return 0;
+        });
+
+        setProducts(filteredProducts);
+    }, [selectedFilters, sortOption, setProducts]);
 
     return (
-        <div >
-            <div className="flex flex-wrap justify-between gap-2">
+
+        <>
+
+            {totalProducts === 0 ? (
+                <div className="text-center mt-8">
+                    <h1 className="text-[#1E381E] text-xl lg:text-2xl">No products found. Please try adjusting your filters.</h1>
+                </div>
+            ) : (<div className="flex flex-wrap justify-between gap-2">
                 {products.map((product, index) => (
-                    <div key={index} className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[49%]"}`}>
+                    <div key={index} className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"}`}>
                         <div className="relative overflow-hidden">
                             {/* Default Image */}
                             <img
@@ -108,17 +203,25 @@ const {productGrid } = useContext(cartContext)
                                     <SlHeart size={18} />
                                 </button>
                             </div>
-                            {product.readyToShip && (
+                            {product.meta.readyToShip ? (
                                 <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2 py-1  inline-block">
                                     READY TO SHIP
                                 </div>
-                            )}
+                            ) :
+                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#fecdcd70] border border-gray-300 px-2 py-1  inline-block">
+                                    NEW ARRIVALS
+                                </div>
+
+                            }
                         </div>
                     </div>
                 ))}
-            </div>
-        </div>
+            </div>)
+            }
+
+        </>
+
     );
 };
 
-export default Men;
+export default Women;

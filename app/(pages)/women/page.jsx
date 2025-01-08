@@ -1,7 +1,7 @@
 "use client";
 
 import { cartContext } from "@/app/context/cartContext";
-import React, { useContext, useEffect,useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { SlHeart } from "react-icons/sl";
 
 const initialProducts = [
@@ -128,7 +128,7 @@ const initialProducts = [
 ];
 
 const Women = () => {
-    const { selectedFilters, sortOption, setProducts, products, productGrid } = useContext(cartContext);
+    const { selectedFilters, sortOption, setProducts, totalProducts, products, productGrid } = useContext(cartContext);
 
     useEffect(() => {
         let filteredProducts = [...initialProducts];
@@ -164,7 +164,14 @@ const Women = () => {
     }, [selectedFilters, sortOption, setProducts]);
 
     return (
-        <div className="flex flex-wrap justify-between gap-2">
+
+        <>
+
+            {totalProducts === 0 ? (
+                <div className="text-center mt-8">
+                    <h1 className="text-[#1E381E] text-xl lg:text-2xl">No products found. Please try adjusting your filters.</h1>
+                </div>
+            ) : (<div className="flex flex-wrap justify-between gap-2">
                 {products.map((product, index) => (
                     <div key={index} className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"}`}>
                         <div className="relative overflow-hidden">
@@ -196,15 +203,23 @@ const Women = () => {
                                     <SlHeart size={18} />
                                 </button>
                             </div>
-                            {product.readyToShip && (
+                            {product.meta.readyToShip ? (
                                 <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2 py-1  inline-block">
                                     READY TO SHIP
                                 </div>
-                            )}
+                            ) :
+                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#fecdcd70] border border-gray-300 px-2 py-1  inline-block">
+                                    NEW ARRIVALS
+                                </div>
+
+                            }
                         </div>
                     </div>
                 ))}
-            </div>
+            </div>)
+            }
+
+        </>
 
     );
 };

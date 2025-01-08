@@ -35,8 +35,11 @@ export default function FilterSection() {
   const sorting = (option) => {
     const sanitizedOption = option.replace(/\s+/g, "");
     setSortOption(sanitizedOption);
-    setIsSortOpen(false); // Close sort menu on selection
+    setIsSortOpen(false);
   };
+
+
+  
 
   return (
     <div className="p-4 relative bg-[#faf8f0] text-[#333]">
@@ -91,7 +94,7 @@ export default function FilterSection() {
                 {filter} <RiArrowDropDownLine />
               </button>
               {activeFilter === filter && (
-                <div className="absolute left-0 mt-2 bg-white border rounded-md shadow-md p-4 w-48 z-10">
+                <div className="absolute left-8 mt-6 bg-white border rounded-md shadow-md p-4 w-48 z-10">
                   <ul className="space-y-2">
                     {options.map((option, idx) => (
                       <li key={idx} className="flex items-center text-sm">
@@ -125,17 +128,15 @@ export default function FilterSection() {
           <div className="flex gap-2">
             <button
               onClick={fourGrid}
-              className={`p-2 border rounded-md ${
-                activeView === "grid" ? "bg-gray-200" : "hover:bg-gray-100"
-              }`}
+              className={`p-2 border rounded-md ${activeView === "grid" ? "bg-gray-200" : "hover:bg-gray-100"
+                }`}
             >
               <FiGrid size={16} />
             </button>
             <button
               onClick={twoGrid}
-              className={`p-2 border rounded-md ${
-                activeView === "list" ? "bg-gray-200" : "hover:bg-gray-100"
-              }`}
+              className={`p-2 border rounded-md ${activeView === "list" ? "bg-gray-200" : "hover:bg-gray-100"
+                }`}
             >
               <FiList size={16} />
             </button>
@@ -177,11 +178,10 @@ export default function FilterSection() {
 
       {/* mobile filter menu */}
       <div
-        className={`fixed h-screen top-0 overflow-auto searchpannel  z-50 left-0 w-full flex flex-col gap-6 bg-[#faf8f0] border border-gray-200 p-6  shadow-xl lg:hidden transition-transform duration-500 ease-in-out ${
-          isFilterVisible
+        className={`fixed h-screen top-0 overflow-auto searchpannel  z-50 left-0 w-full flex flex-col gap-6 bg-[#faf8f0] border border-gray-200 p-6  shadow-xl lg:hidden transition-transform duration-500 ease-in-out ${isFilterVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
-        }`}
+          }`}
       >
         {/* Title */}
         <div className="flex justify-between items-center pb-2 border-b border-gray-300">

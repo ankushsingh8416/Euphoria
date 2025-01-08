@@ -43,6 +43,7 @@ export const Cartprovider = ({ children }) => {
     <cartContext.Provider
       value={{
         selectedFilters,
+        setSelectedFilters,
         handleFilterChange,
         totalProducts,
         activeView,
