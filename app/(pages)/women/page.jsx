@@ -1,7 +1,7 @@
 "use client";
 
 import { cartContext } from "@/app/context/cartContext";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect,useState } from "react";
 import { SlHeart } from "react-icons/sl";
 
 const initialProducts = [
@@ -128,31 +128,45 @@ const initialProducts = [
 ];
 
 const Women = () => {
-    const { productGrid, sortOption, products, setProducts  } = useContext(cartContext);
+    const { selectedFilters, sortOption, setProducts, products, productGrid } = useContext(cartContext);
 
     useEffect(() => {
-        const sortedProducts = [...initialProducts].sort((a, b) => {
-          const priceA = parseFloat(a.price);
-          const priceB = parseFloat(b.price);
-    
-          if (sortOption === "Price:LowtoHigh") return priceA - priceB;
-          if (sortOption === "Price:HightoLow") return priceB - priceA;
-          if (sortOption === "NewestArrivals") return b.meta.isNewArrival - a.meta.isNewArrival;
-    
-          return 0;
+        let filteredProducts = [...initialProducts];
+
+        Object.keys(selectedFilters).forEach(filter => {
+            if (selectedFilters[filter].length > 0) {
+                filteredProducts = filteredProducts.filter(product => {
+                    if (filter === "Price") {
+                        return selectedFilters[filter].some(priceRange => {
+                            const [min, max] = priceRange.split("-").map(Number);
+                            return product.price >= min && product.price <= max;
+                        });
+                    } else if (Array.isArray(product[filter.toLowerCase()])) {
+                        return product[filter.toLowerCase()].some(size =>
+                            selectedFilters[filter].includes(size)
+                        );
+                    }
+                    return selectedFilters[filter].includes(product[filter.toLowerCase()]);
+                });
+            }
         });
-    
-        setProducts(sortedProducts);
-      }, [sortOption, setProducts]);
-    
+
+        // Sorting logic
+        filteredProducts.sort((a, b) => {
+            const priceA = parseFloat(a.price);
+            const priceB = parseFloat(b.price);
+            if (sortOption === "Price:LowtoHigh") return priceA - priceB;
+            if (sortOption === "Price:HightoLow") return priceB - priceA;
+            return 0;
+        });
+
+        setProducts(filteredProducts);
+    }, [selectedFilters, sortOption, setProducts]);
+
     return (
-        <div>
-            <div className="flex flex-wrap justify-between gap-2">
+        <div className="flex flex-wrap justify-between gap-2">
                 {products.map((product, index) => (
-                    <div
-                        key={index}
-                        className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : "w-[100%] lg:w-[48%]"}`}
-                    >
+                    <div key={index} className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"}`}>
                         <div className="relative overflow-hidden">
                             {/* Default Image */}
                             <img
@@ -174,7 +188,7 @@ const Women = () => {
                             </h3>
                             {/* Price and Heart Icon */}
                             <div className="flex items-center justify-between mt-1">
-                                <p className="text-gray-600">₹{product.price}</p>
+                                <p className="text-gray-600">{product.price}</p>
                                 <button
                                     className="text-gray-500 hover:text-[#B18E35] transition duration-300"
                                     aria-label="Add to Wishlist"
@@ -182,21 +196,16 @@ const Women = () => {
                                     <SlHeart size={18} />
                                 </button>
                             </div>
-                            {/* Conditional Rendering for READY TO SHIP or NEW ARRIVALS */}
-                            {product.meta.readyToShip ? (
-                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2 py-1 inline-block">
+                            {product.readyToShip && (
+                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2 py-1  inline-block">
                                     READY TO SHIP
                                 </div>
-                            ) : product.meta.isNewArrival ? (
-                                <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#fbb5d564] border border-gray-300 px-2 py-1 inline-block">
-                                    NEW ARRIVALS
-                                </div>
-                            ) : null}
+                            )}
                         </div>
                     </div>
                 ))}
             </div>
-        </div>
+
     );
 };
 
