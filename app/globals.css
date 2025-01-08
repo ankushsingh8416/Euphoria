@@ -8,7 +8,9 @@ body {
   font-weight: 600;
   background-color: #faf8f0;
 }
-
+.admin{
+  width: calc(100% - 16rem);
+}
 .crimson {
   font-family: "Crimson Pro", serif;
 }

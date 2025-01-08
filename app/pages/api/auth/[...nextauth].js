@@ -9,25 +9,20 @@ export default NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      authorize(credentials) {
+      async authorize(credentials) {
         const { email, password } = credentials;
 
-        // Hardcoded credentials
         if (email === "nkshrazz@gmail.com" && password === "rajputankush999") {
-          return {
-            id: 1,
-            name: "Ankush Rajput",
-            email: "nkshrazz@gmail.com",
-          };
+          return { id: 1, name: "Ankush Rajput", email: "nkshrazz@gmail.com" };
         }
 
-        // Return null if login fails
         return null;
       },
     }),
   ],
   pages: {
-    signIn: "/cpanel-auth"
-},
-  secret: ufgfiugdfhufgdkygdfmhj, 
+    signIn: "/cpanel-auth", 
+  },
+  secret: process.env.NEXTAUTH_SECRET || "asdasd",
+  debug: true, 
 });

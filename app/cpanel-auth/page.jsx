@@ -1,33 +1,32 @@
 "use client";
+
+import { useState } from "react";
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-export default function Cpanel() {
-
+export default function CpanelAuth() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const router = useRouter();
 
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        const result = await signIn("credentials", {
-            redirect: true,
-            email,
-            password,
-            callbackUrl: "/",
-        });
+        const validEmail = "nkshrazz@gmail.com";
+        const validPassword = "rajputankush999";
 
-        if (result?.error) {
-            alert("Invalid credentials.");
+        if (email === validEmail && password === validPassword) {
+            router.push("/cpanel");
+        } else {
+            alert("Email and password is not correct")
         }
     };
 
-
     return (
-        <div className="h-screen  overflow-hidden flex items-center justify-center bg-gray-100">
+        <div className="h-screen overflow-hidden flex items-center justify-center bg-gray-100">
             <div className="bg-white shadow-md w-full max-w-full flex flex-col lg:flex-row rounded-none">
                 {/* Left Side: Image */}
                 <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
@@ -36,7 +35,6 @@ export default function Cpanel() {
                         alt="Login Illustration"
                         className="object-cover w-full h-auto object-top"
                     />
-
                 </div>
 
                 {/* Right Side: Login Form */}
@@ -85,6 +83,7 @@ export default function Cpanel() {
                                     <FontAwesomeIcon
                                         icon={faLock}
                                         className="absolute size-4 left-3 top-3 text-gray-500"
+                                        
                                     />
                                     <input
                                         id="password"
@@ -109,7 +108,7 @@ export default function Cpanel() {
                         </form>
 
                         <p className="text-sm text-center text-gray-500 mt-6">
-                            New to the platform?{' '}
+                            New to the platform?{" "}
                             <Link href="/signup" className="text-[#1E381E] hover:underline">
                                 Create an account
                             </Link>
@@ -117,14 +116,15 @@ export default function Cpanel() {
 
                         <div className="mt-8 text-center">
                             <p className="text-gray-500 text-xs">
-                                By logging in, you agree to our{' '}
+                                By logging in, you agree to our{" "}
                                 <Link href="/terms" className="text-[#1E381E] hover:underline">
                                     Terms of Service
-                                </Link>{' '}
-                                and{' '}
+                                </Link>{" "}
+                                and{" "}
                                 <Link href="/privacy" className="text-[#1E381E] hover:underline">
                                     Privacy Policy
-                                </Link>.
+                                </Link>
+                                .
                             </p>
                         </div>
                     </div>
