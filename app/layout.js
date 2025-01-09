@@ -12,9 +12,9 @@ export default function RootLayout({ children }) {
       <body>
 
           <Cartprovider>
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
-            <Footer />
+            {/* <Footer /> */}
           </Cartprovider>
 
       </body>
