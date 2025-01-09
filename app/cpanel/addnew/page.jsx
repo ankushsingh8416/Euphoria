@@ -1,40 +1,65 @@
-"use client"
-import React, { useState } from 'react';
-import { MdCloudUpload } from 'react-icons/md';
+"use client";
+import React, { useState } from "react";
+import { MdCloudUpload } from "react-icons/md";
 
 const AddNew = () => {
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    price: '',
-    defaultImage: '',
-    color: '',
-    brand: '',
+    title: "",
+    description: "",
+    price: "",
+    defaultImage: null,
+    color: "",
+    brand: "",
     size: [],
-    category: '',
-    page: '',
+    category: "",
+    page: "",
     readyToShip: false,
+    newArrivals: false,
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+    const { name, value, type, checked, files } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : type === "file" ? files[0] : value,
+    }));
+  };
+
+  const handleSizeChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prevData) => {
+      const updatedSizes = checked
+        ? [...prevData.size, value]
+        : prevData.size.filter((size) => size !== value);
+      return { ...prevData, size: updatedSizes };
     });
   };
 
+  const handleStatusChange = (status) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      readyToShip: status === "readyToShip",
+      newArrivals: status === "newArrivals",
+    }));
+  };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    // Handle form submission (e.g., API call)
+  };
 
   return (
     <div className="w-full flex items-center justify-center">
-      <div className="w-[90%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4 bg-white shadow-md">
-
-        {/* Title */}
+      <form onSubmit={handleSubmit} className="w-[90%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4 bg-white shadow-md">
+        {/* Title and Price */}
         <div className="flex gap-4 w-full">
           <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="title">Title</label>
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="title">
+              Title
+            </label>
             <input
+              required
               type="text"
               id="title"
               name="title"
@@ -46,8 +71,11 @@ const AddNew = () => {
           </div>
 
           <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="price">Price</label>
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="price">
+              Price
+            </label>
             <input
+              required
               type="text"
               id="price"
               name="price"
@@ -61,7 +89,9 @@ const AddNew = () => {
 
         {/* Description */}
         <div className="w-full">
-          <label className="w-full mb-2 text-gray-700 block" htmlFor="description">Description</label>
+          <label className="w-full mb-2 text-gray-700 block" htmlFor="description">
+            Description
+          </label>
           <textarea
             id="description"
             name="description"
@@ -72,11 +102,14 @@ const AddNew = () => {
           />
         </div>
 
-        {/* Color and page */}
+        {/* Color and Page */}
         <div className="flex gap-4 w-full">
           <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="color">Color</label>
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="color">
+              Color
+            </label>
             <input
+              required
               type="text"
               id="color"
               name="color"
@@ -88,8 +121,11 @@ const AddNew = () => {
           </div>
 
           <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="page">Page</label>
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="page">
+              Page
+            </label>
             <select
+              required
               id="page"
               name="page"
               value={formData.page}
@@ -108,17 +144,18 @@ const AddNew = () => {
               <option value="Sale">Sale</option>
             </select>
           </div>
-
-
         </div>
 
         {/* Image Upload */}
         <div className="w-full my-8">
-          <div className="w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 h-225 md:h-340 cursor-pointer rounded-lg">
+          <div className="w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
             <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
               <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
-              <p className="text-gray-500 hover:text-gray-700">Click here to upload Image</p>
+              <p className="text-gray-500 hover:text-gray-700">
+                Click here to upload Image
+              </p>
               <input
+                required
                 type="file"
                 id="defaultImage"
                 name="defaultImage"
@@ -130,11 +167,14 @@ const AddNew = () => {
           </div>
         </div>
 
-        {/* Category */}
+        {/* Category and Brand */}
         <div className="flex gap-4 w-full">
           <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="category">Category</label>
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="category">
+              Category
+            </label>
             <select
+              required
               id="category"
               name="category"
               value={formData.category}
@@ -150,10 +190,12 @@ const AddNew = () => {
             </select>
           </div>
 
-          {/* Brand */}
           <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="brand">Brand</label>
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="brand">
+              Brand
+            </label>
             <select
+              required
               id="brand"
               name="brand"
               value={formData.brand}
@@ -167,66 +209,75 @@ const AddNew = () => {
               <option value="Manish Malhotra">Manish Malhotra</option>
             </select>
           </div>
-
         </div>
-
 
         {/* Size */}
-        <div className="flex gap-4 w-full">
-          <div className="w-full">
-            <label className="w-full mb-2 text-gray-800 block font-semibold text-lg">Size</label>
-            <div className="flex flex-wrap gap-4">
-              {["XS", "S", "M", "L", "XL"].map((size) => (
-                <div key={size} className="checkbox-wrapper-50">
-                  <input
-                    type="checkbox"
-                    id={size}
-                    name="size"
-                    className="plus-minus"
-                  />
-                  <label htmlFor={size} className="text-gray-800 cursor-pointer font-medium ml-2 text-xl font-bold">
-                    {size}
-                  </label>
-                </div>
-              ))}
-            </div>
+        <div className="w-full">
+          <label className="w-full mb-2 text-gray-700 block">Size</label>
+          <div className="flex gap-4">
+            {["XS", "S", "M", "L", "XL"].map((size) => (
+              <div key={size} className="flex items-center gap-2">
+                <input
+                  required
+                  type="checkbox"
+                  id={`size-${size}`}
+                  value={size}
+                  checked={formData.size.includes(size)}
+                  onChange={handleSizeChange}
+                  className="cursor-pointer"
+                />
+                <label htmlFor={`size-${size}`} className="cursor-pointer">
+                  {size}
+                </label>
+              </div>
+            ))}
           </div>
+        </div>
 
-          <div className="w-full">
-            <label className="w-full mb-2 text-gray-800 block font-semibold text-lg">Product Status</label>
-            <div className="flex flex-col gap-2">
-              {[
-                { label: "READY TO SHIP" },
-                { label: "NEW ARRIVALS" },
-              ].map((status) => (
-                <div key={status.label} className="flex items-center gap-2 radio-wrapper-9">
-                  <input
-                    type="radio"
-                    id={status.label}
-                    name="readyToShip"
-                    className="cursor-pointer"
-                  />
-                  <label htmlFor={status.label} className="text-gray-800 cursor-pointer font-medium">
-                    {status.label}
-                  </label>
-                </div>
-              ))}
+        {/* Product Status */}
+        <div className="w-full">
+          <label className="w-full mb-2 text-gray-800 block font-semibold text-lg">Product Status</label>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <input
+                type="radio"
+                id="readyToShip"
+                name="productStatus"
+                value="readyToShip"
+                checked={formData.readyToShip}
+                onChange={() => handleStatusChange("readyToShip")}
+                className="cursor-pointer"
+              />
+              <label htmlFor="readyToShip" className="text-gray-800 cursor-pointer font-medium">
+                READY TO SHIP
+              </label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="radio"
+                id="newArrivals"
+                name="productStatus"
+                value="newArrivals"
+                checked={formData.newArrivals}
+                onChange={() => handleStatusChange("newArrivals")}
+                className="cursor-pointer"
+              />
+              <label htmlFor="newArrivals" className="text-gray-800 cursor-pointer font-medium">
+                NEW ARRIVALS
+              </label>
             </div>
           </div>
         </div>
 
-
-        {/* Save Button */}
         <div className="flex items-center w-full">
           <button
-            type="button"
+            type="submit"
             className="ml-0 md:ml-auto w-full md:w-auto border-none outline-none bg-emerald-500 px-12 py-2 rounded-lg text-lg text-white font-semibold"
-            onClick={() => console.log(formData)}
           >
             Save
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
