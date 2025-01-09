@@ -24,13 +24,7 @@ const AddNew = () => {
     });
   };
 
-  const handleMultipleSelect = (e) => {
-    const options = Array.from(e.target.selectedOptions).map((opt) => opt.value);
-    setFormData({
-      ...formData,
-      size: options,
-    });
-  };
+
 
   return (
     <div className="w-full flex items-center justify-center">
@@ -205,7 +199,7 @@ const AddNew = () => {
                 { label: "READY TO SHIP" },
                 { label: "NEW ARRIVALS" },
               ].map((status) => (
-                <div key={status.label} className="flex items-center gap-2">
+                <div key={status.label} className="flex items-center gap-2 radio-wrapper-9">
                   <input
                     type="radio"
                     id={status.label}
