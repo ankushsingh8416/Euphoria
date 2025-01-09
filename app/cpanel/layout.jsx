@@ -1,21 +1,27 @@
-import React from 'react'
-import CpanelSidebar from '../Components/CpanelSidebar'
-import CpanelNavbar from '../Components/CpanelNavbar'
+"use client";
 
-const layout = ({ children }) => {
+import React from 'react';
+import CpanelSidebar from '../Components/CpanelSidebar';
+import CpanelNavbar from '../Components/CpanelNavbar';
+import { usePathname } from 'next/navigation';
+
+const Layout = ({ children }) => {
+  const pathname = usePathname();
+
+  const isCpanelPage = pathname.startsWith("/cpanel/login");
+
   return (
     <div>
-      <CpanelNavbar />
+      {!isCpanelPage && <CpanelNavbar />}
       <div className="flex">
-        <CpanelSidebar />
-
-        <div className='admin'>
+        {!isCpanelPage && <CpanelSidebar />}
+        
+        <div className="w-full">
           {children}
-        </div> 
         </div>
-
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default layout
+export default Layout;

@@ -61,7 +61,9 @@ export default function Navbar() {
             <Image src="/images/wishlist-icon.svg" alt="Wishlist" width={24} height={24} className="hidden lg:block cursor-pointer" />
 
             {/* Cart Icon */}
-            <Image src="/images/cart-icon.svg" alt="Cart" width={24} height={24} className="cursor-pointer" />
+            <Link href="/cart">
+              <Image src="/images/cart-icon.svg" alt="Cart" width={24} height={24} className="cursor-pointer" />
+            </Link>
           </div>
         </div>
 

@@ -6,7 +6,6 @@ const Layout = ({children}) => {
     <div className="p-4 lg:px-6">
         <FilterSection/>
         {children}
-        
     </div>
   )
 }

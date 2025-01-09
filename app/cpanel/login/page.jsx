@@ -19,7 +19,7 @@ export default function CpanelAuth() {
         const validPassword = "rajputankush999";
 
         if (email === validEmail && password === validPassword) {
-            router.push("/cpanel");
+            router.push("/cpanel/dashboard");
         } else {
             alert("Email and password is not correct")
         }
@@ -83,7 +83,7 @@ export default function CpanelAuth() {
                                     <FontAwesomeIcon
                                         icon={faLock}
                                         className="absolute size-4 left-3 top-3 text-gray-500"
-                                        
+
                                     />
                                     <input
                                         id="password"
