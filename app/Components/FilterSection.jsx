@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoFilterSharp } from "react-icons/io5";
+import { BiRupee } from "react-icons/bi";
 
 export default function FilterSection() {
   const {
@@ -21,13 +22,7 @@ export default function FilterSection() {
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const pathname = usePathname();
-  const filterOptions = {
-    Category: ["Kurti", "Saree", "Lehenga", "Kaftan", "Suit"],
-    Price: ["1000-10000", "10000-50000", "50000-100000", "100000-200000"],
-    Color: ["Red", "Blue", "Green", "Yellow", "Pink"],
-    Size: ["XS", "S", "M", "L", "XL"],
-    Brand: ["FabIndia", "Biba", "W for Women", "Manish Malhotra"],
-  };
+
   const toggleFilter = (filter) => {
     setActiveFilter(activeFilter === filter ? null : filter);
   };
@@ -38,8 +33,30 @@ export default function FilterSection() {
     setIsSortOpen(false);
   };
 
+  let filterOptions = {};
+  if (pathname === "/women") {
+    filterOptions = {
+      Category: ["Kurti", "Saree", "Lehenga", "Kaftan", "Suit"],
+      Price: ["1000-10000", "10000-50000", "50000-100000", "100000-200000"],
+      Color: ["Red", "Blue", "Green", "Yellow", "Pink"],
+      Size: ["XS", "S", "M", "L", "XL"],
+      Brand: ["FabIndia", "Biba", "W for Women", "Manish Malhotra"],
+    };
+  }
 
-  
+
+
+  else if (pathname === "/men") {
+    filterOptions = {
+      Category: ["Kurta", "jeans", "Lehenga", "Kaftan", "Suit"],
+      Price: ["1000-10000", "10000-50000", "50000-100000", "100000-200000"],
+      Color: ["Red", "Blue", "Green", "Yellow", "Pink"],
+      Size: ["XS", "S", "M", "L", "XL"],
+      Brand: ["FabIndia", "Biba", "W for Women", "Manish Malhotra"],
+    };
+
+  }
+
 
   return (
     <div className="p-4 relative bg-[#faf8f0] text-[#333]">
@@ -105,8 +122,15 @@ export default function FilterSection() {
                             onChange={() => handleFilterChange(filter, option)}
                             className="mr-2"
                           />
-                          {option}
-                        </label>
+                          {filter === "Price" ? (
+                            <div className="flex  items-center">
+                              <BiRupee />
+                              {option}
+                            </div>
+                          ) : (
+                            option
+                          )} 
+                          </label>
                       </li>
                     ))}
                   </ul>
@@ -179,8 +203,8 @@ export default function FilterSection() {
       {/* mobile filter menu */}
       <div
         className={`fixed h-screen top-0 overflow-auto searchpannel  z-50 left-0 w-full flex flex-col gap-6 bg-[#faf8f0] border border-gray-200 p-6  shadow-xl lg:hidden transition-transform duration-500 ease-in-out ${isFilterVisible
-            ? "translate-y-0 opacity-100"
-            : "-translate-y-full opacity-0 pointer-events-none"
+          ? "translate-y-0 opacity-100"
+          : "-translate-y-full opacity-0 pointer-events-none"
           }`}
       >
         {/* Title */}
@@ -223,7 +247,14 @@ export default function FilterSection() {
                         htmlFor={`${filter}-${idx}`}
                         className="text-gray-800 hover:underline cursor-pointer"
                       >
-                        {option}
+                        {filter === "Price" ? (
+                          <div className="flex  items-center">
+                            <BiRupee />
+                            {option}
+                          </div>
+                        ) : (
+                          option
+                        )}
                       </label>
                     </li>
                   ))}

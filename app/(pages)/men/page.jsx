@@ -18,7 +18,7 @@ const initialProducts = [
         color: "Red",
         brand: "Manish Malhotra",
         size: ["M", "L", "XL"],
-        category: "Lehenga",
+        category: "Kurta",
     },
     {
         id: 2,
@@ -48,7 +48,7 @@ const initialProducts = [
         color: "Gold",
         brand: "Ritu Kumar",
         size: ["M", "L"],
-        category: "Lehenga",
+        category: "Kurta",
     },
     {
         id: 4,

@@ -1,104 +1,288 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import React, { useState } from "react";
+import { MdCloudUpload } from "react-icons/md";
 
-const AddNewProduct = () => {
-  const [product, setProduct] = useState({
-    title: '',
-    price: '',
-    description: '',
-    defaultImage: '',
-    hoverImage: '',
-    readyToShip: false,
-    isNewArrival: false,
-    color: '',
-    brand: '',
+const AddNew = () => {
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    price: "",
+    defaultImage: "",
+    color: "",
+    brand: "",
     size: [],
-    category: '',
+    category: "",
+    page: "",
+    readyToShip: false,
+    newArrivals: false,
   });
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setProduct({
-      ...product,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+    console.log(formData)
+    alert(submitted)
   };
 
   const handleSizeChange = (e) => {
-    const { value } = e.target;
-    setProduct((prevState) => ({
-      ...prevState,
-      size: value.split(',').map((size) => size.trim()),
-    }));
+    const { value, checked } = e.target;
+    setFormData((prevData) => {
+      const updatedSizes = checked
+        ? [...prevData.size, value]
+        : prevData.size.filter((size) => size !== value);
+      return { ...prevData, size: updatedSizes };
+    });
   };
 
-  const handleImageUpload = (e) => {
-    const { name, files } = e.target;
-    if (files.length > 0) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setProduct({
-          ...product,
-          [name]: reader.result,
-        });
-      };
-      reader.readAsDataURL(files[0]);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(product);
-    // Add product submission logic here
+  const handleStatusChange = (status) => {
+    setFormData({
+      ...formData,
+      readyToShip: status === "readyToShip",
+      newArrivals: status === "newArrivals",
+    });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-8 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Add New Product</h1>
+    <div className="w-full flex items-center justify-center">
+      <form onSubmit={handleChange} className="w-[90%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4 bg-white shadow-md">
+        {/* Title and Price */}
+        <div className="flex gap-4 w-full">
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="title">
+              Title
+            </label>
+            <input
+              required
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Give me a title..."
+              value={formData.title}
+              onChange={handleChange}
+              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+            />
+          </div>
 
-      {/* Other form fields here */}
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="price">
+              Price
+            </label>
+            <input
+              required
+              type="text"
+              id="price"
+              name="price"
+              placeholder="Price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+            />
+          </div>
+        </div>
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Default Image</label>
-        <input
-          type="file"
-          name="defaultImage"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-        {product.defaultImage && (
-          <img src={product.defaultImage} alt="Default" className="mt-2 h-32 w-32 object-cover" />
-        )}
-      </div>
+        {/* Description */}
+        <div className="w-full">
+          <label
+            className="w-full mb-2 text-gray-700 block"
+            htmlFor="description"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Description..."
+            value={formData.description}
+            onChange={handleChange}
+            className="w-full h-24 text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+          />
+        </div>
 
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Hover Image</label>
-        <input
-          type="file"
-          name="hoverImage"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"
-        />
-        {product.hoverImage && (
-          <img src={product.hoverImage} alt="Hover" className="mt-2 h-32 w-32 object-cover" />
-        )}
-      </div>
+        {/* Color and Page */}
+        <div className="flex gap-4 w-full">
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="color">
+              Color
+            </label>
+            <input
+              required
+              type="text"
+              id="color"
+              name="color"
+              placeholder="Color"
+              value={formData.color}
+              onChange={handleChange}
+              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+            />
+          </div>
 
-      <div className="flex space-x-4">
-        <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-md shadow-md hover:bg-blue-700">
-          Update
-        </button>
-        <button type="button" className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md hover:bg-red-700">
-          Delete
-        </button>
-        <button type="button" className="bg-gray-600 text-white px-6 py-2 rounded-md shadow-md hover:bg-gray-700">
-          Cancel
-        </button>
-      </div>
-    </form>
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="page">
+              Page
+            </label>
+            <select
+            required
+              id="page"
+              name="page"
+              value={formData.page}
+              onChange={handleChange}
+              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+            >
+              <option value="">Select Page</option>
+              <option value="Women">Women</option>
+              <option value="Men">Men</option>
+              <option value="Wedding">Wedding</option>
+              <option value="Jewelry">Jewelry</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Gifting">Gifting</option>
+              <option value="Discover">Discover</option>
+              <option value="Celebrity Closet">Celebrity Closet</option>
+              <option value="Sale">Sale</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Image Upload */}
+        <div className="w-full my-8">
+          <div className="w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
+            <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+              <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
+              <p className="text-gray-500 hover:text-gray-700">
+                Click here to upload Image
+              </p>
+              <input
+                required
+                type="file"
+                id="defaultImage"
+                name="defaultImage"
+                accept="image/*"
+                onChange={handleChange}
+                className="w-0 h-0"
+              />
+            </label>
+          </div>
+        </div>
+
+        {/* Category and Brand */}
+        <div className="flex gap-4 w-full">
+          <div className="w-full">
+            <label
+              className="w-full mb-2 text-gray-700 block"
+              htmlFor="category"
+            >
+              Category
+            </label>
+            <select
+            required
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full text-base border border-gray-600 p-2 rounded-md cursor-pointer"
+            >
+              <option value="">Select Category</option>
+              <option value="Kurti">Kurti</option>
+              <option value="Saree">Saree</option>
+              <option value="Lehenga">Lehenga</option>
+              <option value="Kaftan">Kaftan</option>
+              <option value="Suit">Suit</option>
+            </select>
+          </div>
+
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="brand">
+              Brand
+            </label>
+            <select
+            required
+              id="brand"
+              name="brand"
+              value={formData.brand}
+              onChange={handleChange}
+              className="w-full text-base border border-gray-600 p-2 rounded-md cursor-pointer"
+            >
+              <option value="">Select Brand</option>
+              <option value="FabIndia">FabIndia</option>
+              <option value="Biba">Biba</option>
+              <option value="W for Women">W for Women</option>
+              <option value="Manish Malhotra">Manish Malhotra</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Size */}
+        <div className="w-full">
+          <label className="w-full mb-2 text-gray-700 block">Size</label>
+          <div className="flex gap-4">
+            {["XS", "S", "M", "L", "XL"].map((size) => (
+              <div key={size} className="flex items-center gap-2">
+                <input
+                  required
+                  type="checkbox"
+                  id={`size-${size}`}
+                  value={size}
+                  checked={formData.size.includes(size)}
+                  onChange={handleSizeChange}
+                  className="cursor-pointer"
+                />
+                <label htmlFor={`size-${size}`} className="cursor-pointer">
+                  {size}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Product Status */}
+        <div className="w-full">
+          <label className="w-full mb-2 text-gray-700 block">
+            Product Status
+          </label>
+          <div className="flex gap-4">
+            <div className="flex items-center gap-2">
+              <input
+                type="radio"
+                id="readyToShip"
+                name="status"
+                checked={formData.readyToShip}
+                onChange={() => handleStatusChange("readyToShip")}
+                className="cursor-pointer"
+              />
+              <label htmlFor="readyToShip" className="cursor-pointer">
+                Ready to Ship
+              </label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="radio"
+                id="newArrivals"
+                name="status"
+                checked={formData.newArrivals}
+                onChange={() => handleStatusChange("newArrivals")}
+                className="cursor-pointer"
+              />
+              <label htmlFor="newArrivals" className="cursor-pointer">
+                New Arrivals
+              </label>
+            </div>
+          </div>
+        </div>
+
+        {/* Save Button */}
+        <div className="flex items-center w-full">
+          <button
+            type="submit"
+            className="ml-0 md:ml-auto w-full md:w-auto border-none outline-none bg-emerald-500 px-12 py-2 rounded-lg text-lg text-white font-semibold"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
-export default AddNewProduct;
+export default AddNew;
