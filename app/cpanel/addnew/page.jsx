@@ -1,8 +1,11 @@
+
 "use client";
 import React, { useState } from "react";
 import { MdCloudUpload } from "react-icons/md";
 import ImageUploading from 'react-images-uploading';
 import { FaTrash, FaEdit } from 'react-icons/fa';
+import Loader from "@/app/Components/Loader";
+import toast from 'react-hot-toast';
 
 const AddNew = () => {
   const [formData, setFormData] = useState({
@@ -18,20 +21,42 @@ const AddNew = () => {
     newArrivals: false,
   });
   const [images, setImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const maxNumber = 2;
 
-  const onChange = (imageList) => {
-    const formattedImages = imageList.map((image) => ({
-      defaultImage: image['data_url'],
-      hoverImage: image['data_url'],
+  const onChange = async (imageList) => {
+    const uploadedImages = await Promise.all(imageList.map(async (image) => {
+      const formData = new FormData();
+      formData.append('file', image.file);
+      formData.append('upload_preset', 'Euphoria');
+
+      const response = await fetch('https://api.cloudinary.com/v1_1/dxhwn8am2/image/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        return {
+          defaultImage: data.secure_url,
+          hoverImage: data.secure_url,
+        };
+      } else {
+        console.error('Cloudinary upload error:', data);
+        alert(`Error: ${data.error?.message || 'Failed to upload image'}`);
+        return null;
+      }
     }));
-    setImages(formattedImages);
+
+    const validImages = uploadedImages.filter(img => img !== null);
+    setImages(validImages);
   };
+
   const handleChange = (e) => {
-    const { name, value, type, checked, files } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : type === "file" ? files[0] : value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -55,10 +80,11 @@ const AddNew = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true); 
     const finalData = { ...formData, images };
 
     try {
-      const response = await fetch("http://localhost:3000/api/products", {
+      const response = await fetch("/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,13 +93,33 @@ const AddNew = () => {
       });
 
       if (response.ok) {
-        const result = await response.json();
-        console.log("Form submitted successfully:", result);
+        // const result = await response.json();
+        // console.log("Form submitted successfully:", result);
+
+        toast.success("Product added successfully!");
+
+        setFormData({
+          title: "",
+          description: "",
+          price: "",
+          color: "",
+          brand: "",
+          size: [],
+          category: "",
+          page: "",
+          readyToShip: false,
+          newArrivals: false,
+        });
+
+        setImages([]); // Clear the images state
+
       } else {
-        console.error("Error submitting form:", response.statusText);
+        toast.error(`Failed to add product: ${response.statusText}`);
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      toast.error(`Error: ${error.message || 'Something went wrong'}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -343,9 +389,11 @@ const AddNew = () => {
         <div className="flex items-center w-full">
           <button
             type="submit"
-            className="ml-0 md:ml-auto w-full md:w-auto border-none outline-none bg-emerald-500 px-12 py-2 rounded-lg text-lg text-white font-semibold"
+            className={` text-white w-40 m-8 ml-auto px-6 py-3 rounded-lg shadow-xl hover:opacity-80 transition duration-300 ${isLoading ? 'bg-gray-700' : 'bg-gray-800'
+              } text-white`}
+            disabled={isLoading}
           >
-            Save
+            {isLoading ? <Loader /> : 'Add Product'}
           </button>
         </div>
       </form>
