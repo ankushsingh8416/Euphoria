@@ -1,13 +1,14 @@
 "use client";
 import React, { useState } from "react";
 import { MdCloudUpload } from "react-icons/md";
+import ImageUploading from 'react-images-uploading';
+import { FaTrash, FaEdit } from 'react-icons/fa';
 
 const AddNew = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     price: "",
-    defaultImage: null,
     color: "",
     brand: "",
     size: [],
@@ -16,7 +17,16 @@ const AddNew = () => {
     readyToShip: false,
     newArrivals: false,
   });
+  const [images, setImages] = useState([]);
+  const maxNumber = 2;
 
+  const onChange = (imageList) => {
+    const formattedImages = imageList.map((image) => ({
+      defaultImage: image['data_url'],
+      hoverImage: image['data_url'],
+    }));
+    setImages(formattedImages);
+  };
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
     setFormData((prevData) => ({
@@ -43,14 +53,33 @@ const AddNew = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission (e.g., API call)
+    const finalData = { ...formData, images };
+
+    try {
+      const response = await fetch("http://localhost:3000/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(finalData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Form submitted successfully:", result);
+      } else {
+        console.error("Error submitting form:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
+
   return (
-    <div className="w-full flex items-center justify-center">
+    <div className="w-full flex items-center  my-8 mx-auto justify-center">
       <form onSubmit={handleSubmit} className="w-[90%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4 bg-white shadow-md">
         {/* Title and Price */}
         <div className="flex gap-4 w-full">
@@ -147,25 +176,68 @@ const AddNew = () => {
         </div>
 
         {/* Image Upload */}
-        <div className="w-full my-8">
-          <div className="w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
-            <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-              <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
-              <p className="text-gray-500 hover:text-gray-700">
-                Click here to upload Image
-              </p>
-              <input
-                required
-                type="file"
-                id="defaultImage"
-                name="defaultImage"
-                accept="image/*"
-                onChange={handleChange}
-                className="w-0 h-0"
-              />
-            </label>
-          </div>
-        </div>
+        <ImageUploading
+          multiple
+          value={images.map(img => ({ data_url: img.defaultImage }))}
+          onChange={onChange}
+          maxNumber={maxNumber}
+          dataURLKey="data_url"
+        >
+          {({
+            imageList,
+            onImageUpload,
+            onImageRemoveAll,
+            onImageRemove,
+            onImageUpdate,
+            dragProps,
+          }) => (
+            <div className="w-full my-8 upload-wrapper">
+              <div onClick={onImageUpload} {...dragProps} className="w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
+                <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                  <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
+                  <p className="text-gray-500 hover:text-gray-700">
+                    Click here to upload Image
+                  </p>
+                </label>
+              </div>
+              {images.length > 0 ? (
+                <>
+                  <button
+                    onClick={onImageRemoveAll}
+                    className="bg-red-700 mb-8 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
+                  >
+                    Remove All
+                  </button>
+                  <div className="image-preview flex gap-6 bg-gray-200 p-6 rounded-lg justify-center items-center shadow-lg">
+                    {imageList.map((image, index) => (
+                      <div key={index} className="image-item relative group">
+                        <img
+                          src={image['data_url']}
+                          alt={`Upload ${index}`}
+                          className="w-36 h-36 object-cover object-top rounded-lg border-2 border-gray-300 transition transform hover:scale-105 hover:border-gray-500"
+                        />
+                        <div className="image-item__btn-wrapper absolute top-0 left-0 w-full h-full flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black bg-opacity-50 rounded-lg">
+                          <button
+                            onClick={() => onImageUpdate(index)}
+                            className="text-white text-xl mx-2 hover:text-yellow-400"
+                          >
+                            <FaEdit />
+                          </button>
+                          <button
+                            onClick={() => onImageRemove(index)}
+                            className="text-white text-xl mx-2 hover:text-red-400"
+                          >
+                            <FaTrash />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : null}
+            </div>
+          )}
+        </ImageUploading>
 
         {/* Category and Brand */}
         <div className="flex gap-4 w-full">
@@ -218,7 +290,6 @@ const AddNew = () => {
             {["XS", "S", "M", "L", "XL"].map((size) => (
               <div key={size} className="flex items-center gap-2">
                 <input
-                  required
                   type="checkbox"
                   id={`size-${size}`}
                   value={size}

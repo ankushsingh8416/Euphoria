@@ -4,10 +4,9 @@ import ImageUploading from 'react-images-uploading';
 
 export default function MultipleImageUpload() {
   const [images, setImages] = useState([]);
-  const maxNumber = 5; // Limit the number of images to upload
+  const maxNumber = 1;
 
   const onChange = (imageList) => {
-    // Update the state with the selected images
     setImages(imageList);
   };
 
@@ -18,7 +17,7 @@ export default function MultipleImageUpload() {
         value={images}
         onChange={onChange}
         maxNumber={maxNumber}
-        dataURLKey="data_url"n  
+        dataURLKey="data_url" n
       >
         {({
           imageList,
