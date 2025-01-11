@@ -125,9 +125,10 @@ const AddNew = () => {
   };
 
   const generateDescription = async () => {
-    if (!formData.title && !formData.category && !formData.page) {
-      return toast.error("Please fill out the Title, Category and page fields first.");
+    if (!formData.title || !formData.category || !formData.page) {
+      return toast.error("Please fill out the Title, Category, and Page fields first.");
     }
+  
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
