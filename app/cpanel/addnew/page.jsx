@@ -109,7 +109,7 @@ const AddNew = () => {
     const finalData = { ...formData, images };
 
     try {
-      const response = await fetch("/api/products", {
+      const response = await fetch("http://localhost:3000/api/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
