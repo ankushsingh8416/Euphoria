@@ -22,34 +22,58 @@ const AddNew = () => {
   });
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const maxNumber = 2;
+  const maxNumber = 5;
   const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCvdEBSjT8wGlP9KV-gqD393D7qC4yRlTo"
 
   const onChange = async (imageList) => {
-    const uploadedImages = await Promise.all(imageList.map(async (image) => {
-      const formData = new FormData();
-      formData.append('file', image.file);
-      formData.append('upload_preset', 'Euphoria');
+    console.log("Received imageList:", imageList); // Debugging
 
-      const response = await fetch('https://api.cloudinary.com/v1_1/dxhwn8am2/image/upload', {
-        method: 'POST',
-        body: formData,
-      });
+    // Process new and existing images
+    const uploadedImages = await Promise.all(
+      imageList.map(async (image) => {
+        if (!image.file) {
+          return {
+            defaultImage: image.data_url,
+            hoverImage: image.data_url,
+          };
+        }
 
-      const data = await response.json();
-      if (response.ok) {
-        return {
-          defaultImage: data.secure_url,
-          hoverImage: data.secure_url,
-        };
-      } else {
-        console.error('Cloudinary upload error:', data);
-        alert(`Error: ${data.error?.message || 'Failed to upload image'}`);
-        return null;
-      }
-    }));
+        // For new uploads
+        const formData = new FormData();
+        formData.append("file", image.file);
+        formData.append("upload_preset", "Euphoria");
 
-    const validImages = uploadedImages.filter(img => img !== null);
+        try {
+          const response = await fetch(
+            "https://api.cloudinary.com/v1_1/dxhwn8am2/image/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          if (!response.ok) {
+            const data = await response.json();
+            console.error("Cloudinary upload error:", data);
+            alert(`Error: ${data.error?.message || "Failed to upload image"}`);
+            return null;
+          }
+
+          const data = await response.json();
+          return {
+            defaultImage: data.secure_url,
+            hoverImage: data.secure_url,
+          };
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("An error occurred during the upload.");
+          return null;
+        }
+      })
+    );
+
+    // Filter out any failed uploads
+    const validImages = uploadedImages.filter((img) => img !== null);
     setImages(validImages);
   };
 
@@ -94,9 +118,6 @@ const AddNew = () => {
       });
 
       if (response.ok) {
-        // const result = await response.json();
-        // console.log("Form submitted successfully:", result);
-
         toast.success("Product added successfully!");
 
         setFormData({
@@ -112,7 +133,7 @@ const AddNew = () => {
           newArrivals: false,
         });
 
-        setImages([]); // Clear the images state
+        setImages([]);
 
       } else {
         toast.error(`Failed to add product: ${response.statusText}`);
@@ -128,7 +149,7 @@ const AddNew = () => {
     if (!formData.title || !formData.category || !formData.page) {
       return toast.error("Please fill out the Title, Category, and Page fields first.");
     }
-  
+
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
@@ -239,8 +260,8 @@ const AddNew = () => {
 
         {/* category and Page */}
         <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
-         
-        <div className="w-full">
+
+          <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="category">
               Category
             </label>
@@ -291,7 +312,7 @@ const AddNew = () => {
         {/* Image Upload */}
         <ImageUploading
           multiple
-          value={images.map(img => ({ data_url: img.defaultImage }))}
+          value={images.map((img) => ({ data_url: img.defaultImage }))}
           onChange={onChange}
           maxNumber={maxNumber}
           dataURLKey="data_url"
@@ -321,7 +342,7 @@ const AddNew = () => {
                   >
                     Remove All
                   </button>
-                  <div className="image-preview flex gap-6 bg-gray-200 p-6 rounded-lg justify-center items-center shadow-lg">
+                  <div className="image-preview flex gap-6 bg-[#fefefe] border-2 border-gray-100 p-6 rounded-lg justify-center items-center shadow-lg">
                     {imageList.map((image, index) => (
                       <div key={index} className="image-item relative group">
                         <img
@@ -354,7 +375,7 @@ const AddNew = () => {
 
         {/* Category and Brand */}
         <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
-         
+
           <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="color">
               Color
@@ -457,11 +478,11 @@ const AddNew = () => {
           >
             {isLoading ? <Loader /> : (
               <>
-              Add Product  <FaPlusCircle className="text-2xl" />
+                Add Product  <FaPlusCircle className="text-2xl" />
 
               </>
             )}
-           
+
           </button>
         </div>
       </form>
