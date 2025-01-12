@@ -6,6 +6,7 @@ import ImageUploading from 'react-images-uploading';
 import { FaTrash, FaEdit, FaPlusCircle } from 'react-icons/fa';
 import Loader from "@/app/Components/Loader";
 import toast from 'react-hot-toast';
+import axios from "axios";
 
 const AddNew = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +23,7 @@ const AddNew = () => {
   });
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const maxNumber = 5;
+  const maxNumber = 2;
   const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCvdEBSjT8wGlP9KV-gqD393D7qC4yRlTo"
 
   const onChange = async (imageList) => {
@@ -104,46 +105,56 @@ const AddNew = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const finalData = { ...formData, images };
+  e.preventDefault(); // Prevent the default form submission behavior
+  setIsLoading(true); // Start loading
 
-    try {
-      const response = await fetch("/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(finalData),
-      });
+  const finalData = { ...formData, images }; // Combine form data and images
 
-      if (response.ok) {
-        toast.success("Product added successfully!");
+  try {
+    // Make POST request to your API using Axios
+    const response = await axios.post("/api/products", finalData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-        setFormData({
-          title: "",
-          description: "",
-          price: "",
-          color: "",
-          brand: "",
-          size: [],
-          category: "",
-          page: "",
-          readyToShip: false,
-          newArrivals: false,
-        });
+    // If request is successful (status 2xx)
+    toast.success("Product added successfully!");
 
-        setImages([]);
+    // Reset form data and images
+    setFormData({
+      title: "",
+      description: "",
+      price: "",
+      color: "",
+      brand: "",
+      size: [],
+      category: "",
+      page: "",
+      readyToShip: false,
+      newArrivals: false,
+    });
 
-      } else {
-        toast.error(`Failed to add product: ${response.statusText}`);
-      }
-    } catch (error) {
-      toast.error(`Error: ${error.message || 'Something went wrong'}`);
-    } finally {
-      setIsLoading(false);
+    setImages([]); // Clear images
+  } catch (error) {
+    // Handle error response
+    if (error.response) {
+      // Server responded with a status other than 2xx
+      toast.error(
+        `Error: ${error.response.data.error || error.response.statusText}`
+      );
+    } else if (error.request) {
+      // Request was made but no response was received
+      toast.error("No response from server. Please try again later.");
+    } else {
+      // Something else happened during the request setup
+      toast.error(`Error: ${error.message || "Something went wrong"}`);
     }
-  };
+  } finally {
+    setIsLoading(false); // End loading
+  }
+};
+
 
   const generateDescription = async () => {
     if (!formData.title || !formData.category || !formData.page) {
