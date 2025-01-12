@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { MdCloudUpload } from "react-icons/md";
 import ImageUploading from 'react-images-uploading';
-import { FaTrash, FaEdit } from 'react-icons/fa';
+import { FaTrash, FaEdit, FaPlusCircle } from 'react-icons/fa';
 import Loader from "@/app/Components/Loader";
 import toast from 'react-hot-toast';
 
@@ -22,33 +22,58 @@ const AddNew = () => {
   });
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const maxNumber = 2;
+  const maxNumber = 5;
+  const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCvdEBSjT8wGlP9KV-gqD393D7qC4yRlTo"
 
   const onChange = async (imageList) => {
-    const uploadedImages = await Promise.all(imageList.map(async (image) => {
-      const formData = new FormData();
-      formData.append('file', image.file);
-      formData.append('upload_preset', 'Euphoria');
+    console.log("Received imageList:", imageList); // Debugging
 
-      const response = await fetch('https://api.cloudinary.com/v1_1/dxhwn8am2/image/upload', {
-        method: 'POST',
-        body: formData,
-      });
+    // Process new and existing images
+    const uploadedImages = await Promise.all(
+      imageList.map(async (image) => {
+        if (!image.file) {
+          return {
+            defaultImage: image.data_url,
+            hoverImage: image.data_url,
+          };
+        }
 
-      const data = await response.json();
-      if (response.ok) {
-        return {
-          defaultImage: data.secure_url,
-          hoverImage: data.secure_url,
-        };
-      } else {
-        console.error('Cloudinary upload error:', data);
-        alert(`Error: ${data.error?.message || 'Failed to upload image'}`);
-        return null;
-      }
-    }));
+        // For new uploads
+        const formData = new FormData();
+        formData.append("file", image.file);
+        formData.append("upload_preset", "Euphoria");
 
-    const validImages = uploadedImages.filter(img => img !== null);
+        try {
+          const response = await fetch(
+            "https://api.cloudinary.com/v1_1/dxhwn8am2/image/upload",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          if (!response.ok) {
+            const data = await response.json();
+            console.error("Cloudinary upload error:", data);
+            alert(`Error: ${data.error?.message || "Failed to upload image"}`);
+            return null;
+          }
+
+          const data = await response.json();
+          return {
+            defaultImage: data.secure_url,
+            hoverImage: data.secure_url,
+          };
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("An error occurred during the upload.");
+          return null;
+        }
+      })
+    );
+
+    // Filter out any failed uploads
+    const validImages = uploadedImages.filter((img) => img !== null);
     setImages(validImages);
   };
 
@@ -80,7 +105,7 @@ const AddNew = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); 
+    setIsLoading(true);
     const finalData = { ...formData, images };
 
     try {
@@ -93,9 +118,6 @@ const AddNew = () => {
       });
 
       if (response.ok) {
-        // const result = await response.json();
-        // console.log("Form submitted successfully:", result);
-
         toast.success("Product added successfully!");
 
         setFormData({
@@ -111,7 +133,7 @@ const AddNew = () => {
           newArrivals: false,
         });
 
-        setImages([]); // Clear the images state
+        setImages([]);
 
       } else {
         toast.error(`Failed to add product: ${response.statusText}`);
@@ -123,12 +145,63 @@ const AddNew = () => {
     }
   };
 
+  const generateDescription = async () => {
+    if (!formData.title || !formData.category || !formData.page) {
+      return toast.error("Please fill out the Title, Category, and Page fields first.");
+    }
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: `Write a short 30-40 word expencive description of ${formData.title}, a ${formData.category} clothing product ${formData.category} from clothing, a stylish and trendy product.`
+                },
+              ],
+            },
+          ],
+        }),
+      });
+
+      const data = await response.json();
+      const productDesc = data.candidates[0].content.parts[0].text;
+      console.log(productDesc);
+      animateDescriptionLetterByLetter(productDesc);
+    } catch (error) {
+      toast.error('Error generating description: ' + error.message);
+      console.log(error)
+    }
+  };
+
+  const animateDescriptionLetterByLetter = (fullDescription) => {
+    let currentText = '';
+    let letterIndex = 0;
+
+    const interval = setInterval(() => {
+      currentText += fullDescription[letterIndex];
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        description: currentText,
+      }));
+      letterIndex++;
+
+      if (letterIndex === fullDescription.length) {
+        clearInterval(interval);
+      }
+    }, 50);
+  };
+
+
 
   return (
-    <div className="w-full flex items-center  my-8 mx-auto justify-center">
-      <form onSubmit={handleSubmit} className="w-[90%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4 bg-white shadow-md">
+    <div className="w-full flex items-center  md:my-8 mx-auto justify-center">
+      <form onSubmit={handleSubmit} className=" w-full md:w-[90%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4 bg-white shadow-md">
         {/* Title and Price */}
-        <div className="flex gap-4 w-full">
+        <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
           <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="title">
               Title
@@ -167,33 +240,48 @@ const AddNew = () => {
           <label className="w-full mb-2 text-gray-700 block" htmlFor="description">
             Description
           </label>
-          <textarea
-            id="description"
-            name="description"
-            placeholder="Description..."
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full h-24 text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
-          />
-        </div>
-
-        {/* Color and Page */}
-        <div className="flex gap-4 w-full">
-          <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="color">
-              Color
-            </label>
-            <input
-              required
-              type="text"
-              id="color"
-              name="color"
-              placeholder="Color"
-              value={formData.color}
+          <div className="relative">
+            <textarea
+              id="description"
+              name="description"
+              placeholder="Description..."
+              value={formData.description}
               onChange={handleChange}
-              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+              className="w-full h-52 md:h-44 text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+            />
+            <img
+              src="/images/genrate.png"
+              onClick={generateDescription}
+              alt="Generate"
+              className="w-[90px] md:w-[120px] absolute bottom-4 right-2 cursor-pointer hover:opacity-80 transition-opacity"
             />
           </div>
+        </div>
+
+        {/* category and Page */}
+        <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
+
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="category">
+              Category
+            </label>
+            <select
+              required
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full text-base border border-gray-600 p-2 rounded-md cursor-pointer"
+            >
+              <option value="">Select Category</option>
+              <option value="Kurti">Kurti</option>
+              <option value="Saree">Saree</option>
+              <option value="Lehenga">Lehenga</option>
+              <option value="Kaftan">Kaftan</option>
+              <option value="Suit">Suit</option>
+            </select>
+          </div>
+
 
           <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="page">
@@ -224,7 +312,7 @@ const AddNew = () => {
         {/* Image Upload */}
         <ImageUploading
           multiple
-          value={images.map(img => ({ data_url: img.defaultImage }))}
+          value={images.map((img) => ({ data_url: img.defaultImage }))}
           onChange={onChange}
           maxNumber={maxNumber}
           dataURLKey="data_url"
@@ -238,7 +326,7 @@ const AddNew = () => {
             dragProps,
           }) => (
             <div className="w-full my-8 upload-wrapper">
-              <div onClick={onImageUpload} {...dragProps} className="w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
+              <div onClick={onImageUpload} {...dragProps} className="w-[95%] md:w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
                 <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
                   <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
                   <p className="text-gray-500 hover:text-gray-700">
@@ -254,7 +342,7 @@ const AddNew = () => {
                   >
                     Remove All
                   </button>
-                  <div className="image-preview flex gap-6 bg-gray-200 p-6 rounded-lg justify-center items-center shadow-lg">
+                  <div className="image-preview flex gap-6 bg-[#fefefe] border-2 border-gray-100 p-6 rounded-lg justify-center items-center shadow-lg">
                     {imageList.map((image, index) => (
                       <div key={index} className="image-item relative group">
                         <img
@@ -286,28 +374,23 @@ const AddNew = () => {
         </ImageUploading>
 
         {/* Category and Brand */}
-        <div className="flex gap-4 w-full">
-          <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="category">
-              Category
-            </label>
-            <select
-              required
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full text-base border border-gray-600 p-2 rounded-md cursor-pointer"
-            >
-              <option value="">Select Category</option>
-              <option value="Kurti">Kurti</option>
-              <option value="Saree">Saree</option>
-              <option value="Lehenga">Lehenga</option>
-              <option value="Kaftan">Kaftan</option>
-              <option value="Suit">Suit</option>
-            </select>
-          </div>
+        <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
 
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="color">
+              Color
+            </label>
+            <input
+              required
+              type="text"
+              id="color"
+              name="color"
+              placeholder="Color"
+              value={formData.color}
+              onChange={handleChange}
+              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+            />
+          </div>
           <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="brand">
               Brand
@@ -389,11 +472,17 @@ const AddNew = () => {
         <div className="flex items-center w-full">
           <button
             type="submit"
-            className={` text-white w-40 m-8 ml-auto px-6 py-3 rounded-lg shadow-xl hover:opacity-80 transition duration-300 ${isLoading ? 'bg-gray-700' : 'bg-gray-800'
+            className={` text-white flex gap-4 justify-center w-full md:w-auto m-8  md:ml-auto px-6 py-3 rounded-lg shadow-xl hover:opacity-80 transition duration-300 ${isLoading ? 'bg-gray-700' : 'bg-gray-800'
               } text-white`}
             disabled={isLoading}
           >
-            {isLoading ? <Loader /> : 'Add Product'}
+            {isLoading ? <Loader /> : (
+              <>
+                Add Product  <FaPlusCircle className="text-2xl" />
+
+              </>
+            )}
+
           </button>
         </div>
       </form>

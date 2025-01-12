@@ -1,5 +1,5 @@
 {
-    "name": "ecobazar",
+    "name": "euphoria",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -13,12 +13,10 @@
         "@fortawesome/free-brands-svg-icons": "^6.7.2",
         "@fortawesome/free-solid-svg-icons": "^6.7.2",
         "@fortawesome/react-fontawesome": "^0.2.2",
-        "@nanostores/react": "github:ai/react",
+        "cors": "^2.8.5",
         "mongoose": "^8.9.4",
         "next": "15.1.2",
         "next-auth": "^4.24.11",
-        "next-cloudinary": "^6.16.0",
-        "openai": "^4.78.1",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-hot-toast": "^2.5.1",

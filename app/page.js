@@ -1,7 +1,6 @@
 import Category from "./Components/Category";
 import Celebrate from "./Components/Celebrate";
 import Craft from "./Components/Craft";
-import Footer from "./Components/Footer";
 import FooterBanner from "./Components/FooterBanner";
 import Gifting from "./Components/Gifting";
 import Hero from "./Components/Hero";
