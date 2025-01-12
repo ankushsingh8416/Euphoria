@@ -1,8 +1,12 @@
+import { applyCors, runCors } from '@/lib/cors';
 import dbConnect from '@/lib/dbConnect';
 import Product from '@/models/Product';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
+
+  const response = NextResponse.next();
+  await applyCors(req, response); 
   try {
     console.log('Connecting to the database...');
     await dbConnect();
