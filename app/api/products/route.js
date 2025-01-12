@@ -25,3 +25,8 @@ export async function POST(req) {
     );
   }
 }
+
+
+export async function GET(req, res) {
+return NextResponse.json({ message: 'GET request to the API' });
+}
