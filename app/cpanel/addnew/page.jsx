@@ -10,6 +10,58 @@ import axios from "axios";
 import Image from "next/image";
 
 const AddNew = () => {
+  const categoriesMapping = {
+    Women: [
+      "Kurta Sets",
+      "Sarees & Blouses",
+      "Lehenga Sets",
+      "Dresses & Jumpsuits",
+      "Co-Ord Sets",
+      "Gowns",
+      "Kaftans",
+    ],
+    Men: [
+      "Kurtas & Shirts",
+      "Bandhgalas",
+      "Nehru Jackets",
+      "Sherwanis",
+      "Bottoms",
+    ],
+    Wedding: [
+      "Lehenga Sets",
+      "Sarees & Blouses",
+      "Gowns",
+      "Co-ord Sets",
+      "Kurta Sets",
+      "For Groom",
+      "Sherwanis",
+      "Bandhgalas",
+      "Kurtas & Shirts",
+      "Nehru Jackets",
+    ],
+    Jewelry: [
+      "Earrings",
+      "Necklaces",
+      "Bangles & Bracelets",
+      "Rings & Haathphools",
+      "Maangtikkas & Mathapattis",
+      "Nose Rings",
+      "Waist Belts",
+    ],
+    Accessories: ["Scarves & Dupattas", "Bags", "Shoes", "Belts"],
+    Gifting: ["Gifts for Her", "Gifts for Him"],
+    Sale: [
+      "Dresses & Jumpsuits",
+      "Co-Ord Sets",
+      "Kurta Sets",
+      "Sarees & Blouses",
+      "Lehenga Sets",
+      "Gowns",
+      "Kaftans",
+      "Tops & Jackets",
+    ],
+  };
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -85,8 +137,12 @@ const AddNew = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
+      ...(name === "page" && { category: "" }),
     }));
   };
+
+  const availableCategories = categoriesMapping[formData.page] || [];
+
 
   const handleSizeChange = (e) => {
     const { value, checked } = e.target;
@@ -211,7 +267,7 @@ const AddNew = () => {
       <form onSubmit={handleSubmit} className=" w-full md:w-[90%] border border-gray-300 rounded-lg p-4 flex flex-col items-center justify-center gap-4 bg-white shadow-md">
         {/* Title and Price */}
         <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
-        <div className="w-full">
+          <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="title">
               Title
             </label>
@@ -285,7 +341,7 @@ const AddNew = () => {
         {/* category and Page */}
         <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
 
-        <div className="w-full">
+          <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="page">
               Page
             </label>
@@ -298,15 +354,12 @@ const AddNew = () => {
               className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Page</option>
-              <option value="Women">Women</option>
-              <option value="Men">Men</option>
-              <option value="Wedding">Wedding</option>
-              <option value="Jewelry">Jewelry</option>
-              <option value="Accessories">Accessories</option>
-              <option value="Gifting">Gifting</option>
-              <option value="Discover">Discover</option>
-              <option value="Celebrity Closet">Celebrity Closet</option>
-              <option value="Sale">Sale</option>
+              {Object.keys(categoriesMapping).map((page) => (
+                <option key={page} value={page}>
+                  {page}
+                </option>
+              ))}
+
             </select>
           </div>
           <div className="w-full">
@@ -319,14 +372,15 @@ const AddNew = () => {
               name="category"
               value={formData.category}
               onChange={handleChange}
+              disabled={availableCategories.length === 0}
               className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Category</option>
-              <option value="Kurti">Kurti</option>
-              <option value="Saree">Saree</option>
-              <option value="Lehenga">Lehenga</option>
-              <option value="Kaftan">Kaftan</option>
-              <option value="Suit">Suit</option>
+              {availableCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -359,7 +413,7 @@ const AddNew = () => {
                 </label>
               </div>
               {images.length > 0 ? (
-                <>
+                <div className="my-4">
                   <button
                     onClick={onImageRemoveAll}
                     className="bg-red-700 mb-8 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
@@ -391,7 +445,7 @@ const AddNew = () => {
                       </div>
                     ))}
                   </div>
-                </>
+                </div>
               ) : null}
             </div>
           )}
@@ -436,63 +490,76 @@ const AddNew = () => {
           </div>
         </div>
 
-     {/* Size */}
-<div className="w-full">
-  <label className="w-full mb-4 text-gray-800 font-semibold text-lg leading-tight">Size</label>
-  <div className="flex gap-6">
-    {["XS", "S", "M", "L", "XL"].map((size) => (
-      <div key={size} className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          id={`size-${size}`}
-          value={size}
-          checked={formData.size.includes(size)}
-          onChange={handleSizeChange}
-          className="cursor-pointer w-6 h-6 border-2 border-gray-300 rounded-xl bg-white checked:bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-        />
-        <label htmlFor={`size-${size}`} className="cursor-pointer text-gray-700 font-medium text-lg">
-          {size}
-        </label>
-      </div>
-    ))}
-  </div>
-</div>
 
-{/* Product Status */}
-<div className="w-full mt-8">
-  <label className="w-full mb-4 text-gray-800 font-semibold text-lg leading-tight">Product Status</label>
-  <div className="flex flex-col gap-6">
-    <div className="flex items-center gap-4">
-      <input
-        type="radio"
-        id="readyToShip"
-        name="productStatus"
-        value="readyToShip"
-        checked={formData.readyToShip}
-        onChange={() => handleStatusChange("readyToShip")}
-        className="cursor-pointer w-6 h-6 border-2 border-gray-300 rounded-full bg-white checked:bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-      />
-      <label htmlFor="readyToShip" className="text-gray-800 cursor-pointer font-medium text-lg">
-        READY TO SHIP
-      </label>
-    </div>
-    <div className="flex items-center gap-4">
-      <input
-        type="radio"
-        id="newArrivals"
-        name="productStatus"
-        value="newArrivals"
-        checked={formData.newArrivals}
-        onChange={() => handleStatusChange("newArrivals")}
-        className="cursor-pointer w-6 h-6 border-2 border-gray-300 rounded-full bg-white checked:bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 checked:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition duration-300 ease-in-out"
-      />
-      <label htmlFor="newArrivals" className="text-gray-800 cursor-pointer font-medium text-lg">
-        NEW ARRIVALS
-      </label>
-    </div>
-  </div>
-</div>
+        {/* Size */}
+        <div className="w-full">
+          <label className="w-full mb-4 text-gray-900 font-semibold text-xl leading-tight tracking-wider">
+            Size
+          </label>
+          <div className="flex gap-6 mt-4">
+            {["XS", "S", "M", "L", "XL"].map((size) => (
+              <div key={size} className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  id={`size-${size}`}
+                  value={size}
+                  checked={formData.size.includes(size)}
+                  onChange={handleSizeChange}
+                  className="cursor-pointer w-7 h-7 border-2 border-gray-400 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-sm checked:bg-gradient-to-r from-gold to-goldenrod checked:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50 transition duration-300 ease-in-out"
+                />
+                <label
+                  htmlFor={`size-${size}`}
+                  className="cursor-pointer text-gray-900 font-medium text-lg tracking-wide"
+                >
+                  {size}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
 
+        {/* Product Status */}
+        <div className="w-full mt-10">
+          <label className="w-full  text-gray-900 font-semibold text-xl leading-tight tracking-wider">
+            Product Status
+          </label>
+          <div className="flex flex-col mt-4 gap-8">
+            <div className="flex items-center gap-5">
+              <input
+                type="radio"
+                id="readyToShip"
+                name="productStatus"
+                value="readyToShip"
+                checked={formData.readyToShip}
+                onChange={() => handleStatusChange("readyToShip")}
+                className="cursor-pointer w-7 h-7 border-2 border-gray-400 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-sm checked:bg-gradient-to-r from-gold to-goldenrod checked:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50 transition duration-300 ease-in-out"
+              />
+              <label
+                htmlFor="readyToShip"
+                className="text-gray-900 cursor-pointer font-medium text-lg tracking-wide"
+              >
+                READY TO SHIP
+              </label>
+            </div>
+            <div className="flex items-center gap-5">
+              <input
+                type="radio"
+                id="newArrivals"
+                name="productStatus"
+                value="newArrivals"
+                checked={formData.newArrivals}
+                onChange={() => handleStatusChange("newArrivals")}
+                className="cursor-pointer w-7 h-7 border-2 border-gray-400 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-sm checked:bg-gradient-to-r from-gold to-goldenrod checked:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50 transition duration-300 ease-in-out"
+              />
+              <label
+                htmlFor="newArrivals"
+                className="text-gray-900 cursor-pointer font-medium text-lg tracking-wide"
+              >
+                NEW ARRIVALS
+              </label>
+            </div>
+          </div>
+        </div>
 
         <div className="flex items-center w-full">
           <button
