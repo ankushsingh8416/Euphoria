@@ -18,7 +18,7 @@ const Women = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/api/products");
+                const response = await axios.get("/api/products");
                 let filteredProducts = response.data;
 
                 filteredProducts = filteredProducts.filter(
@@ -52,6 +52,7 @@ const Women = () => {
                     const priceB = parseFloat(b.price);
                     if (sortOption === "Price:LowtoHigh") return priceA - priceB;
                     if (sortOption === "Price:HightoLow") return priceB - priceA;
+                    if (sortOption === "NewestArrivals") return a.id - b.id;
                     return 0;
                 });
 
@@ -77,7 +78,7 @@ const Women = () => {
                     {products.map((product, index) => (
                         <div
                             key={index}
-                            className={`mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"
+                            className={`cursor-pointer mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%]"
                                 }`}
                         >
                             <div className="relative overflow-hidden">

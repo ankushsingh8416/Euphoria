@@ -22,12 +22,14 @@ export async function POST(req) {
   }
 }
 
+
 export async function GET(req) {
   try {
-  
+    console.log('Connecting to the database...');
+    await dbConnect();
+    console.log('Connected to the database.');
     const products = await Product.find();
-
-    return NextResponse.json(products );
+    return NextResponse.json(products);
   } catch (error) {
     console.error('Error in GET /api/products:', error);
     return NextResponse.json(
