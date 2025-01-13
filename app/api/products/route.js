@@ -3,22 +3,18 @@ import Product from '@/models/Product';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-  const response = NextResponse.next();
   try {
     console.log('Connecting to the database...');
     await dbConnect();
     console.log('Connected to the database.');
 
     const body = await req.json();
-    console.log('Request body:', body);
 
     const product = new Product(body);
     const savedProduct = await product.save();
-    console.log('Product saved:', savedProduct);
 
     return NextResponse.json({ message: 'Product created successfully!', product: savedProduct });
   } catch (error) {
-    console.error('Error in POST /api/products:', error);
     return NextResponse.json(
       { error: 'Error saving product', details: error.message },
       { status: 500 }
@@ -26,7 +22,17 @@ export async function POST(req) {
   }
 }
 
+export async function GET(req) {
+  try {
+  
+    const products = await Product.find();
 
-export async function GET(req, res) {
-return NextResponse.json({ message: 'GET request to the API' });
+    return NextResponse.json(products );
+  } catch (error) {
+    console.error('Error in GET /api/products:', error);
+    return NextResponse.json(
+      { error: 'Error retrieving products', details: error.message },
+      { status: 500 }
+    );
+  }
 }
