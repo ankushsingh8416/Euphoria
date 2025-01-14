@@ -52,8 +52,11 @@ const Women = () => {
                     const priceB = parseFloat(b.price);
                     if (sortOption === "Price:LowtoHigh") return priceA - priceB;
                     if (sortOption === "Price:HightoLow") return priceB - priceA;
-                    if (sortOption === "NewestArrivals") return a.id - b.id;
-                    return 0;
+                    if (sortOption === "NewestArrivals") {
+                        const newA = a.newArrivals ? 1 : 0;
+                        const newB = b.newArrivals ? 1 : 0;
+                        return newB - newA;
+                    } return 0;
                 });
 
                 setProducts(filteredProducts);
@@ -68,11 +71,16 @@ const Women = () => {
     return (
         <>
             {totalProducts === 0 ? (
-                <div className="text-center mt-8">
-                    <h1 className="text-[#1E381E] text-xl lg:text-2xl">
-                        No products found. Please try adjusting your filters.
-                    </h1>
+                <div className="flex flex-wrap justify-between gap-2">
+                    {[...Array(16)].map((_, index) => (
+                        <div
+                            key={index}
+                            className={`cursor-pointer mb-8 shimmer-container ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : " w-[100%] lg:w-[48%] "}`}
+                        >
+                        </div>
+                    ))}
                 </div>
+
             ) : (
                 <div className="flex flex-wrap justify-between gap-2">
                     {products.map((product, index) => (

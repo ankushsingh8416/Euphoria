@@ -45,6 +45,29 @@ header {
   display: none; 
 }
 
+.shimmer-container {
+  position: relative;
+  overflow: hidden;
+  background: #f6f7f8;
+  background-image: linear-gradient(to right, #f6f7f8 0%, #e0e0e0 50%, #f6f7f8 100%);
+  background-repeat: no-repeat;
+  background-size: 200% 100%; 
+  animation: shimmer .8s infinite ease-in-out; 
+  border-radius: 4px; 
+  height: 400px;
+}
+
+/* Shimmer animation */
+@keyframes shimmer {
+  0% {
+    background-position: -150% 0;
+  }
+  100% {
+    background-position: 150% 0;
+  }
+}
+
+
 @media (max-width: 766px) {
   .ship {
     height: 1000px !important;
@@ -60,6 +83,10 @@ header {
   .footer-banner-mob {
     height: 700px !important;
   }
+  .shimmer-container {
+    height: 220px;
+  }
+  
 }
 @media (max-width: 500px) {
   .hero {
@@ -81,5 +108,4 @@ header {
     height: 500px !important;
   }
 }
-
 
