@@ -1,10 +1,17 @@
+"use client"
+
 import React from 'react'
 import FilterSection from '../Components/FilterSection'
+import { usePathname } from 'next/navigation';
 
 const Layout = ({children}) => {
+
+  const pathname = usePathname();
+  const isCpanelPage = pathname.startsWith("/productdetails");
+  
   return (
-    <div className="p-4 lg:px-6">
-        <FilterSection/>
+    <div>
+        {!isCpanelPage && <FilterSection/>}
         {children}
     </div>
   )
