@@ -1,150 +1,61 @@
 "use client";
 
-import { cartContext } from "@/app/context/cartContext";
-import React, { useContext, useEffect, useState } from "react";
-import { SlHeart } from "react-icons/sl";
+import { useRouter } from "next/router";
 import axios from "axios";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const Women = () => {
-    const {
-        selectedFilters,
-        sortOption,
-        setProducts,
-        totalProducts,
-        setTotalProducts,
-        products,
-        productGrid,
-    } = useContext(cartContext);
-
-    const [loading, setLoading] = useState(false);
+const ProductDetail = () => {
+    const router = useRouter();
+    const { id } = router.query; // Extract product ID from the query
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true); // Start shimmer effect
-            try {
-                const response = await axios.get("/api/products");
-                let filteredProducts = response.data;
-
-                // Filter products by page
-                filteredProducts = filteredProducts.filter(
-                    (product) => product.page === "Women"
-                );
-
-                // Apply filters
-                for (const filter in selectedFilters) {
-                    if (selectedFilters[filter].length > 0) {
-                        filteredProducts = filteredProducts.filter((product) => {
-                            if (filter === "Price") {
-                                return selectedFilters[filter].some((range) => {
-                                    const [min, max] = range.split("-").map(Number);
-                                    return product.price >= min && product.price <= max;
-                                });
-                            }
-                            return selectedFilters[filter].includes(
-                                product[filter.toLowerCase()]
-                            );
-                        });
-                    }
+        if (id) {
+            const fetchProduct = async () => {
+                try {
+                    const response = await axios.get(`/api/products/${id}`);
+                    setProduct(response.data);
+                } catch (error) {
+                    console.error("Error fetching product details:", error);
+                } finally {
+                    setLoading(false);
                 }
+            };
 
-                // Apply sorting
-                filteredProducts.sort((a, b) => {
-                    if (sortOption === "Price:LowtoHigh") return a.price - b.price;
-                    if (sortOption === "Price:HightoLow") return b.price - a.price;
-                    return 0;
-                });
-
-                setProducts(filteredProducts);
-                setTotalProducts(filteredProducts.length);
-            } catch (error) {
-                console.error("Error fetching products:", error);
-            } finally {
-                setLoading(false); // Stop shimmer effect
-            }
-        };
-
-        fetchProducts();
-    }, [selectedFilters, sortOption, setProducts, setTotalProducts]);
+            fetchProduct();
+        }
+    }, [id]);
 
     if (loading) {
-        // Shimmer Effect
-        return (
-            <div className="flex flex-wrap justify-between gap-2">
-                {[...Array(16)].map((_, index) => (
-                    <div
-                        key={index}
-                        className={`mb-8 shimmer-container ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : "w-[100%] lg:w-[48%]"}`}
-                    >
-                    </div>
-                ))}
-            </div>
-        );
+        return <div>Loading product details...</div>;
     }
 
-    if (totalProducts === 0) {
-        // No Results Message
-        return (
-            <div className="text-center py-10">
-                <h1 className="text-lg font-semibold text-gray-700">
-                    No products found. Please change your filters.
-                </h1>
-            </div>
-        );
+    if (!product) {
+        return <div>Product not found</div>;
     }
 
-    // Product List
     return (
-        <div className="flex flex-wrap justify-between gap-2 p-2 lg:px-6">
-            {products.map((product) => (
-                <Link  href={{
-                    pathname: `/productdetails/${product.page}/${product.title}`,
-                    query: { id: product._id }, 
-                }}
-
-                    key={product._id}
-                    className={`cursor-pointer mb-8 group ${productGrid === "four" ? "w-[48%] lg:w-[24%]" : "w-[100%] lg:w-[48%]"}`}
-                >
-                    <div className="relative overflow-hidden">
-                        <img
-                            src={product.images[0]?.defaultImage}
-                            alt={product.title}
-                            className="w-full transition-transform duration-500 group-hover:scale-110"
-                        />
-                        <img
-                            src={product.images[1]?.hoverImage}
-                            alt={`${product.title} Hover`}
-                            className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                        />
-                    </div>
-                    <div className="mt-4">
-                        <h3 className="text-sm font-medium uppercase truncate overflow-hidden whitespace-nowrap relative">
-                            {product.title}
-                            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#B18E35] transition-all duration-500 group-hover:w-full"></span>
-                        </h3>
-                        <div className="flex items-center justify-between mt-1">
-                            <p className="text-gray-600">₹{product.price}</p>
-                            <button
-                                className="text-gray-500 hover:text-[#B18E35] transition duration-300"
-                                aria-label="Add to Wishlist"
-                            >
-                                <SlHeart size={18} />
-                            </button>
-                        </div>
-                        {product.readyToShip ? (
-                            <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#F5F5F5] border border-gray-300 px-2 py-1 inline-block">
-                                READY TO SHIP
-                            </div>
-                        ) : (
-                            <div className="mt-2 text-[.7rem] font-medium text-[#1E381E] bg-[#fecdcd70] border border-gray-300 px-2 py-1 inline-block">
-                                NEW ARRIVALS
-                            </div>
-                        )}
-                    </div>
-                </Link>
-            ))}
+        <div className="p-4">
+            <div className="flex flex-col lg:flex-row">
+                <div className="flex-1">
+                    <img
+                        src={product.images[0]?.defaultImage}
+                        alt={product.title}
+                        className="w-full"
+                    />
+                </div>
+                <div className="flex-1 lg:pl-6">
+                    <h1 className="text-2xl font-bold">{product.title}</h1>
+                    <p className="text-lg text-gray-600 mt-2">₹{product.price}</p>
+                    <p className="mt-4">{product.description}</p>
+                    <button className="mt-6 px-4 py-2 bg-[#B18E35] text-white rounded">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
 
-export default Women;
+export default ProductDetail;
