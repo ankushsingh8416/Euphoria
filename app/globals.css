@@ -69,11 +69,11 @@ header {
 }
 /* Swiper custom navigation arrows */
 .swiper-button-next, .swiper-button-prev {
-  color: white !important; 
+  color: #1e381e !important; 
   transition: color 300s ease-in-out;
   width: 40px !important;
   height: 40px !important;
-  background: #1e381e;
+  background: #f5f5f5;
   border-radius: 50%;
   overflow: hidden;
 }

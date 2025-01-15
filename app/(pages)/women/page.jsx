@@ -101,7 +101,7 @@ const Women = () => {
 
     // Product List
     return (
-        <div className="flex flex-wrap justify-between gap-2 p-2 lg:px-6">
+        <div className="flex flex-wrap justify-between gap-2 px-4 lg:px-6">
             {products.map((product) => (
                 <Link  href={{
                     pathname: `/productdetails/${product.page}/${product.title}`,
