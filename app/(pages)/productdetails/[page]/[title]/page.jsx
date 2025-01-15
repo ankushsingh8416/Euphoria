@@ -1,7 +1,31 @@
+"use client"
+import axios from "axios";
+import {  useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { FaHeart, FaTruck } from "react-icons/fa";
 import { HiOutlineHome, HiOutlineLocationMarker } from "react-icons/hi";
 import { IoBagHandle } from "react-icons/io5";
 const ProductDetails = () => {
+    const searchParams = useSearchParams();
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const id = searchParams.get('id'); 
+    console.log("This is id: " + id);
+
+    if (id) {
+        axios.get(`/api/products/${id}`)
+            .then((response) => {
+                setProduct(response.data);
+                console.log("Product details:", response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching product details:", error);
+                setLoading(false);
+            });
+    } else {
+        setLoading(false); 
+    }
     return (
         <div className="w-full lg:w-[95%] shadow-lg mx-auto px-4 py-8">
             <div className="flex flex-col gap-10 lg:flex-row">
@@ -69,7 +93,7 @@ const ProductDetails = () => {
                     {/* Add to Cart */}
                     <button className=" flex items-center justify-center gap-2  my-4 sticky bottom-4 lg:static  w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white  py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
                         Add To Bag
-                    <IoBagHandle className="text-white text-xl" />
+                        <IoBagHandle className="text-white text-xl" />
 
                     </button>
                     <button className="w-full flex items-center justify-center gap-2 border border-transparent py-3 rounded-md text-black transform transition-all duration-300 shadow-lg border-[#1e381e] text-sm lg:text-base">
