@@ -21,7 +21,7 @@ const Women = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-            setLoading(true); // Start shimmer effect
+            setLoading(true); 
             try {
                 const response = await axios.get("/api/products");
                 let filteredProducts = response.data;
@@ -52,7 +52,12 @@ const Women = () => {
                 filteredProducts.sort((a, b) => {
                     if (sortOption === "Price:LowtoHigh") return a.price - b.price;
                     if (sortOption === "Price:HightoLow") return b.price - a.price;
-                    return 0;
+                    if (sortOption === "NewestArrivals") return a.id - b.id;
+                    if (sortOption === "NewestArrivals") {
+                        const newA = a.newArrivals ? 1 : 0;
+                        const newB = b.newArrivals ? 1 : 0;
+                        return newB - newA;
+                    } return 0;
                 });
 
                 setProducts(filteredProducts);
@@ -60,7 +65,7 @@ const Women = () => {
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
-                setLoading(false); // Stop shimmer effect
+                setLoading(false); 
             }
         };
 
@@ -70,7 +75,7 @@ const Women = () => {
     if (loading) {
         // Shimmer Effect
         return (
-            <div className="flex flex-wrap justify-between gap-2">
+            <div className="flex flex-wrap justify-between gap-2 p-2 ">
                 {[...Array(16)].map((_, index) => (
                     <div
                         key={index}
