@@ -22,7 +22,7 @@ const AddNew = () => {
   });
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const maxNumber = 5;
+  const maxNumber = 2;
   const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCvdEBSjT8wGlP9KV-gqD393D7qC4yRlTo"
 
   const onChange = async (imageList) => {
@@ -109,7 +109,7 @@ const AddNew = () => {
     const finalData = { ...formData, images };
 
     try {
-      const response = await fetch("/api/products", {
+      const response = await fetch(/api/products, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

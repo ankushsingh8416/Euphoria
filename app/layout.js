@@ -13,11 +13,14 @@ export default function RootLayout({ children }) {
   const isCpanelPage = pathname.startsWith("/cpanel");
 
   return (
+    
     <html lang="en">
       <body>
         <Cartprovider>
         <Toaster />
           {!isCpanelPage && <Navbar />}
+         
+          
           {children}
           {!isCpanelPage && <Footer />}
         </Cartprovider>
