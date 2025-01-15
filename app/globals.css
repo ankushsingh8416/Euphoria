@@ -67,7 +67,28 @@ header {
     background-position: -200% 0;
   }
 }
+/* Swiper custom navigation arrows */
+.swiper-button-next, .swiper-button-prev {
+  color: white !important; 
+  transition: color 300s ease-in-out;
+  width: 40px !important;
+  height: 40px !important;
+  background: #1e381e;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.swiper-button-prev:after, .swiper-button-next:after {
+  font-size: 1rem !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+/* Optional: Change the hover effect */
+.swiper-button-next:hover, .swiper-button-prev:hover {
+  color: #d1d1d1 !important;
+  transform: scale(1.1);
+}
 
 @media (max-width: 766px) {
   .ship {

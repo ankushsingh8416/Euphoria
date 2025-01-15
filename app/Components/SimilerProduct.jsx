@@ -10,6 +10,8 @@ import { Pagination } from "swiper/modules";
 import { FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
 
+const shimmerClass = "animate-pulse bg-gray-200";
+
 const SimilerProduct = ({ page, category, id }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -41,22 +43,7 @@ const SimilerProduct = ({ page, category, id }) => {
                 SIMILAR PRODUCTS
             </h2>
 
-{loading ?(
-
-
-<>
-
-
-
-
-
-</>
-):(
-    <>
-    
-    
-    
-    <Swiper
+            <Swiper
                 modules={[Pagination]}
                 pagination={{
                     clickable: true,
@@ -71,17 +58,20 @@ const SimilerProduct = ({ page, category, id }) => {
                 loop={true}
             >
                 {loading ? (
+                    // Display shimmer effect for loading state
                     Array.from({ length: 4 }).map((_, index) => (
                         <SwiperSlide key={index}>
-                            <div className="animate-pulse flex flex-col">
-                                <div className="h-60 bg-gray-200 rounded-md mb-4"></div>
-                                <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                            <div className="group mb-8">
+                                <div className={`relative overflow-hidden ${shimmerClass} h-[200px] lg:h-[400px] rounded-md`} />
+                                <div className="mt-4">
+                                    <div className={`h-4 w-3/4 ${shimmerClass} mb-2`} />
+                                    <div className={`h-4 w-1/2 ${shimmerClass}`} />
+                                </div>
                             </div>
                         </SwiperSlide>
                     ))
                 ) : products.length === 0 ? (
-                    <p>No similar products found</p>
+                    <h1 className="text-center py-4">No similar products found</h1>
                 ) : (
                     products.map((product) => (
                         <SwiperSlide key={product._id}>
@@ -120,15 +110,6 @@ const SimilerProduct = ({ page, category, id }) => {
                     ))
                 )}
             </Swiper>
-    
-    
-    </>
-)}
-
-
-
-
-           
 
             {/* Button */}
             <div className="text-center my-6">
