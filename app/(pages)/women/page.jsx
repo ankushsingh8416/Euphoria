@@ -52,16 +52,17 @@ const Women = () => {
                 filteredProducts.sort((a, b) => {
                     if (sortOption === "Price:LowtoHigh") return a.price - b.price;
                     if (sortOption === "Price:HightoLow") return b.price - a.price;
-                    if (sortOption === "NewestArrivals") return a.id - b.id;
                     if (sortOption === "NewestArrivals") {
                         const newA = a.newArrivals ? 1 : 0;
                         const newB = b.newArrivals ? 1 : 0;
-                        return newB - newA;
-                    } return 0;
+                        return newB - newA; 
+                    }
+                    return 0;
                 });
+                
 
                 setProducts(filteredProducts);
-                setTotalProducts(filteredProducts.length);
+                setTotalProducts(filteredProducts.length);   
             } catch (error) {
                 console.error("Error fetching products:", error);
             } finally {
