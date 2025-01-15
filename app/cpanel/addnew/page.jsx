@@ -6,8 +6,62 @@ import ImageUploading from 'react-images-uploading';
 import { FaTrash, FaEdit, FaPlusCircle } from 'react-icons/fa';
 import Loader from "@/app/Components/Loader";
 import toast from 'react-hot-toast';
+import axios from "axios";
+import Image from "next/image";
 
 const AddNew = () => {
+  const categoriesMapping = {
+    Women: [
+      "Kurta Sets",
+      "Sarees & Blouses",
+      "Lehenga Sets",
+      "Dresses & Jumpsuits",
+      "Co-Ord Sets",
+      "Gowns",
+      "Kaftans",
+    ],
+    Men: [
+      "Kurtas & Shirts",
+      "Bandhgalas",
+      "Nehru Jackets",
+      "Sherwanis",
+      "Bottoms",
+    ],
+    Wedding: [
+      "Lehenga Sets",
+      "Sarees & Blouses",
+      "Gowns",
+      "Co-ord Sets",
+      "Kurta Sets",
+      "For Groom",
+      "Sherwanis",
+      "Bandhgalas",
+      "Kurtas & Shirts",
+      "Nehru Jackets",
+    ],
+    Jewelry: [
+      "Earrings",
+      "Necklaces",
+      "Bangles & Bracelets",
+      "Rings & Haathphools",
+      "Maangtikkas & Mathapattis",
+      "Nose Rings",
+      "Waist Belts",
+    ],
+    Accessories: ["Scarves & Dupattas", "Bags", "Shoes", "Belts"],
+    Gifting: ["Gifts for Her", "Gifts for Him"],
+    Sale: [
+      "Dresses & Jumpsuits",
+      "Co-Ord Sets",
+      "Kurta Sets",
+      "Sarees & Blouses",
+      "Lehenga Sets",
+      "Gowns",
+      "Kaftans",
+      "Tops & Jackets",
+    ],
+  };
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -22,6 +76,7 @@ const AddNew = () => {
   });
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [genrating, setGenrating] = useState(false)
   const maxNumber = 2;
   const API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyCvdEBSjT8wGlP9KV-gqD393D7qC4yRlTo"
 
@@ -82,8 +137,12 @@ const AddNew = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
+      ...(name === "page" && { category: "" }),
     }));
   };
+
+  const availableCategories = categoriesMapping[formData.page] || [];
+
 
   const handleSizeChange = (e) => {
     const { value, checked } = e.target;
@@ -106,40 +165,42 @@ const AddNew = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
     const finalData = { ...formData, images };
 
     try {
-      const response = await fetch(/api/products, {
-        method: "POST",
+      const response = await axios.post("/api/products", finalData, {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(finalData),
       });
 
-      if (response.ok) {
-        toast.success("Product added successfully!");
+      toast.success("Product added successfully!");
 
-        setFormData({
-          title: "",
-          description: "",
-          price: "",
-          color: "",
-          brand: "",
-          size: [],
-          category: "",
-          page: "",
-          readyToShip: false,
-          newArrivals: false,
-        });
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        color: "",
+        brand: "",
+        size: [],
+        category: "",
+        page: "",
+        readyToShip: false,
+        newArrivals: false,
+      });
 
-        setImages([]);
-
-      } else {
-        toast.error(`Failed to add product: ${response.statusText}`);
-      }
+      setImages([]);
     } catch (error) {
-      toast.error(`Error: ${error.message || 'Something went wrong'}`);
+      if (error.response) {
+        toast.error(
+          `Error: ${error.response.data.error || error.response.statusText}`
+        );
+      } else if (error.request) {
+        toast.error("No response from server. Please try again later.");
+      } else {
+        toast.error(`Error: ${error.message || "Something went wrong"}`);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -151,6 +212,7 @@ const AddNew = () => {
     }
 
     try {
+      setGenrating(true);
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -192,7 +254,10 @@ const AddNew = () => {
       if (letterIndex === fullDescription.length) {
         clearInterval(interval);
       }
+
     }, 50);
+    setGenrating(false);
+
   };
 
 
@@ -214,9 +279,10 @@ const AddNew = () => {
               placeholder="Give me a title..."
               value={formData.title}
               onChange={handleChange}
-              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+              className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
 
           <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="price">
@@ -230,7 +296,7 @@ const AddNew = () => {
               placeholder="Price"
               value={formData.price}
               onChange={handleChange}
-              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+              className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
@@ -247,41 +313,33 @@ const AddNew = () => {
               placeholder="Description..."
               value={formData.description}
               onChange={handleChange}
-              className="w-full h-52 md:h-44 text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+              className="w-full h-52 md:h-44 text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             />
-            <img
-              src="/images/genrate.png"
+
+            <div
               onClick={generateDescription}
-              alt="Generate"
-              className="w-[90px] md:w-[120px] absolute bottom-4 right-2 cursor-pointer hover:opacity-80 transition-opacity"
-            />
+              className={`w-[40px] h-[40px] cursor-pointer 
+                } rounded-full absolute bottom-4 right-2 text-white font-medium flex items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 justify-center shadow-lg transition-all hover:scale-110 hover:shadow-xl ${genrating ? "" : "hover:bg-gradient-to-r hover:from-pink-500 hover:via-purple-500 hover:to-blue-500"
+                }`}
+            >
+
+              {genrating ? <Loader /> : (
+                <>
+                  <Image
+                    src="/images/icon.png"
+                    alt="icon"
+                    width={20}
+                    height={20}
+                  />
+                </>
+              )}
+
+            </div>
           </div>
         </div>
 
         {/* category and Page */}
         <div className="flex gap-4 w-full mb-4 flex-col md:flex-row">
-
-          <div className="w-full">
-            <label className="w-full mb-2 text-gray-700 block" htmlFor="category">
-              Category
-            </label>
-            <select
-              required
-              id="category"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full text-base border border-gray-600 p-2 rounded-md cursor-pointer"
-            >
-              <option value="">Select Category</option>
-              <option value="Kurti">Kurti</option>
-              <option value="Saree">Saree</option>
-              <option value="Lehenga">Lehenga</option>
-              <option value="Kaftan">Kaftan</option>
-              <option value="Suit">Suit</option>
-            </select>
-          </div>
-
 
           <div className="w-full">
             <label className="w-full mb-2 text-gray-700 block" htmlFor="page">
@@ -293,20 +351,40 @@ const AddNew = () => {
               name="page"
               value={formData.page}
               onChange={handleChange}
-              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+              className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Page</option>
-              <option value="Women">Women</option>
-              <option value="Men">Men</option>
-              <option value="Wedding">Wedding</option>
-              <option value="Jewelry">Jewelry</option>
-              <option value="Accessories">Accessories</option>
-              <option value="Gifting">Gifting</option>
-              <option value="Discover">Discover</option>
-              <option value="Celebrity Closet">Celebrity Closet</option>
-              <option value="Sale">Sale</option>
+              {Object.keys(categoriesMapping).map((page) => (
+                <option key={page} value={page}>
+                  {page}
+                </option>
+              ))}
+
             </select>
           </div>
+          <div className="w-full">
+            <label className="w-full mb-2 text-gray-700 block" htmlFor="category">
+              Category
+            </label>
+            <select
+              required
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              disabled={availableCategories.length === 0}
+              className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select Category</option>
+              {availableCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
         </div>
 
         {/* Image Upload */}
@@ -327,7 +405,7 @@ const AddNew = () => {
           }) => (
             <div className="w-full my-8 upload-wrapper">
               <div onClick={onImageUpload} {...dragProps} className="w-[95%] md:w-[60%] m-auto h-[300px] flex justify-center items-center flex-col border-2 border-dotted border-gray-300 cursor-pointer rounded-lg">
-                <label className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                <label className="w-full image-drag h-full flex flex-col items-center justify-center cursor-pointer">
                   <MdCloudUpload className="text-gray-500 text-3xl hover:text-gray-700" />
                   <p className="text-gray-500 hover:text-gray-700">
                     Click here to upload Image
@@ -335,7 +413,7 @@ const AddNew = () => {
                 </label>
               </div>
               {images.length > 0 ? (
-                <>
+                <div className="my-4">
                   <button
                     onClick={onImageRemoveAll}
                     className="bg-red-700 mb-8 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-300"
@@ -367,7 +445,7 @@ const AddNew = () => {
                       </div>
                     ))}
                   </div>
-                </>
+                </div>
               ) : null}
             </div>
           )}
@@ -388,7 +466,7 @@ const AddNew = () => {
               placeholder="Color"
               value={formData.color}
               onChange={handleChange}
-              className="w-full text-lg bg-transparent outline-none border border-gray-600 p-2 placeholder:text-gray-500 text-textColor rounded-md"
+              className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div className="w-full">
@@ -401,7 +479,7 @@ const AddNew = () => {
               name="brand"
               value={formData.brand}
               onChange={handleChange}
-              className="w-full text-base border border-gray-600 p-2 rounded-md cursor-pointer"
+              className="w-full text-lg bg-white outline-none border border-gray-400 p-3 placeholder:text-gray-500 text-gray-800 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
             >
               <option value="">Select Brand</option>
               <option value="FabIndia">FabIndia</option>
@@ -412,21 +490,27 @@ const AddNew = () => {
           </div>
         </div>
 
+
         {/* Size */}
         <div className="w-full">
-          <label className="w-full mb-2 text-gray-700 block">Size</label>
-          <div className="flex gap-4">
+          <label className="w-full mb-4 text-gray-900 font-semibold text-xl leading-tight tracking-wider">
+            Size
+          </label>
+          <div className="flex gap-6 mt-4">
             {["XS", "S", "M", "L", "XL"].map((size) => (
-              <div key={size} className="flex items-center gap-2">
+              <div key={size} className="flex items-center gap-3">
                 <input
                   type="checkbox"
                   id={`size-${size}`}
                   value={size}
                   checked={formData.size.includes(size)}
                   onChange={handleSizeChange}
-                  className="cursor-pointer"
+                  className="cursor-pointer w-7 h-7 border-2 border-gray-400 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-sm checked:bg-gradient-to-r from-gold to-goldenrod checked:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50 transition duration-300 ease-in-out"
                 />
-                <label htmlFor={`size-${size}`} className="cursor-pointer">
+                <label
+                  htmlFor={`size-${size}`}
+                  className="cursor-pointer text-gray-900 font-medium text-lg tracking-wide"
+                >
                   {size}
                 </label>
               </div>
@@ -435,10 +519,12 @@ const AddNew = () => {
         </div>
 
         {/* Product Status */}
-        <div className="w-full">
-          <label className="w-full mb-2 text-gray-800 block font-semibold text-lg">Product Status</label>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+        <div className="w-full mt-10">
+          <label className="w-full  text-gray-900 font-semibold text-xl leading-tight tracking-wider">
+            Product Status
+          </label>
+          <div className="flex flex-col mt-4 gap-8">
+            <div className="flex items-center gap-5">
               <input
                 type="radio"
                 id="readyToShip"
@@ -446,13 +532,16 @@ const AddNew = () => {
                 value="readyToShip"
                 checked={formData.readyToShip}
                 onChange={() => handleStatusChange("readyToShip")}
-                className="cursor-pointer"
+                className="cursor-pointer w-7 h-7 border-2 border-gray-400 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-sm checked:bg-gradient-to-r from-gold to-goldenrod checked:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50 transition duration-300 ease-in-out"
               />
-              <label htmlFor="readyToShip" className="text-gray-800 cursor-pointer font-medium">
+              <label
+                htmlFor="readyToShip"
+                className="text-gray-900 cursor-pointer font-medium text-lg tracking-wide"
+              >
                 READY TO SHIP
               </label>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-5">
               <input
                 type="radio"
                 id="newArrivals"
@@ -460,9 +549,12 @@ const AddNew = () => {
                 value="newArrivals"
                 checked={formData.newArrivals}
                 onChange={() => handleStatusChange("newArrivals")}
-                className="cursor-pointer"
+                className="cursor-pointer w-7 h-7 border-2 border-gray-400 rounded-full bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 shadow-sm checked:bg-gradient-to-r from-gold to-goldenrod checked:border-transparent focus:outline-none focus:ring-2 focus:ring-gold focus:ring-opacity-50 transition duration-300 ease-in-out"
               />
-              <label htmlFor="newArrivals" className="text-gray-800 cursor-pointer font-medium">
+              <label
+                htmlFor="newArrivals"
+                className="text-gray-900 cursor-pointer font-medium text-lg tracking-wide"
+              >
                 NEW ARRIVALS
               </label>
             </div>
