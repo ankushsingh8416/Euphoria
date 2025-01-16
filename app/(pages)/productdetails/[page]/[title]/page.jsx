@@ -154,7 +154,7 @@ const ProductDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                            <button className="flex items-center justify-center gap-2 my-4 sticky bottom-4 lg:static w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
+                            <button className="flex items-center justify-center gap-2 my-4 sticky bottom-4 lg:static w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white py-4 md:py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
                                 Add To Bag
                                 <IoBagHandle className="text-white text-xl" />
                             </button>

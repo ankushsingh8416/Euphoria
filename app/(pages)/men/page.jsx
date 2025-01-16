@@ -18,7 +18,7 @@ const Men = () => {
     } = useContext(cartContext);
 
     const [loading, setLoading] = useState(false);
-
+ 
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true); 
