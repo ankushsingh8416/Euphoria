@@ -7,11 +7,14 @@ import { usePathname } from 'next/navigation';
 const Layout = ({children}) => {
 
   const pathname = usePathname();
-  const isCpanelPage = pathname.startsWith("/productdetails");
+
+  const noHeaderFooterRoutes = ["/productdetails", "/search"];
+
+  const isNoHeaderFooterRoute = noHeaderFooterRoutes.includes(pathname);
   
   return (
     <div>
-        {!isCpanelPage && <FilterSection/>}
+        {!isNoHeaderFooterRoute && <FilterSection/>}
         {children}
     </div>
   )
