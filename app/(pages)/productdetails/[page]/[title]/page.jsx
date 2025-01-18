@@ -1,5 +1,7 @@
-"use client"
-import { useContext } from "react";
+"use client";
+import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect,useContext } from "react";
 import { FaHeart, FaTruck } from "react-icons/fa";
 import { HiOutlineHome, HiOutlineLocationMarker } from "react-icons/hi";
 import { IoBagHandle } from "react-icons/io5";
@@ -9,14 +11,36 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import SimilerProduct from "@/app/Components/SimilerProduct";
-import { cartContext } from "@/app/context/cartContext";
+import {cartContext} from "@/app/context/cartContext";
 import Link from "next/link";
-
 // Shimmer effect CSS
 const shimmerClass = "animate-pulse bg-gray-200";
 
 const ProductDetails = () => {
-    const { loading, product, addToCart } = useContext(cartContext); 
+    const searchParams = useSearchParams();
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const id = searchParams.get('id');
+    const {addToCart} = useContext(cartContext)
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
+        if (id) {
+            axios.get(`/api/products/${id}`)
+                .then((response) => {
+                    setProduct(response.data);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching product details:", error);
+                    setLoading(false);
+                });
+        } else {
+            setLoading(false);
+        }
+    }, [id]);
 
     return (
         <>
@@ -131,11 +155,11 @@ const ProductDetails = () => {
                                     </div>
                                 </div>
                             </div>
-                            <Link href="/cart">
-                                <button onClick={() => addToCart(product)} className="flex items-center justify-center gap-2 my-4 sticky bottom-4 lg:static w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
-                                    Add To Bag
-                                    <IoBagHandle className="text-white text-xl" />
-                                </button>
+                            <Link href='/cart'>
+                            <button  onClick={()=>addToCart(product)} className="flex items-center justify-center gap-2 my-4 sticky bottom-4 lg:static w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
+                                Add To Bag
+                                <IoBagHandle className="text-white text-xl" />
+                            </button>
                             </Link>
                             <button className="w-full flex items-center justify-center gap-2 border border-transparent py-3 rounded-md text-black transform transition-all duration-300 shadow-lg border-[#1e381e] text-sm lg:text-base">
                                 <FaHeart className="text-red-500 text-xl" />
@@ -160,8 +184,7 @@ const ProductDetails = () => {
                 page={product?.page || ''}
                 category={product?.category || ''}
                 id={product?._id || ''}
-            />
-        </>
+            />        </>
     );
 };
 

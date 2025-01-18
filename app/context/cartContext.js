@@ -11,7 +11,6 @@ export const Cartprovider = ({ children }) => {
     Size: [],
     Brand: [],
   });
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeView, setActiveView] = useState("grid");
   const [productGrid, setproductGrid] = useState("four");
   const [sortOption, setSortOption] = useState("Price:LowtoHigh");
@@ -74,8 +73,6 @@ const removeFromCart = (index) => {
         products,
         setProducts,
         sortOption,
-        isSearchOpen,
-        setIsSearchOpen,
         fourGrid,
         twoGrid,
         productGrid,
