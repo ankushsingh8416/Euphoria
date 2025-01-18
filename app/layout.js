@@ -2,7 +2,7 @@
 
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import { CartProvider } from "./context/cartContext";
+import { Cartprovider } from "./context/cartContext";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
@@ -19,12 +19,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <CartProvider>
-          <Toaster />
+        <Cartprovider>
+        <Toaster />
           {!isNoHeaderFooterRoute && <Navbar />}
           {children}
           {!isNoHeaderFooterRoute && <Footer />}
-        </CartProvider>
+        </Cartprovider>
       </body>
     </html>
   );
