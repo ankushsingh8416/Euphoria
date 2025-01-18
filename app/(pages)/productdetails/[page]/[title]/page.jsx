@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 "use client";
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect,useContext } from "react";
+=======
+>>>>>>> 64249bfe48bcf5ef19fa379d83a000ea6dee20b9
 import { FaHeart, FaTruck } from "react-icons/fa";
 import { HiOutlineHome, HiOutlineLocationMarker } from "react-icons/hi";
 import { IoBagHandle } from "react-icons/io5";
@@ -17,6 +20,7 @@ import Link from "next/link";
 const shimmerClass = "animate-pulse bg-gray-200";
 
 const ProductDetails = () => {
+<<<<<<< HEAD
     const searchParams = useSearchParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -42,6 +46,8 @@ const ProductDetails = () => {
         }
     }, [id]);
 
+=======
+>>>>>>> 64249bfe48bcf5ef19fa379d83a000ea6dee20b9
     return (
         <>
             {loading ? (
@@ -101,6 +107,7 @@ const ProductDetails = () => {
                                 </Swiper>
                             </div>
                         </div>
+<<<<<<< HEAD
                         <div className="flex-1 lg:pl-8">
                             <h1 className="text-[25px] lg:text-[30px] crimson tracking-wider mb-4">
                                 {product?.title}
@@ -176,6 +183,27 @@ const ProductDetails = () => {
                                     </p>
                                 </div>
                             </div>
+=======
+                    </div>
+                    {/* Add to Cart */}
+                    <button className=" flex items-center justify-center gap-2  my-4 sticky bottom-4 lg:static  w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white  py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
+                        Add To Bag
+                    <IoBagHandle className="text-white text-xl" />
+
+                    </button>
+                    <button className="w-full flex items-center justify-center gap-2 border border-transparent py-3 rounded-md text-black transform transition-all duration-300 shadow-lg border-[#1e381e] text-sm lg:text-base">
+                        <FaHeart className="text-red-500 text-xl" />
+                        <span>Add to Wishlist</span>
+                    </button>
+                    {/* Additional Info */}
+                    <div className="mt-6 border-t pt-4">
+                        <p className="text-xs lg:text-sm text-gray-500">
+                            This is a made-to-order style and will take 30 business days for production and dispatch orders within India and internationally.
+                        </p>
+                        <div className="flex sm:flex-row items-center gap-4 mt-4 border p-4 justify-center border-gray-400">
+                            <FaTruck />
+                            <p className="text-xs lg:text-sm">Explore Kaftans shipping in 24 hours</p>
+>>>>>>> 64249bfe48bcf5ef19fa379d83a000ea6dee20b9
                         </div>
                     </div>
                 </div>
