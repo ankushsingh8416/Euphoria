@@ -16,7 +16,7 @@
         "algoliasearch": "^5.19.0",
         "axios": "^1.7.9",
         "cors": "^2.8.5",
-        "instantsearch.js": "^4.76.0",
+        "instantsearch.js": "^4.77.0",
         "mongoose": "^8.9.4",
         "next": "15.1.2",
         "next-auth": "^4.24.11",

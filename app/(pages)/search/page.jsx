@@ -1,16 +1,15 @@
-"use client"; 
-import { useContext, useEffect } from 'react';
+"use client";
+import { FaSearch } from "react-icons/fa";
+import Link from "next/link";
+import { FaArrowLeftLong } from "react-icons/fa6";
+import { useEffect } from 'react';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js';
 import { searchBox, hits } from 'instantsearch.js/es/widgets';
-import { cartContext } from '../context/cartContext';
 
 const searchClient = algoliasearch('G7NL75DG1D', '5860c31f24fe6ecf2f3c1fa2c2349de3');
 
-export default function SearchPage() {
-  const { isSearchOpen, setIsSearchOpen } = useContext(cartContext);
-  if (!isSearchOpen) return null;
-
+const SearchPanel = () => {
   useEffect(() => {
     const search = instantsearch({
       indexName: 'Product_index',
@@ -53,16 +52,45 @@ export default function SearchPage() {
     // Cleanup function
     return () => search.dispose();
   }, []);
-
   return (
-     <>
-     
-     <div class="absolute top-0 left-0 h-screen overflow-auto w-full searchpannel bg-white z-50">
-       <h1 class="text-3xl font-bold mb-6">Search Page</h1>
-      <div id="searchbox" class="mb-6"></div>
+    <div className="relative w-full  space-x-0 bg-white z-50">
+      {/* Top Notification Bar */}
+      <div className="bg-[#1E381E] text-white text-center py-2 text-sm md:text-base">
+        <Link href="#" className="font-medium">
+          Shop At Special Prices |
+          <Link href="/" className="underline"> Discover Now</Link>
+        </Link>
+      </div>
+
+      {/* Back Button */}
+      <Link href="/" 
+        className="absolute top-12 lg:top-16  sm:top-20 left-4 sm:left-6 text-lg sm:text-xl md:text-2xl text-[#1E381E] hover:text-gray-600 cursor-pointer"
+      >
+        <FaArrowLeftLong />
+      </Link>
+
+      {/* Search Panel Content */}
+      <div className="p-4 pt-6 md:pt-5 sm:p-6 md:p-8 bg-[#faf8f0]">
+        {/* Search Bar */}
+
+        <div id="searchbox" className="mb-6"></div>
+
+        {/* Popular Searches */}
+        <div className="mt-8 sm:mt-10 md:mt-12">
+          <h2 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800">POPULAR SEARCHES</h2>
+          <div className="flex flex-wrap gap-4 sm:gap-6 mt-4">
+            {["Lehenga", "Sharara", "Anarkali", "Bags", "Benarasi", "Dress"].map((item) => (
+              <div key={item} className="flex items-center space-x-2">
+                <FaSearch className="text-gray-600 text-xs sm:text-base" />
+                <span className="text-gray-700 font-medium text-xs sm:text-base md:text-lg">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       <div id="hits"></div>
       </div>
-     </>
-
+    </div>
   );
-}
+};
+
+export default SearchPanel;

@@ -2,7 +2,7 @@
 
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import { Cartprovider } from "./context/cartContext";
+import { CartProvider } from "./context/cartContext";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
@@ -10,17 +10,21 @@ import { Toaster } from 'react-hot-toast';
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  const isCpanelPage = pathname.startsWith("/cpanel");
+  // Define routes where Navbar and Footer should not be displayed
+  const noHeaderFooterRoutes = ["/cpanel", "/search"];
+
+  // Check if the current pathname matches any of the specified routes
+  const isNoHeaderFooterRoute = noHeaderFooterRoutes.includes(pathname);
 
   return (
     <html lang="en">
       <body>
-        <Cartprovider>
-        <Toaster />
-          {!isCpanelPage && <Navbar />}
+        <CartProvider>
+          <Toaster />
+          {!isNoHeaderFooterRoute && <Navbar />}
           {children}
-          {!isCpanelPage && <Footer />}
-        </Cartprovider>
+          {!isNoHeaderFooterRoute && <Footer />}
+        </CartProvider>
       </body>
     </html>
   );

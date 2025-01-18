@@ -1,14 +1,8 @@
-"use client"
-import { useContext, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { cartContext } from "../context/cartContext";
-import SearchPanel from "./SearchPannel";
 
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { setIsSearchOpen, isSearchOpen } = useContext(cartContext);
 
   return (
     <>
@@ -47,12 +41,12 @@ export default function Navbar() {
           {/* Right Section (Icons) */}
           <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Search Icon */}
-            <Image onClick={() => setIsSearchOpen(true)}
+            <Link href="/search">
+            <Image 
               src="/images/search-icon.svg" alt="Search" width={24} height={24} className="cursor-pointer"
             />
-            {
-              isSearchOpen ? <SearchPanel /> : null
-            }
+            </Link>
+          
             {/* User Icon */}
             <Link href="/login">
               <Image src="/images/user-icon.svg" alt="User" width={24} height={24} className="cursor-pointer" />
