@@ -6,7 +6,7 @@ import { SlHeart } from "react-icons/sl";
 import axios from "axios";
 import Link from "next/link";
 
-const Women = () => {
+const Accessories = () => {
     const {
         selectedFilters,
         sortOption,
@@ -29,7 +29,7 @@ const Women = () => {
 
                 // Filter products by page
                 filteredProducts = filteredProducts.filter(
-                    (product) => product.page === "Women"
+                    (product) => product.page === "Accessories"
                 );
 
                 // Apply filters
@@ -156,4 +156,4 @@ const Women = () => {
     );
 };
 
-export default Women;
+export default Accessories;

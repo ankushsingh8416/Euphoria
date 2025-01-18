@@ -17,6 +17,29 @@ export const Cartprovider = ({ children }) => {
   const [sortOption, setSortOption] = useState("Price:LowtoHigh");
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [cart, setCart] = useState(() => {
+    if (typeof window !== "undefined") {
+        const savedCart = localStorage.getItem("cart");
+        return savedCart ? JSON.parse(savedCart) : [];
+    }
+    return [];
+});
+
+const addToCart = (product) => {
+    setCart((prevCart) => {
+        const updatedCart = [...prevCart, product];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        return updatedCart;
+    });
+};
+
+const removeFromCart = (index) => {
+    setCart((prevCart) => {
+        const updatedCart = prevCart.filter((_, i) => i !== index);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        return updatedCart;
+    });
+};
 
   useEffect(() => {
     setTotalProducts(products.length);
@@ -56,6 +79,9 @@ export const Cartprovider = ({ children }) => {
         fourGrid,
         twoGrid,
         productGrid,
+        cart,
+        addToCart,
+        removeFromCart
       }}
     >
       {children}

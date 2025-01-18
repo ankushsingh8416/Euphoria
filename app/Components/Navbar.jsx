@@ -82,8 +82,6 @@ export default function Navbar() {
               "Jewelry",
               "Accessories",
               "Gifting",
-              "Discover",
-              "Celebrity Closet",
               "Sale",
             ].map((item, index) => {
               const href = `/${item.toLowerCase().replace(/\s+/g, "-")}`;

@@ -15,11 +15,18 @@ export default function RootLayout({ children }) {
   const isNoHeaderFooterRoute = noHeaderFooterRoutes.includes(pathname);
 
   return (
+    
     <html lang="en">
       <body>
         <Cartprovider>
         <Toaster />
+<<<<<<< HEAD
           {!isNoHeaderFooterRoute && <Navbar />}
+=======
+          {!isCpanelPage && <Navbar />}
+         
+          
+>>>>>>> 7d8d1b6be3cde3a76e9fd89d82f9f2a2ae1d9f28
           {children}
           {!isNoHeaderFooterRoute && <Footer />}
         </Cartprovider>
