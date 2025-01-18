@@ -18,7 +18,7 @@ export default function Navbar() {
 
       <header className="shadow-xl z-50 sticky top-0">
         {/* Main Header Section */}
-        <div className="flex items-center justify-between px-4 md:px-6 py-2">
+        <div className="flex items-center justify-between px-4 md:px-6 py-3">
           {/* Left Section */}
           <div className="flex items-center">
             <div className="logo hidden lg:block">

@@ -21,7 +21,7 @@ const Hero = () => {
     },
     {
       desktop: "/images/banner3.webp",
-      mobile: "/images/banner3-mob.webp",
+      mobile: "/images/banner2-mobile.jpg",
       alt: "Banner 3",
     },
   ];
