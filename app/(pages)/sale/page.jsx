@@ -30,8 +30,7 @@ const Sale
 
                 // Filter products by page
                 filteredProducts = filteredProducts.filter(
-                    (product) => product.page === "Sale
-                    "
+                    (product) => product.page === "Sale"
                 );
 
                 // Apply filters
