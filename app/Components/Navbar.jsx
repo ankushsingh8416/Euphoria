@@ -78,7 +78,7 @@ export default function Navbar() {
 
           <div className="logo block lg:hidden ">
             <Link href="/">
-              <Image src="/images/euphoria.webp" alt="Anita Dongre" width={80} height={64} className="object-cover" />
+              <Image src="/images/euphoria.webp" alt="Anita Dongre" width={100} height={64} className="object-cover" />
             </Link>
           </div>
 

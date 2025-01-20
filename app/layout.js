@@ -10,10 +10,10 @@ import { Toaster } from 'react-hot-toast';
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  const noHeaderFooterRoutes = ["/cpanel", "/search"];
+   const noHeaderFooterRoutes = ["/cpanel/", "/search"];
 
-  const isNoHeaderFooterRoute = noHeaderFooterRoutes.includes(pathname);
-
+   const isNoHeaderFooterRoute = noHeaderFooterRoutes.some(route => pathname.startsWith(route));
+ 
   return (
     
     <html lang="en">

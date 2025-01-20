@@ -16,8 +16,11 @@
         "@fortawesome/react-fontawesome": "^0.2.2",
         "algoliasearch": "^5.19.0",
         "axios": "^1.7.9",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
         "cors": "^2.8.5",
         "instantsearch.js": "^4.77.0",
+        "lucide-react": "^0.473.0",
         "mongoose": "^8.9.4",
         "next": "15.1.2",
         "next-auth": "^4.24.11",
@@ -27,7 +30,9 @@
         "react-icons": "^5.4.0",
         "react-images-uploading": "^3.1.7",
         "react-instantsearch": "^7.14.0",
-        "swiper": "^11.1.15"
+        "swiper": "^11.1.15",
+        "tailwind-merge": "^2.6.0",
+        "tailwindcss-animate": "^1.0.7"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
