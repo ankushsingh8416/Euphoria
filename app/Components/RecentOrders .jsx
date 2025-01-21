@@ -1,4 +1,8 @@
+"use client";
+
+
 "use client"
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FiMoreVertical } from "react-icons/fi";
@@ -9,35 +13,47 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import { FaEdit, FaExchangeAlt, FaTrashAlt, FaEye } from 'react-icons/fa';
+
+// Shimmer component for loading placeholders
+const Shimmer = () => (
+  <div className="animate-pulse flex space-x-4">
+    <div className="h-24 w-24 bg-gray-300 rounded-md"></div>
+    <div className="flex-1 space-y-4 py-1">
+      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+      <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+    </div>
+  </div>
+);
 
 const RecentOrders = () => {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch data from the API
     const fetchOrders = async () => {
       try {
         const response = await axios.get('/api/products/');
         const products = response.data;
 
-        // Map the API data to the desired structure
         const mappedOrders = products.map((product) => ({
-          id: 1 || 'N/A',
+          id: product.id || 'N/A',
           product: product.title || 'No Title',
           image: (product.images && product.images[0].defaultImage) || 'https://via.placeholder.com/50',
           date: new Date(product.createdAt).toLocaleString() || 'N/A',
           customer: 'N/A',
           email: 'N/A',
           total: `$${product.price || '0.00'}`,
-          payment: 'N/A',
-          status: product.readyToShip ? 'Ready to Ship' : 'Processing',
+          status: product.readyToShip ? 'Shipped' : 'Processing',
         }));
 
         setOrders(mappedOrders);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching orders:', error);
+        setLoading(false);
       }
     };
 
@@ -46,13 +62,11 @@ const RecentOrders = () => {
 
   return (
     <div className="p-6">
-      {/* Header Section */}
       <header className="mb-8">
         <h1 className="text-2xl font-bold text-gray-800">Order Management Dashboard</h1>
         <p className="text-gray-600 mt-2">Overview of recent orders and statuses.</p>
       </header>
 
-      {/* Recent Orders Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100">
@@ -63,57 +77,72 @@ const RecentOrders = () => {
               <th scope="col" className="px-6 py-3">Date</th>
               <th scope="col" className="px-6 py-3">Customer</th>
               <th scope="col" className="px-6 py-3">Total</th>
-              <th scope="col" className="px-6 py-3">Payment</th>
               <th scope="col" className="px-6 py-3">Status</th>
               <th scope="col" className="px-6 py-3">Action</th>
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
-              <tr key={order.id} className="bg-white border-b">
-                <td className="px-6 py-4">{order.id}</td>
-                <td className="px-6 py-4">
-                  <img src={order.image} alt={order.product} className="w-24 rounded-md shadow-lg" />
-                </td>
-                <td className="px-6 py-4">{order.product}</td>
-                <td className="px-6 py-4">{order.date}</td>
-                <td className="px-6 py-4">
-                  {order.customer}<br />
-                  <span className="text-xs text-gray-400">{order.email}</span>
-                </td>
-                <td className="px-6 py-4">{order.total}</td>
-                <td className="px-6 py-4">{order.payment}</td>
-                <td className="px-6 py-4">
-                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
-                    order.status === 'Ready to Ship' ? 'bg-green-100 text-green-800' :
-                      'bg-red-100 text-red-800'
-                    }`}>
-                    {order.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4">
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>Order Actions</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <FaEye className="mr-2" /> View Details
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <FaEdit className="mr-2" /> Edit Order
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <FaExchangeAlt className="mr-2" /> Change Status
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <FaTrashAlt className="mr-2" /> Cancel Order
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <FaEye className="mr-2" /> View Invoice
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </td>
-              </tr>
-            ))}
+            {loading ? (
+              Array.from({ length: 5 }).map((_, index) => (
+                <tr key={index} className="bg-white border-b">
+                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer /></td>
+                </tr>
+              ))
+            ) : (
+              orders.map((order) => (
+                <tr key={order.id} className="bg-white border-b">
+                  <td className="px-6 py-4">{order.id}</td>
+                  <td className="px-6 py-4">
+                    <img src={order.image} alt={order.product} className="w-24 rounded-md shadow-lg" />
+                  </td>
+                  <td className="px-6 py-4">{order.product}</td>
+                  <td className="px-6 py-4">{order.date}</td>
+                  <td className="px-6 py-4">
+                    {order.customer}<br />
+                    <span className="text-xs text-gray-400">{order.email}</span>
+                  </td>
+                  <td className="px-6 py-4">{order.total}</td>
+                  <td className="px-6 py-4">
+                    <span className={`px-2 inline-flex whitespace-nowrap text-xs leading-5 font-semibold rounded-full ${order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
+                      order.status === 'Shipped' ? 'bg-green-100 text-green-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger><FiMoreVertical className="text-gray-700 hover:text-gray-500" size={20} /></DropdownMenuTrigger>
+                      <DropdownMenuContent className="bg-white shadow-lg rounded-lg w-48 py-2">
+                        <DropdownMenuLabel className="px-4 py-2 text-sm font-semibold text-gray-700">
+                          Order Actions
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator className="border-t border-gray-200 my-2" />
+                        <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
+                          <FaEye className="mr-2 text-blue-500" /> View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
+                          <FaEdit className="mr-2 text-green-500" /> Edit Order
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
+                          <FaExchangeAlt className="mr-2 text-yellow-500" /> Change Status
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
+                          <FaTrashAlt className="mr-2 text-red-500" /> Cancel Order
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
