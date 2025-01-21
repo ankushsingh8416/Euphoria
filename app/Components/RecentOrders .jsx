@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { FaEdit, FaExchangeAlt, FaTrashAlt, FaEye } from 'react-icons/fa';
 
 const RecentOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -84,24 +85,32 @@ const RecentOrders = () => {
                 <td className="px-6 py-4">{order.payment}</td>
                 <td className="px-6 py-4">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
-                      order.status === 'Ready to Ship' ? 'bg-green-100 text-green-800' :
-                        'bg-red-100 text-red-800'
+                    order.status === 'Ready to Ship' ? 'bg-green-100 text-green-800' :
+                      'bg-red-100 text-red-800'
                     }`}>
                     {order.status}
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                    <DropdownMenu>
-                    <DropdownMenuTrigger><FiMoreVertical className="text-black" size={20} /></DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                      <DropdownMenuItem>Billing</DropdownMenuItem>
-                      <DropdownMenuItem>Team</DropdownMenuItem>
-                      <DropdownMenuItem>Subscription</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Order Actions</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>
+                      <FaEye className="mr-2" /> View Details
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <FaEdit className="mr-2" /> Edit Order
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <FaExchangeAlt className="mr-2" /> Change Status
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <FaTrashAlt className="mr-2" /> Cancel Order
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <FaEye className="mr-2" /> View Invoice
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
                 </td>
               </tr>
             ))}
