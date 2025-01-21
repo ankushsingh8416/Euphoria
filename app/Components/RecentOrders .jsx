@@ -1,8 +1,5 @@
 "use client";
 
-
-"use client"
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FiMoreVertical } from "react-icons/fi";
@@ -17,16 +14,30 @@ import {
 import { FaEdit, FaExchangeAlt, FaTrashAlt, FaEye } from 'react-icons/fa';
 
 // Shimmer component for loading placeholders
-const Shimmer = () => (
-  <div className="animate-pulse flex space-x-4">
-    <div className="h-24 w-24 bg-gray-300 rounded-md"></div>
-    <div className="flex-1 space-y-4 py-1">
-      <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-      <div className="h-4 bg-gray-300 rounded w-1/4"></div>
-    </div>
-  </div>
-);
+const Shimmer = ({ type }) => {
+  switch (type) {
+    case 'id':
+      return <div className="h-4 w-16 bg-gray-300 rounded-md"></div>;
+    case 'image':
+      return <div className="h-16 w-16 bg-gray-300 rounded-md"></div>;
+    case 'title':
+      return <div className="h-4 w-32 bg-gray-300 rounded-md"></div>;
+    case 'date':
+      return <div className="h-4 w-24 bg-gray-300 rounded-md"></div>;
+    case 'customer':
+      return <div className="h-4 w-24 bg-gray-300 rounded-md"></div>;
+    case 'email':
+      return <div className="h-4 w-32 bg-gray-300 rounded-md"></div>;
+    case 'total':
+      return <div className="h-4 w-16 bg-gray-300 rounded-md"></div>;
+    case 'status':
+      return <div className="h-4 w-20 bg-gray-300 rounded-md"></div>;
+    case 'action':
+      return <div className="h-4 w-12 bg-gray-300 rounded-md"></div>;
+    default:
+      return <div className="h-4 w-16 bg-gray-300 rounded-md"></div>;
+  }
+};
 
 const RecentOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -38,8 +49,8 @@ const RecentOrders = () => {
         const response = await axios.get('/api/products/');
         const products = response.data;
 
-        const mappedOrders = products.map((product) => ({
-          id: product.id || 'N/A',
+        const mappedOrders = products.map((product, index) => ({
+          id: index + 1 || 'N/A',
           product: product.title || 'No Title',
           image: (product.images && product.images[0].defaultImage) || 'https://via.placeholder.com/50',
           date: new Date(product.createdAt).toLocaleString() || 'N/A',
@@ -85,14 +96,14 @@ const RecentOrders = () => {
             {loading ? (
               Array.from({ length: 5 }).map((_, index) => (
                 <tr key={index} className="bg-white border-b">
-                  <td className="px-6 py-4"><Shimmer /></td>
-                  <td className="px-6 py-4"><Shimmer /></td>
-                  <td className="px-6 py-4"><Shimmer /></td>
-                  <td className="px-6 py-4"><Shimmer /></td>
-                  <td className="px-6 py-4"><Shimmer /></td>
-                  <td className="px-6 py-4"><Shimmer /></td>
-                  <td className="px-6 py-4"><Shimmer /></td>
-                  <td className="px-6 py-4"><Shimmer /></td>
+                  <td className="px-6 py-4"><Shimmer type="id" /></td>
+                  <td className="px-6 py-4"><Shimmer type="image" /></td>
+                  <td className="px-6 py-4"><Shimmer type="title" /></td>
+                  <td className="px-6 py-4"><Shimmer type="date" /></td>
+                  <td className="px-6 py-4"><Shimmer type="customer" /></td>
+                  <td className="px-6 py-4"><Shimmer type="total" /></td>
+                  <td className="px-6 py-4"><Shimmer type="status" /></td>
+                  <td className="px-6 py-4"><Shimmer type="action" /></td>
                 </tr>
               ))
             ) : (
@@ -110,10 +121,7 @@ const RecentOrders = () => {
                   </td>
                   <td className="px-6 py-4">{order.total}</td>
                   <td className="px-6 py-4">
-                    <span className={`px-2 inline-flex whitespace-nowrap text-xs leading-5 font-semibold rounded-full ${order.status === 'Processing' ? 'bg-yellow-100 text-yellow-800' :
-                      order.status === 'Shipped' ? 'bg-green-100 text-green-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
+                    <span className={`px-2 inline-flex whitespace-nowrap text-xs leading-5 font-semibold rounded-full ${order.status === 'Processing' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
                       {order.status}
                     </span>
                   </td>
