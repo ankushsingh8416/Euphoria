@@ -10,19 +10,19 @@ import { Toaster } from 'react-hot-toast';
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  const isCpanelPage = pathname.startsWith("/cpanel");
+   const noHeaderFooterRoutes = ["/cpanel/", "/search"];
 
+   const isNoHeaderFooterRoute = noHeaderFooterRoutes.some(route => pathname.startsWith(route));
+ 
   return (
     
     <html lang="en">
       <body>
         <Cartprovider>
         <Toaster />
-          {!isCpanelPage && <Navbar />}
-         
-          
+          {!isNoHeaderFooterRoute && <Navbar />}
           {children}
-          {!isCpanelPage && <Footer />}
+          {!isNoHeaderFooterRoute && <Footer />}
         </Cartprovider>
       </body>
     </html>

@@ -1,3 +1,7 @@
+"use client";
+import axios from "axios";
+import { useSearchParams } from "next/navigation";
+import { useState, useEffect,useContext } from "react";
 import { FaHeart, FaTruck } from "react-icons/fa";
 import { HiOutlineHome, HiOutlineLocationMarker } from "react-icons/hi";
 import { IoBagHandle } from "react-icons/io5";
@@ -13,6 +17,31 @@ import Link from "next/link";
 const shimmerClass = "animate-pulse bg-gray-200";
 
 const ProductDetails = () => {
+    const searchParams = useSearchParams();
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const id = searchParams.get('id');
+    const {addToCart} = useContext(cartContext)
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
+        if (id) {
+            axios.get(`/api/products/${id}`)
+                .then((response) => {
+                    setProduct(response.data);
+                    setLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching product details:", error);
+                    setLoading(false);
+                });
+        } else {
+            setLoading(false);
+        }
+    }, [id]);
+
     return (
         <>
             {loading ? (
@@ -72,25 +101,81 @@ const ProductDetails = () => {
                                 </Swiper>
                             </div>
                         </div>
-                    </div>
-                    {/* Add to Cart */}
-                    <button className=" flex items-center justify-center gap-2  my-4 sticky bottom-4 lg:static  w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white  py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
-                        Add To Bag
-                    <IoBagHandle className="text-white text-xl" />
-
-                    </button>
-                    <button className="w-full flex items-center justify-center gap-2 border border-transparent py-3 rounded-md text-black transform transition-all duration-300 shadow-lg border-[#1e381e] text-sm lg:text-base">
-                        <FaHeart className="text-red-500 text-xl" />
-                        <span>Add to Wishlist</span>
-                    </button>
-                    {/* Additional Info */}
-                    <div className="mt-6 border-t pt-4">
-                        <p className="text-xs lg:text-sm text-gray-500">
-                            This is a made-to-order style and will take 30 business days for production and dispatch orders within India and internationally.
-                        </p>
-                        <div className="flex sm:flex-row items-center gap-4 mt-4 border p-4 justify-center border-gray-400">
-                            <FaTruck />
-                            <p className="text-xs lg:text-sm">Explore Kaftans shipping in 24 hours</p>
+                        <div className="flex-1 lg:pl-8">
+                            <h1 className="text-[25px] lg:text-[30px] crimson tracking-wider mb-4">
+                                {product?.title}
+                            </h1>
+                            <p className="text-base lg:text-lg text-gray-500 mt-2">
+                                ₹{product?.price?.toLocaleString()}
+                            </p>
+                            <p className="text-sm lg:text-base text-gray-400 mt-1">
+                                MRP Inclusive of all taxes
+                            </p>
+                            <p className="text-gray-700 mt-4 text-sm lg:text-base">
+                                {product?.description}
+                            </p>
+                            <div className="mt-6">
+                                <p className="text-sm lg:text-base text-gray-700">Colour:</p>
+                                <div className="flex items-center gap-3 mt-2 cursor-pointer">
+                                    <div
+                                        className="w-8 h-8 shadow-xl border-2 border-gray-400 rounded-full transform transition-transform duration-300 hover:scale-125 hover:border-gold-500 hover:shadow-2xl"
+                                        style={{ backgroundColor: product?.color }}
+                                    ></div>
+                                </div>
+                            </div>
+                            <div className="mt-6">
+                                <p className="text-sm lg:text-base text-gray-700">Size:</p>
+                                <div className="flex items-center gap-2 lg:gap-3 mt-2">
+                                    {product?.size?.map((size) => (
+                                        <button
+                                            key={size}
+                                            className="px-3 py-1.5 text-xs lg:text-sm border rounded-md hover:bg-gray-100"
+                                        >
+                                            {size}
+                                        </button>
+                                    ))}
+                                </div>
+                                <a
+                                    href="#"
+                                    className="text-xs lg:text-sm text-blue-500 underline mt-2 inline-block"
+                                >
+                                    View Size Guide
+                                </a>
+                            </div>
+                            <div className="mt-6">
+                                <p className="text-sm lg:text-base text-gray-700">Delivery Method:</p>
+                                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mt-2">
+                                    <div className="flex items-center gap-2 text-xs lg:text-sm">
+                                        <HiOutlineHome />
+                                        <span>Home Delivery</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs lg:text-sm">
+                                        <HiOutlineLocationMarker />
+                                        <span>Store Pickup</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <Link href='/cart'>
+                            <button  onClick={()=>addToCart(product)} className="flex items-center justify-center gap-2 my-4 sticky bottom-4 lg:static w-full bg-gradient-to-r from-[#1e381e] to-[#2b4f2b] text-white py-3 rounded-md transform transition-all duration-300 hover:shadow-lg hover:from-[#2b4f2b] hover:to-[#1e381e] text-sm lg:text-base">
+                                Add To Bag
+                                <IoBagHandle className="text-white text-xl" />
+                            </button>
+                            </Link>
+                            <button className="w-full flex items-center justify-center gap-2 border border-transparent py-3 rounded-md text-black transform transition-all duration-300 shadow-lg border-[#1e381e] text-sm lg:text-base">
+                                <FaHeart className="text-red-500 text-xl" />
+                                <span>Add to Wishlist</span>
+                            </button>
+                            <div className="mt-6 border-t pt-4">
+                                <p className="text-xs lg:text-sm text-gray-500">
+                                    This is a made-to-order style and will take 30 business days for production and dispatch orders within India and internationally.
+                                </p>
+                                <div className="flex sm:flex-row items-center gap-4 mt-4 border p-4 justify-center border-gray-400">
+                                    <FaTruck />
+                                    <p className="text-xs lg:text-sm">
+                                        Explore Kaftans shipping in 24 hours
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
