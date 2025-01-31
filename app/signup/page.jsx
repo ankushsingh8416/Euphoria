@@ -1,10 +1,43 @@
+"use client"
+import { useState } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faUser } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-
+import { signIn } from "next-auth/react";
+import toast, { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 export default function SignUp() {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter(); 
+  const handleSubmit=  async (e)=>{
+     e.preventDefault();
+     if (!email || !password || !username) {
+      toast.error('Please fill in all fields.');
+       return;
+     }  
+     const response = await fetch('/api/signup',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body:JSON.stringify({ username, email, password })
+     })
+     const result = await response.json();
+     if(response.ok){
+      if (response.ok) {
+        toast.success("Registration successful!!");
+        router.push('/login');
+      }
+     }else{
+      toast.error(result.message || 'Signup failed. Please try again.');
+     }
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <Toaster /> 
       <div className="bg-white shadow-md w-11/12 my-6 max-w-4xl flex flex-col lg:flex-row rounded-lg overflow-hidden">
         {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
@@ -26,7 +59,7 @@ export default function SignUp() {
 
           {/* Social Buttons */}
           <div className="space-y-4 mb-6">
-            <button className="w-full flex items-center justify-center space-x-3 bg-gray-100 border border-gray-300 py-2 rounded-lg hover:shadow-md">
+            <button onClick={() => signIn('google')} className="w-full flex items-center justify-center space-x-3 bg-gray-100 border border-gray-300 py-2 rounded-lg hover:shadow-md">
               <img
                 src="./images/google-icon.webp"
                 alt="Google"
@@ -45,7 +78,7 @@ export default function SignUp() {
           </div>
 
           {/* Signup Form */}
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             {/* Name Field */}
             <div className="relative">
               <label
@@ -63,6 +96,8 @@ export default function SignUp() {
                   id="name"
                   type="text"
                   placeholder="Name"
+                  value={username}
+  onChange={(e) => setUsername(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#1E381E] focus:border-[#1E381E]"
                 />
               </div>
@@ -85,6 +120,8 @@ export default function SignUp() {
                   id="email"
                   type="email"
                   placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#1E381E] focus:border-[#1E381E]"
                 />
               </div>
@@ -107,6 +144,8 @@ export default function SignUp() {
                   id="password"
                   type="password"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#1E381E] focus:border-[#1E381E]"
                 />
               </div>
@@ -131,7 +170,7 @@ export default function SignUp() {
             </div>
 
             {/* Signup Button */}
-            <button className="w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f]">
+            <button type="submit" className="w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f]">
               Sign Up
             </button>
           </form>

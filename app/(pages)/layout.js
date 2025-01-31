@@ -3,6 +3,7 @@
 import React from 'react';
 import FilterSection from '../Components/FilterSection';
 import { usePathname } from 'next/navigation';
+import { SessionProvider } from "next-auth/react"
 
 const Layout = ({ children }) => {
     const pathname = usePathname();
@@ -12,10 +13,12 @@ const Layout = ({ children }) => {
     const isNoHeaderFooterRoute = noHeaderFooterRoutes.some(route => pathname.startsWith(route));
 
     return (
+        <SessionProvider>
         <div>
             {!isNoHeaderFooterRoute && <FilterSection />}
             {children}
         </div>
+        </SessionProvider>
     );
 };
 
