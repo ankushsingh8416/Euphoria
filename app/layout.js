@@ -6,6 +6,7 @@ import { Cartprovider } from "./context/cartContext";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
+import SessionProviderWrapper from "./Components/SessionProviderWrapper";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -18,12 +19,14 @@ export default function RootLayout({ children }) {
     
     <html lang="en">
       <body>
-        <Cartprovider>
+        <SessionProviderWrapper>     <Cartprovider>
         <Toaster />
           {!isNoHeaderFooterRoute && <Navbar />}
           {children}
           {!isNoHeaderFooterRoute && <Footer />}
         </Cartprovider>
+        </SessionProviderWrapper>
+   
       </body>
     </html>
   );
