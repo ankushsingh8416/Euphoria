@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required:true,
+    required: true,
   },
 
   email: {
@@ -18,5 +18,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Prevent redefining the model if it already exists
 export default mongoose.models.User || mongoose.model("User", userSchema);

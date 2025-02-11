@@ -142,9 +142,10 @@ export default function Navbar() {
               {dropDown && (
                 <div className="w-64 z-10 shadow-2xl absolute top-[55px] -left-36 bg-white rounded-lg  p-4">
                   <div className="flex items-center mb-4">
-                    <div className="ml-3">
+                    <div className="ml-3 flex gap-4 items-center">
+                      <Image  src="/images/profile.webp" alt="user" className="object-cover" width={30} height={30}/>
                       <h3 className="text-sm  text-gray-900 font-bold capitalize">
-                        Welcome {session?.user.name}
+                         {session?.user.name}
                       </h3>
                     </div>
                   </div>

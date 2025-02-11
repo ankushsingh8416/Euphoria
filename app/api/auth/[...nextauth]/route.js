@@ -26,7 +26,7 @@ const handler = NextAuth({
     }),
   ],
   session: {
-    strategy: "jwt", // ✅ Explicitly enable JWT
+    strategy: "jwt",
   },
   callbacks: {
     async jwt({ token, user }) {
