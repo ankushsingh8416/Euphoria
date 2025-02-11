@@ -29,7 +29,7 @@ export default function Login() {
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', data.token); // Store the token
       }
-      router.push('/dashboard'); // Redirect to dashboard
+      router.push('/cpanel/dashboard'); // Redirect to dashboard
     } else {
       toast.error(data.message || 'Login failed. Please try again.');
     }
