@@ -1,39 +1,49 @@
-"use client"
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import { signIn } from "next-auth/react"
-import toast, { Toaster } from 'react-hot-toast';
+import { Loader } from "lucide-react";
+
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    if (!email || !password) {
-      toast.error('Please fill in all fields.');
+    setLoading(true);
+
+    const res = await signIn("credentials", {
+      redirect: false,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    setLoading(false);
+
+    if (res.error) {
+      toast.error(res.error);
       return;
     }
-  
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-  
-    const data = await response.json();
-    if (response.ok) {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('token', data.token); // Store the token
-      }
-      router.push('/cpanel/dashboard'); // Redirect to dashboard
-    } else {
-      toast.error(data.message || 'Login failed. Please try again.');
-    }
+
+    toast.success("Login successful! Redirecting...");
+
+    // Clear input fields after successful login
+    setFormData({ email: "", password: "" });
+
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
 <Toaster /> 
@@ -41,7 +51,7 @@ export default function Login() {
         {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
           <img
-            src="./images/login.webp"
+            src="/images/login.webp"
             alt="Login Illustration"
             className="object-cover object-top w-full h-52 md:h-64 lg:h-full"
           />
@@ -56,28 +66,8 @@ export default function Login() {
             Log in to access your account and our products
           </p>
 
-          {/* Social Buttons */}
-          <div className="space-y-4 mb-6">
-            <button onClick={() => signIn("google")} className="w-full flex items-center justify-center space-x-3 bg-gray-100 border border-gray-300 py-2 rounded-lg hover:shadow-md">
-              <img
-                src="./images/google-icon.webp"
-                alt="Google"
-                className="h-5"
-              />
-              <span >Continue With Google</span>
-            </button>
-            <button className="w-full flex items-center justify-center space-x-3 bg-gray-100 border border-gray-300 py-2 rounded-lg hover:shadow-md">
-              <img
-                src="./images/twitter.webp"
-                alt="Twitter"
-                className="h-5"
-              />
-              <span>Continue With Twitter</span>
-            </button>
-          </div>
-
           {/* Login Form */}
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Field */}
             <div className="relative">
               <label
@@ -93,10 +83,12 @@ export default function Login() {
                 />
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="Email Address"
-                  value={email}
-                  onChange={(e)=>setEmail(e.target.value)}
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#1E381E] focus:border-[#1E381E]"
                 />
               </div>
@@ -117,18 +109,30 @@ export default function Login() {
                 />
                 <input
                   id="password"
+                  name="password"
                   type="password"
                   placeholder="Password"
-                  value={password}
-  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#1E381E] focus:border-[#1E381E]"
                 />
               </div>
             </div>
 
             {/* Login Button */}
-            <button  type="submit" className="w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f]">
-              Log In
+            <button
+              type="submit"
+              className={`w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f] flex justify-center ${
+                loading ? "opacity-50 cursor-not-allowed" : "opacity-100"
+              }`}
+              disabled={loading}
+            >
+              {loading ? (
+                <Loader className="animate-spin"  />
+              ) : (
+                "Log In"
+              )}
             </button>
           </form>
 

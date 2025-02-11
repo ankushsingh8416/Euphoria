@@ -56,7 +56,7 @@ const RecentOrders = () => {
           date: new Date(product.createdAt).toLocaleString() || 'N/A',
           customer: 'N/A',
           email: 'N/A',
-          total: `$${product.price || '0.00'}`,
+          total: `₹${product.price || '0.00'}`,
           status: product.readyToShip ? 'Shipped' : 'Processing',
         }));
 
