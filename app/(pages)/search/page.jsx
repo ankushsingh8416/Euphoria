@@ -2,7 +2,7 @@
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { InstantSearch, SearchBox, Hits } from 'react-instantsearch';
+import { InstantSearch, SearchBox, Hits, connectStateResults } from 'react-instantsearch';
 import { liteClient as algoliasearch } from 'algoliasearch/lite';
 import { SlHeart } from "react-icons/sl"; // Import SlHeart icon
 
@@ -21,7 +21,7 @@ const Hit = ({ hit }) => (
       query: { id: hit._id },
     }}
     key={hit._id}
-    className={`cursor-pointer mb-8 group w-[48%] lg:w-[24%]"`}
+    className="cursor-pointer mb-8 group w-[48%] lg:w-[24%]"
   >
     <div className="relative overflow-hidden">
       <img
@@ -66,6 +66,15 @@ const Hit = ({ hit }) => (
   </Link>
 );
 
+// Component to check if there are results
+const CustomResults = connectStateResults(({ searchResults }) => (
+  searchResults && searchResults.nbHits === 0 ? (
+    <h1 className="text-center text-2xl font-bold text-gray-800 mt-10">No product found</h1>
+  ) : (
+    <Hits hitComponent={Hit} />
+  )
+));
+
 const SearchPanel = () => (
   <div className="relative w-full space-x-0 bg-white z-50">
     {/* Top Notification Bar */}
@@ -87,14 +96,14 @@ const SearchPanel = () => (
     <div className="p-4 pt-6 md:pt-5 sm:p-6 md:p-8 bg-[#faf8f0]">
       <InstantSearch indexName="Product_index" searchClient={searchClient}>
         {/* Search Bar */}
-        <SearchBox placeholder="Search for products..." value={"ank"} />
+        <SearchBox placeholder="Search for products..." />
 
         {/* Popular Searches */}
         <div className="mt-8 sm:mt-10 md:mt-12">
           <h2 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800">POPULAR SEARCHES</h2>
           <div className="flex flex-wrap gap-4 sm:gap-6 mt-4">
             {["Lehenga", "Sharara", "Anarkali", "Bags", "Benarasi", "Dress"].map((item) => (
-              <div key={item} className="flex items-center space-x-2 cursor-pointer" onClick={()=> alert(item)}>
+              <div key={item} className="flex items-center space-x-2 cursor-pointer" onClick={() => alert(item)}>
                 <FaSearch className="text-gray-600 text-xs sm:text-base" />
                 <span className="text-gray-700 font-medium text-xs sm:text-base md:text-lg">{item}</span>
               </div>
@@ -102,8 +111,8 @@ const SearchPanel = () => (
           </div>
         </div>
 
-        {/* Hits */}
-        <Hits hitComponent={Hit} />
+        {/* Hits or No Product Message */}
+        <CustomResults />
       </InstantSearch>
     </div>
   </div>
