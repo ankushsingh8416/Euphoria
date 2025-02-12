@@ -2,18 +2,21 @@
 import { FaSearch } from "react-icons/fa";
 import Link from "next/link";
 import { FaArrowLeftLong } from "react-icons/fa6";
-import { InstantSearch, SearchBox, Hits, connectStateResults } from 'react-instantsearch';
-import { liteClient as algoliasearch } from 'algoliasearch/lite';
+import { InstantSearch, SearchBox, Hits } from "react-instantsearch";
+import { liteClient as algoliasearch } from "algoliasearch/lite";
 import { SlHeart } from "react-icons/sl"; // Import SlHeart icon
 
-const searchClient = algoliasearch('G7NL75DG1D', '5860c31f24fe6ecf2f3c1fa2c2349de3');
+const searchClient = algoliasearch(
+  "G7NL75DG1D",
+  "5860c31f24fe6ecf2f3c1fa2c2349de3"
+);
 
 // Mock function for addToCart, replace with actual function
 const addToCart = (product) => {
   console.log(`Adding product ${product.title} to cart`);
 };
 
-// Custom component to render each hit
+// Custom component to render each search result (Hit)
 const Hit = ({ hit }) => (
   <Link
     href={{
@@ -29,11 +32,13 @@ const Hit = ({ hit }) => (
         alt={hit.title}
         className="w-full transition-transform duration-500 group-hover:scale-110"
       />
-      <img
-        src={hit.images[1]?.hoverImage}
-        alt={`${hit.title} Hover`}
-        className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      />
+      {hit.images[1]?.hoverImage && (
+        <img
+          src={hit.images[1]?.hoverImage}
+          alt={`${hit.title} Hover`}
+          className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        />
+      )}
     </div>
     <div className="mt-4">
       <h3 className="text-sm font-medium uppercase truncate overflow-hidden whitespace-nowrap relative">
@@ -66,27 +71,22 @@ const Hit = ({ hit }) => (
   </Link>
 );
 
-// Component to check if there are results
-const CustomResults = connectStateResults(({ searchResults }) => (
-  searchResults && searchResults.nbHits === 0 ? (
-    <h1 className="text-center text-2xl font-bold text-gray-800 mt-10">No product found</h1>
-  ) : (
-    <Hits hitComponent={Hit} />
-  )
-));
-
 const SearchPanel = () => (
   <div className="relative w-full space-x-0 bg-white z-50">
     {/* Top Notification Bar */}
     <div className="bg-[#1E381E] text-white text-center py-2 text-sm md:text-base">
       <Link href="#" className="font-medium">
         Shop At Special Prices |
-        <Link href="/" className="underline"> Discover Now</Link>
+        <Link href="/" className="underline">
+          {" "}
+          Discover Now
+        </Link>
       </Link>
     </div>
 
     {/* Back Button */}
-    <Link href="/" 
+    <Link
+      href="/"
       className="absolute top-12 lg:top-16 sm:top-20 left-4 sm:left-6 text-lg sm:text-xl md:text-2xl text-[#1E381E] hover:text-gray-600 cursor-pointer"
     >
       <FaArrowLeftLong />
@@ -100,19 +100,34 @@ const SearchPanel = () => (
 
         {/* Popular Searches */}
         <div className="mt-8 sm:mt-10 md:mt-12">
-          <h2 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800">POPULAR SEARCHES</h2>
+          <h2 className="text-sm sm:text-lg md:text-xl font-bold text-gray-800">
+            POPULAR SEARCHES
+          </h2>
           <div className="flex flex-wrap gap-4 sm:gap-6 mt-4">
-            {["Lehenga", "Sharara", "Anarkali", "Bags", "Benarasi", "Dress"].map((item) => (
-              <div key={item} className="flex items-center space-x-2 cursor-pointer" onClick={() => alert(item)}>
+            {[
+              "Lehenga",
+              "Sharara",
+              "Anarkali",
+              "Bags",
+              "Benarasi",
+              "Dress",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center space-x-2 cursor-pointer"
+                onClick={() => alert(item)}
+              >
                 <FaSearch className="text-gray-600 text-xs sm:text-base" />
-                <span className="text-gray-700 font-medium text-xs sm:text-base md:text-lg">{item}</span>
+                <span className="text-gray-700 font-medium text-xs sm:text-base md:text-lg">
+                  {item}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Hits or No Product Message */}
-        <CustomResults />
+        {/* Search Results (Hits) */}
+        <Hits hitComponent={Hit} />
       </InstantSearch>
     </div>
   </div>
