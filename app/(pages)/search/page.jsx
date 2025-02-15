@@ -87,15 +87,14 @@ const CustomHits = () => {
     <div>
       {hits.length === 0 ? (
         <div className="flex items-center justify-center mt-12 sm:mt-16 md:mt-24">
-        <Image
-          src="/images/no-product.png"
-          width={150} // Smaller default size
-          height={150}
-          alt="No Products Found"
-          className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px]"
-        />
-      </div>
-      
+          <Image
+            src="/images/no-product.png"
+            width={150}
+            height={150}
+            alt="No Products Found"
+            className="w-[120px] h-[120px] sm:w-[150px] sm:h-[150px] md:w-[200px] md:h-[200px]"
+          />
+        </div>
       ) : (
         <Hits hitComponent={Hit} />
       )}
@@ -149,25 +148,20 @@ const SearchPanel = () => {
               POPULAR SEARCHES
             </h2>
             <div className="flex flex-wrap gap-4 sm:gap-6 mt-4">
-              {[
-                "Kurta's",
-                "Mens",
-                "Anarkali",
-                "Bags",
-                "Saree",
-                "Dress",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center space-x-2 cursor-pointer"
-                  onClick={() => setQuery(item)}
-                >
-                  <FaSearch className="text-gray-600 text-xs sm:text-base" />
-                  <span className="text-gray-700 font-medium text-xs sm:text-base md:text-lg">
-                    {item}
-                  </span>
-                </div>
-              ))}
+              {["Kurta's", "Mens", "Anarkali", "Bags", "Saree", "Dress"].map(
+                (item) => (
+                  <div
+                    key={item}
+                    className="flex items-center space-x-2 cursor-pointer"
+                    onClick={() => setQuery(item)}
+                  >
+                    <FaSearch className="text-gray-600 text-xs sm:text-base" />
+                    <span className="text-gray-700 font-medium text-xs sm:text-base md:text-lg">
+                      {item}
+                    </span>
+                  </div>
+                )
+              )}
             </div>
           </div>
 

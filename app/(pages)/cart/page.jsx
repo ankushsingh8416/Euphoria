@@ -1,16 +1,20 @@
 "use client";
 import React, { useContext, useState } from "react";
 import { cartContext } from "@/app/context/cartContext";
+import { useSession } from "next-auth/react";
 
 const Page = () => {
   const { cart, removeFromCart } = useContext(cartContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1)); // Initialize quantities with 1 for each product
+  const { data: session } = useSession();
 
   const handleQuantityChange = (index, newQuantity) => {
     const updatedQuantities = [...quantities];
     updatedQuantities[index] = parseInt(newQuantity);
     setQuantities(updatedQuantities);
   };
+
+  
 
   const calculateTotalPrice = () => {
     return cart
@@ -20,8 +24,11 @@ const Page = () => {
       )
       .toFixed(2);
   };
+  console.log(cart)
 
   return (
+  <>
+  
     <div className="container mx-auto mt-10">
       <div className="sm:flex shadow-md my-10">
         <div className="w-full sm:w-3/4 bg-white px-10 py-10">
@@ -38,6 +45,7 @@ const Page = () => {
                 key={index}
                 className="md:flex items-stretch py-8 md:py-10 lg:py-8 border-t border-b border-gray-50"
               >
+                 
                 <div className="md:w-2/4 2xl:w-1/4 w-full">
                   <img
                     src={product.images[0]?.defaultImage}
@@ -95,6 +103,8 @@ const Page = () => {
                 </div>
               </div>
             ))
+
+
           )}
 
           <div className="mt-10">
@@ -154,6 +164,8 @@ const Page = () => {
         </div>
       </div>
     </div>
+  
+  </>
   );
 };
 
