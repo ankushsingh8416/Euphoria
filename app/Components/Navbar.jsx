@@ -15,8 +15,8 @@ export default function Navbar() {
   const router = useRouter();
   const userClick = () => {
     if (session) {
-      setdropDown(prevState => !prevState);
-        } else {
+      setdropDown((prevState) => !prevState);
+    } else {
       router.push("/login");
     }
   };
@@ -26,7 +26,6 @@ export default function Navbar() {
         <Link href="#" className="text-sm font-medium">
           Shop At Special Prices |
           <Link href="/" className="underline">
-            
             Discover Now
           </Link>
         </Link>
@@ -143,9 +142,15 @@ export default function Navbar() {
                 <div className="w-64 z-10 shadow-2xl absolute top-[55px] -left-36 bg-white rounded-lg  p-4">
                   <div className="flex items-center mb-4">
                     <div className="ml-3 flex gap-4 items-center">
-                      <Image  src="/images/profile.webp" alt="user" className="object-cover" width={30} height={30}/>
+                      <Image
+                        src="/images/profile.webp"
+                        alt="user"
+                        className="object-cover"
+                        width={30}
+                        height={30}
+                      />
                       <h3 className="text-sm  text-gray-900 font-bold capitalize">
-                         {session?.user.name}
+                        {session?.user.name}
                       </h3>
                     </div>
                   </div>
@@ -154,17 +159,26 @@ export default function Navbar() {
 
                   <ul className="mt-4 space-y-2">
                     <li className="flex items-center justify-between text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                      <span className="flex items-center">
+                      <Link
+                        href={{
+                          pathname: `/edit/${session?.user.name}`,
+                          query: { id: session?.user.id },
+                        }}
+                        className="flex items-center"
+                      >
                         <FiUser className="w-5 h-5 mr-2 text-gray-500" />
                         Edit Profile
-                      </span>
+                      </Link>
                     </li>
 
                     <li className="flex items-center justify-between text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                      <Link href={"/cpanel/login"} className="flex items-center">
+                      <Link
+                        href={"/cpanel/login"}
+                        className="flex items-center"
+                      >
                         <MdDashboardCustomize className="w-5 h-5 mr-2 text-gray-500" />
                         Dashboard
-                      </Link >
+                      </Link>
                     </li>
 
                     <li className="flex items-center justify-between text-gray-700 hover:bg-red-100 p-2 rounded-md cursor-pointer">
@@ -172,7 +186,7 @@ export default function Navbar() {
                         className="flex items-center text-red-500"
                         onClick={() => signOut()}
                       >
-                        <LucideLogOut  className="w-5 h-5 mr-2" />
+                        <LucideLogOut className="w-5 h-5 mr-2" />
                         Logout
                       </span>
                     </li>

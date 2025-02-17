@@ -29,6 +29,14 @@ export const Cartprovider = ({ children }) => {
   });
   const addToCart = (product) => {
     setCart((prevCart) => {
+      // Check if the product is already in the cart
+      const isProductInCart = prevCart.some((item) => item._id === product._id);
+
+      if (isProductInCart) {
+        console.log("Product is already in the cart");
+        return prevCart; // Return the previous cart without adding the product again
+      }
+
       const updatedProduct = {
         ...product,
         user: {
@@ -38,6 +46,7 @@ export const Cartprovider = ({ children }) => {
       };
 
       const updatedCart = [...prevCart, updatedProduct];
+      console.log("data" + updatedCart);
 
       // Save cart in localStorage
       localStorage.setItem("cart", JSON.stringify(updatedCart));

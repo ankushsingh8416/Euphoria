@@ -48,18 +48,20 @@ const RecentOrders = () => {
       try {
         const response = await axios.get("/api/cart");
         const products = response.data;
-
+        console.log(products);
         const mappedOrders = products.map((product, index) => ({
           id: index + 1 || "N/A",
-          product: product.title || "No Title",
+          product: product?.products[0]?.product?.title || "No Title",
           image:
-            (product.images && product.images[0].defaultImage) ||
+            product?.products[0]?.product?.images[0].defaultImage ||
             "https://via.placeholder.com/50",
           date: new Date(product.createdAt).toLocaleString() || "N/A",
-          customer: "N/A",
-          email: "N/A",
-          total: `₹${product.price || "0.00"}`,
-          status: product.readyToShip ? "Shipped" : "Processing",
+          customer: product?.user?.name || "N/A",
+          email: product?.user?.email || "N/A",
+          total: `₹${product?.products[0]?.product?.price || "0.00"}`,
+          status: product?.products[0]?.product?.readyToShip
+            ? "Shipped"
+            : "Processing",
         }));
 
         setOrders(mappedOrders);
@@ -149,14 +151,14 @@ const RecentOrders = () => {
                     <td className="px-6 py-4">{order.id}</td>
                     <td className="px-6 py-4">
                       <img
-                       src={order?.products?.[0]?.product?.images?.[0]?.defaultImage ?? "https://via.placeholder.com/100"} // Use placeholder if missing
-                       alt={order?.products?.[0]?.product?.title ?? "No Product"}
-                       className="w-24 rounded-md shadow-lg"
+                        src={order?.image ?? "https://via.placeholder.com/100"}
+                        alt={order?.product ?? "No Product"}
+                        className="w-24 rounded-md shadow-lg"
                       />
                     </td>
                     <td className="px-6 py-4">{order.product}</td>
                     <td className="px-6 py-4">{order.date}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 capitalize">
                       {order.customer}
                       <br />
                       <span className="text-xs text-gray-400">

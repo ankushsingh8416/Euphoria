@@ -1,6 +1,5 @@
 import Cart from "@/models/Cart";
 import User from "@/models/User";
-import Product from "@/models/Product";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 
@@ -8,69 +7,49 @@ import dbConnect from "@/lib/dbConnect";
 export async function POST(req) {
   try {
     await dbConnect();
-    const data = await req.json();
+    const { user, products } = await req.json();
 
-    if (!data.user || !data.user.email) {
-      return NextResponse.json(
-        { error: "User data is missing" },
-        { status: 400 }
-      );
-    }
-
-    // Find or create the user
-    let user = await User.findOne({ email: data.user.email });
-    if (!user) {
-      user = await User.create({
-        name: data.user.name,
-        email: data.user.email,
-      });
-    }
-
-    if (!Array.isArray(data.products) || data.products.length === 0) {
-      return NextResponse.json(
-        { error: "Product data is missing" },
-        { status: 400 }
-      );
-    }
-
-    // Process products
-    const productEntries = await Promise.all(
-      data.products.map(async (item) => {
-        let product = await Product.findById(item.productId);
-        if (!product) throw new Error("Product not found");
-        return { product: product._id, quantity: item.quantity || 1 };
-      })
+    console.log(user, products);
+    const existingUser = await User.findOneAndUpdate(
+      { email: user.email },
+      { name: user.name },
+      { new: true, upsert: true }
     );
 
-    // Check if the user's cart exists
-    let existingCart = await Cart.findOne({ user: user._id });
-    if (existingCart) {
-      existingCart.products = productEntries;
-      await existingCart.save();
-    } else {
-      await Cart.create({ user: user._id, products: productEntries });
-    }
+    // Create a separate cart entry for each product
+    const cartEntries = products.map((item) => ({
+      user: existingUser._id,
+      products: [{ product: item.productId, quantity: item.quantity || 1 }],
+    }));
+
+    await Cart.insertMany(cartEntries);
 
     return NextResponse.json(
-      { message: "Cart saved successfully" },
+      { message: "Products added to cart successfully" },
       { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
-      { error: error.message || "Failed to save cart data" },
+      { error: "Failed to save cart data" },
       { status: 500 }
     );
   }
 }
 
 // Handle GET request - Retrieve cart data
-export async function GET() {
+export async function GET(req) {
   try {
     await dbConnect();
-    const carts = await Cart.find()
+    const { searchParams } = new URL(req.url);
+    const userId = searchParams.get("userId"); // Get user ID from query params
+
+    const query = userId ? { user: userId } : {}; // Filter by user if provided
+
+    const carts = await Cart.find(query)
       .populate("user")
       .populate("products.product");
-    return NextResponse.json(carts);
+
+    return NextResponse.json(carts, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to retrieve cart data" },
