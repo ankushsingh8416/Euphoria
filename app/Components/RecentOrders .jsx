@@ -43,38 +43,71 @@ const RecentOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // useEffect(() => {
+  //   const fetchOrders = async () => {
+  //     try {
+  //       const response = await axios.get("/api/cart");
+  //       const products = response.data;
+  //       console.log(products);
+  //       const mappedOrders = products.map((product, index) => ({
+  //         id: index + 1 || "N/A",
+  //         product: product?.products[0]?.product?.title || "No Title",
+  //         image:
+  //           product?.products[0]?.product?.images[0].defaultImage ||
+  //           "https://via.placeholder.com/50",
+  //         date: new Date(product.createdAt).toLocaleString() || "N/A",
+  //         customer: product?.user?.name || "N/A",
+  //         email: product?.user?.email || "N/A",
+  //         total: `₹${product?.products[0]?.product?.price || "0.00"}`,
+  //         status: product?.products[0]?.product?.readyToShip
+  //           ? "Shipped"
+  //           : "Processing",
+  //       }));
+
+  //       setOrders(mappedOrders);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.error("Error fetching orders:", error);
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchOrders();
+  // }, []);
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("/api/cart");
-        const products = response.data;
-        console.log(products);
-        const mappedOrders = products.map((product, index) => ({
-          id: index + 1 || "N/A",
-          product: product?.products[0]?.product?.title || "No Title",
-          image:
-            product?.products[0]?.product?.images[0].defaultImage ||
-            "https://via.placeholder.com/50",
-          date: new Date(product.createdAt).toLocaleString() || "N/A",
-          customer: product?.user?.name || "N/A",
-          email: product?.user?.email || "N/A",
-          total: `₹${product?.products[0]?.product?.price || "0.00"}`,
-          status: product?.products[0]?.product?.readyToShip
-            ? "Shipped"
-            : "Processing",
-        }));
-
-        setOrders(mappedOrders);
-        setLoading(false);
+        const res = await fetch("/api/orders"); // Fetch orders from API
+        const data = await res.json();
+    
+        if (res.ok) {
+          // Map the fetched orders
+          const mappedOrders = data.orders.map(order => ({
+            _id: order._id,
+            productName: order.productName,
+            quantity: order.quantity,
+            price: order.price,
+            date: order.date,
+          }));
+    
+          // Add new products without removing previous ones
+          setOrders(prevOrders => [
+            ...prevOrders, 
+            ...mappedOrders.filter(order => !prevOrders.some(prev => prev._id === order._id))
+          ]);
+        } else {
+          console.error("Error fetching orders:", data.message);
+        }
       } catch (error) {
-        console.error("Error fetching orders:", error);
-        setLoading(false);
+        console.error("Failed to fetch orders:", error);
       }
     };
-
+    
+  
     fetchOrders();
   }, []);
-
+  
   return (
     <div className="p-6">
       <header className="mb-8">
