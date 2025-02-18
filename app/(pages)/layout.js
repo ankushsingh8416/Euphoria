@@ -9,16 +9,14 @@ const Layout = ({ children }) => {
     const pathname = usePathname();
 
     // Check if the current path matches any of the noHeaderFooterRoutes patterns
-    const noHeaderFooterRoutes = ["/productdetails/", "/search"];
+    const noHeaderFooterRoutes = ["/productdetails/", "/search" , "/cart","/edit"];
     const isNoHeaderFooterRoute = noHeaderFooterRoutes.some(route => pathname.startsWith(route));
 
     return (
-        <SessionProvider>
         <div>
             {!isNoHeaderFooterRoute && <FilterSection />}
             {children}
-        </div>
-        </SessionProvider>
+        </div>      
     );
 };
 

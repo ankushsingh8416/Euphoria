@@ -1,6 +1,7 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { createContext, useState, useEffect } from "react";
- 
+
 export const cartContext = createContext();
 
 export const Cartprovider = ({ children }) => {
@@ -11,24 +12,90 @@ export const Cartprovider = ({ children }) => {
     Size: [],
     Brand: [],
   });
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeView, setActiveView] = useState("grid");
   const [productGrid, setproductGrid] = useState("four");
   const [sortOption, setSortOption] = useState("Price:LowtoHigh");
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const [cart, setCart] = useState([]);
+  const { data: session } = useSession();
 
+  const [cart, setCart] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedCart = localStorage.getItem("cart");
+      return savedCart ? JSON.parse(savedCart) : [];
+    }
+    return [];
+  });
   const addToCart = (product) => {
     setCart((prevCart) => {
-      const updatedCart = [...prevCart, product];
+      // Check if the product is already in the cart
+      const isProductInCart = prevCart.some((item) => item._id === product._id);
+
+      if (isProductInCart) {
+        console.log("Product is already in the cart");
+        return prevCart; // Return the previous cart without adding the product again
+      }
+
+      const updatedProduct = {
+        ...product,
+        user: {
+          name: session?.user?.name || "Guest",
+          email: session?.user?.email || "guest@example.com",
+        },
+      };
+
+      const updatedCart = [...prevCart, updatedProduct];
+      console.log("data" + updatedCart);
+
+      // Save cart in localStorage
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      // Send cart to backend
+      sendCartToBackend(updatedCart);
+
       return updatedCart;
     });
   };
- 
+
+  // Function to send cart data to backend
+  const sendCartToBackend = async (cartData) => {
+    try {
+      const requestBody = {
+        user: cartData[0]?.user || {
+          name: "Guest",
+          email: "guest@example.com",
+        },
+        products: cartData.map((item) => ({
+          productId: item._id, // Ensure your product has an `_id`
+          quantity: item.quantity || 1,
+        })),
+      };
+
+      const response = await fetch("/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      });
+
+      const result = await response.json();
+      console.log("Cart sent to backend:", result);
+    } catch (error) {
+      console.error("Error sending cart data to backend:", error);
+    }
+  };
+
   const removeFromCart = (index) => {
     setCart((prevCart) => {
-      const updatedCart = prevCart.filter((_, i) => i !== index);
-      return updatedCart;
+      const newCart = prevCart.filter((_, i) => i !== index);
+
+      // Update localStorage
+      localStorage.setItem("cart", JSON.stringify(newCart));
+
+      // Send updated cart to backend
+      sendCartToBackend(newCart);
+
+      return newCart;
     });
   };
 
@@ -65,6 +132,8 @@ export const Cartprovider = ({ children }) => {
         products,
         setProducts,
         sortOption,
+        isSearchOpen,
+        setIsSearchOpen,
         fourGrid,
         twoGrid,
         productGrid,
