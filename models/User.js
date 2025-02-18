@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+  profileImage: {
+    type: String, 
+    default: "/images/profile.webp", 
+  },
 });
 
 export default mongoose.models.User || mongoose.model("User", userSchema);
