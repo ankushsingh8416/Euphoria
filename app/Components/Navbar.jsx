@@ -14,7 +14,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const [dropDown, setdropDown] = useState(false);
-  const [profile, setprofile] = useState({}); // Fixed: Initialized as an empty object
+  const [profile, setprofile] = useState({});
   const router = useRouter();
 
   const userClick = () => {
@@ -38,7 +38,7 @@ export default function Navbar() {
     };
 
     fetchUserData();
-  }, [session?.user?.id]); // Fixed: Prevents infinite re-renders
+  }, [session?.user?.id]); 
 
   return (
     <>
