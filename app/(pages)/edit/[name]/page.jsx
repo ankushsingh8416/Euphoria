@@ -39,14 +39,14 @@ export default function EditProfile() {
       setIsLoading(true);
 
       try {
-        const response = await axios.get(`https://euphoria-cloth.vercel.app/api/users/${id}`);
+        const response = await axios.get(`/api/users/${id}`);
         const { name, email, password, profileImage } = response.data;
         setFormData({
           fullName: name,
           email,
           password,
-          confirmPassword: "",
-          profileImage: profileImage || null, // Handle potential null
+          confirmPassword: password,
+          profileImage: profileImage || null, 
         });
       } catch (error) {
         console.error("Error fetching user data:", error);

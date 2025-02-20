@@ -120,7 +120,17 @@ export default function Navbar() {
               ))}
             </nav>
           </div>
-
+          <div className="logo block lg:hidden ">
+            <Link href="/">
+              <Image
+                src="/images/euphoria.webp"
+                alt="Anita Dongre"
+                width={100}
+                height={64}
+                className="object-cover"
+              />
+            </Link>
+          </div>
           {/* Right Section (Icons) */}
           <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Search Icon */}

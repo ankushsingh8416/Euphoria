@@ -1,5 +1,6 @@
 // components/CategorySection.js
 import Image from 'next/image';
+import Link from 'next/link';
 
 const categories = [
   { id: 1, name: 'SAREES', imagePath: '/images/cat1.jpg' },
@@ -13,21 +14,22 @@ export default function Category() {
       <h2 className="text-center text-3xl md:text-4xl my-10 font-thin  crimson green tracking-wider">SHOP BY CATEGORY</h2>
       <div className="flex flex-wrap justify-center gap-4 md:gap-6">
         {categories.map((category) => (
-          <div
-            key={category.id}
-            className="shadow-md hover:shadow-lg transition-shadow duration-300 rounded-lg text-center w-[46%] lg:w-[23%] overflow-hidden"
-          >
-            <div className="relative w-full aspect-[3/4]">
-              <Image
-                src={category.imagePath}
-                alt={category.name}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
-              />
-            </div>
-            <h3 className="my-2 text-[.9rem] ">{category.name}</h3>
-          </div>
+            <Link key={category.id} href="/women" passHref legacyBehavior>
+            <a className="w-[46%] lg:w-[23%] block">
+              <div className="shadow-md hover:shadow-lg transition-shadow duration-300 rounded-lg text-center overflow-hidden">
+                <div className="relative w-full aspect-[3/4]">
+                  <Image
+                    src={category.imagePath}
+                    alt={category.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
+                </div>
+                <h3 className="my-2 text-[.9rem]">{category.name}</h3>
+              </div>
+            </a>
+          </Link>
         ))}
       </div>
     </div>
