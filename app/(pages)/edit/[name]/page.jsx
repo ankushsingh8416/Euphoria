@@ -12,7 +12,7 @@ import {
   FaLock,
   FaSignOutAlt,
 } from "react-icons/fa";
-import Image from "next/image";
+import Image from "next/image"; // Import Image component
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
@@ -24,7 +24,7 @@ export default function EditProfile() {
     email: "",
     password: "",
     confirmPassword: "",
-    profileImage: [],
+    profileImage: null, // Store as a single URL string
   });
 
   const searchParams = useSearchParams();
@@ -46,7 +46,7 @@ export default function EditProfile() {
           email,
           password,
           confirmPassword: "",
-          profileImage,
+          profileImage: profileImage || null, // Handle potential null
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -60,51 +60,52 @@ export default function EditProfile() {
   }, [id]);
 
   const onChange = async (imageList) => {
-    const uploadedImages = await Promise.all(
-      imageList.map(async (image) => {
-        if (!image.file) {
-          return {
-            Profileimage: image.data_url,
-          };
+    if (imageList.length === 0) {
+      setFormData((prevData) => ({ ...prevData, profileImage: null }));
+      return;
+    }
+
+    const image = imageList[0]; // Only one image allowed
+
+    if (!image.file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        profileImage: image.data_url,
+      }));
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", image.file);
+    formData.append("upload_preset", "Euphoria");
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dxhwn8am2/image/upload",
+        {
+          method: "POST",
+          body: formData,
         }
+      );
 
-        const formData = new FormData();
-        formData.append("file", image.file);
-        formData.append("upload_preset", "Euphoria");
+      if (!response.ok) {
+        const data = await response.json();
+        console.error("Cloudinary upload error:", data);
+        toast.error(
+          `Error: ${data.error?.message || "Failed to upload image"}`
+        );
+        return;
+      }
 
-        try {
-          const response = await fetch(
-            "https://api.cloudinary.com/v1_1/dxhwn8am2/image/upload",
-            {
-              method: "POST",
-              body: formData,
-            }
-          );
-
-          if (!response.ok) {
-            const data = await response.json();
-            console.error("Cloudinary upload error:", data);
-            toast.error(
-              `Error: ${data.error?.message || "Failed to upload image"}`
-            );
-            return null;
-          }
-
-          const data = await response.json();
-          return {
-            Profileimage: data.secure_url,
-          };
-        } catch (error) {
-          console.error("Fetch error:", error);
-          toast.error("An error occurred during the upload.");
-          return null;
-        }
-      })
-    );
-
-    const validImages = uploadedImages.filter((img) => img !== null);
-
-    setFormData((prevData) => ({ ...prevData, profileImage: validImages }));
+      const data = await response.json();
+      setFormData((prevData) => ({
+        ...prevData,
+        profileImage: data.secure_url,
+      }));
+    } catch (error) {
+      console.error("Fetch error:", error);
+      toast.error("An error occurred during the upload.");
+    }
   };
 
   const handleChange = (e) => {
@@ -125,14 +126,12 @@ export default function EditProfile() {
       const updatedUser = {
         fullName: formData.fullName,
         email: formData.email,
-        password: formData.password || undefined,
-        profileImage:formData.profileImage[0].Profileimage
+        password: formData.password || undefined, // Only send if changed
+        profileImage: formData.profileImage, // Send the URL
       };
 
       await axios.put(`/api/users/${id}`, updatedUser);
       toast.success("Profile updated successfully!");
-
-    
     } catch (error) {
       console.error("Error updating profile:", error);
       toast.error("Failed to update profile!");
@@ -147,37 +146,39 @@ export default function EditProfile() {
         <ul className="space-y-6 text-gray-800 text-base font-medium">
           <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
             <Link href="/dashboard" className="flex items-center gap-4">
-              <FaHome /> Dashboard
+              <FaHome /> <span className="md:block hidden">Dashboard</span>
             </Link>
           </li>
           <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
             <Link href="/favourites" className="flex items-center gap-4">
-              <FaHeart /> Favourites
+              <FaHeart /> <span className="md:block hidden">Favourites</span>
             </Link>
           </li>
           <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
             <Link href="/setting" className="flex items-center gap-4">
-              <FaCog /> Setting
+              <FaCog /> <span className="md:block hidden">Setting</span>
             </Link>
           </li>
           <li className="flex items-center gap-4 p-2 rounded-md bg-gray-300 font-semibold">
             <Link href="/edit-profile" className="flex items-center gap-4">
-              <FaUserEdit /> Edit Profile
+              <FaUserEdit />{" "}
+              <span className="md:block hidden">Edit Profile</span>
             </Link>
           </li>
           <li className="flex items-center gap-4 p-2 rounded-md text-red-600 transition hover:bg-red-700 hover:text-white">
             <Link href="/logout" className="flex items-center gap-4">
-              <FaSignOutAlt /> Log Out
+              <FaSignOutAlt /> <span className="md:block hidden">Log Out</span>
             </Link>
           </li>
         </ul>
       </aside>
       <main className="flex-1 bg-white p-8 rounded-lg shadow-md border border-gray-300">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit Profile</h2>
-
-        <div className="flex flex-col items-center mb-6">
+        <div className="relative w-full  flex justify-center mb-6">
           <ImageUploading
-            value={formData.profileImage}
+            value={
+              formData.profileImage ? [{ data_url: formData.profileImage }] : []
+            } // Correct value prop
             onChange={onChange}
             maxNumber={1}
             dataURLKey="data_url"
@@ -190,23 +191,23 @@ export default function EditProfile() {
               onImageUpdate,
               dragProps,
             }) => (
-              <div className="relative w-28 h-28">
+              <div>
                 {imageList.length === 0 ? (
                   <div
                     onClick={onImageUpload}
                     {...dragProps}
-                    className="rounded-full border-4 border-gray-400 shadow-md flex items-center justify-center cursor-pointer w-full h-full"
+                    className="rounded-full h-[112] w-[112] border-4 border-gray-400 shadow-md flex items-center justify-center cursor-pointer "
                   >
                     <FaUserEdit size={40} className="text-gray-500" />
                   </div>
                 ) : (
                   <div className="relative w-28 h-28">
-                    <img
-                      src={formData.profileImage[0].Profileimage}
+                    <Image
+                      src={formData.profileImage}
                       alt="Profile Picture"
                       width={112}
                       height={112}
-                      className="rounded-full block h-[112] w-[112] border-4 border-gray-400 shadow-md object-cover"
+                      className="rounded-full block w-full h-full border-4 border-gray-400 shadow-md object-cover"
                     />
                     <span
                       onClick={() => onImageUpdate(0)}
@@ -226,59 +227,71 @@ export default function EditProfile() {
             )}
           </ImageUploading>
         </div>
-
         <form className="space-y-6" onSubmit={handleSubmit}>
-          {["fullName", "email"].map((field, index) => (
-            <div key={index} className="flex flex-col">
-              <label className="text-gray-700 font-semibold capitalize text-sm">
-                {field}
-              </label>
+          <div className="flex flex-col">
+            <label className="text-gray-700 font-semibold capitalize text-sm">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-gray-700 font-semibold capitalize text-sm">
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label className="text-gray-700 font-semibold capitalize text-sm">
+              Password
+            </label>
+            <div className="relative">
               <input
-                type="text"
-                name={field}
-                value={formData[field]}
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
                 onChange={handleChange}
-                className="p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+                className="p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
+              <span
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 cursor-pointer"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
-          ))}
-          {["password", "confirmPassword"].map((field, index) => (
-            <div key={index} className="flex flex-col">
-              <label className="text-gray-700 font-semibold capitalize text-sm">
-                {field}
-              </label>
-              <div className="relative">
-                <input
-                  type={
-                    field === "password"
-                      ? showPassword
-                        ? "text"
-                        : "password"
-                      : showConfirmPassword
-                      ? "text"
-                      : "password"
-                  }
-                  name={field}
-                  value={formData[field]}
-                  onChange={handleChange}
-                  className="p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
-                />
-                <span
-                  onClick={
-                    field === "password"
-                      ? () => setShowPassword(!showPassword)
-                      : () => setShowConfirmPassword(!showConfirmPassword)
-                  }
-                  className="absolute right-3 top-3 cursor-pointer"
-                >
-                  {field === "password" &&
-                    (showPassword ? <FaEyeSlash /> : <FaEye />)}
-                  {field === "confirmPassword" &&
-                    (showConfirmPassword ? <FaEyeSlash /> : <FaEye />)}
-                </span>
-              </div>
+          </div>
+          <div className="flex flex-col">
+            <label className="text-gray-700 font-semibold capitalize text-sm">
+              Confirm Password
+            </label>
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="p-3 border border-gray-300 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-gray-400"
+              />
+              <span
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-3 top-3 cursor-pointer"
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
             </div>
-          ))}
+          </div>
           <button
             type="submit"
             className="px-6 py-3 bg-[#1E381E] text-white rounded-lg shadow-md hover:bg-gray-800"

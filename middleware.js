@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 export async function middleware(req) {
-  const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET, raw: true });
+  const session = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+    raw: true,
+  });
 
   // ✅ Fix: If session exists, allow access
   if (session) {
@@ -15,5 +19,5 @@ export async function middleware(req) {
 
 // ✅ Fix: Ensure `/cart` and all subpaths are protected
 export const config = {
-  matcher: ["/cart/:path*"],
+  matcher: ["/cart/:path*", "/edit/:path*"],
 };

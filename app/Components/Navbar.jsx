@@ -1,10 +1,12 @@
 "use client";
+import axios from "axios";
 import { LucideLogOut } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { FiUser } from "react-icons/fi";
 import { MdDashboardCustomize } from "react-icons/md";
 
@@ -12,7 +14,9 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const [dropDown, setdropDown] = useState(false);
+  const [profile, setprofile] = useState({}); // Fixed: Initialized as an empty object
   const router = useRouter();
+
   const userClick = () => {
     if (session) {
       setdropDown((prevState) => !prevState);
@@ -20,6 +24,22 @@ export default function Navbar() {
       router.push("/login");
     }
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (!session?.user?.id) return;
+      try {
+        const response = await axios.get(`/api/users/${session.user.id}`);
+        setprofile(response.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to fetch user data.");
+      }
+    };
+
+    fetchUserData();
+  }, [session?.user?.id]); // Fixed: Prevents infinite re-renders
+
   return (
     <>
       <div className="bg-[#1E381E] text-white text-center py-2">
@@ -56,11 +76,12 @@ export default function Navbar() {
                 width="30"
                 height="30"
                 src="https://img.icons8.com/ios-glyphs/30/menu--v3.png"
-                alt="menu--v3"
+                alt="menu"
               />
             </button>
           </div>
 
+          {/* Mobile Menu */}
           <div
             className={`fixed top-0 left-0 bg-[#faf8f0] w-[320px] h-screen z-40 transition-transform duration-300 ${
               isMenuOpen ? "translate-x-0" : "-translate-x-full"
@@ -86,33 +107,18 @@ export default function Navbar() {
                 "Accessories",
                 "Gifting",
                 "Sale",
-              ].map((item, index) => {
-                const href = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
-                return (
-                  <Link
-                    key={index}
-                    href={href}
-                    className="relative group hover:text-[#B18E35] transition-all duration-300"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item}
-                    <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
-                  </Link>
-                );
-              })}
+              ].map((item, index) => (
+                <Link
+                  key={index}
+                  href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="relative group hover:text-[#B18E35] transition-all duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item}
+                  <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-[#B18E35] transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              ))}
             </nav>
-          </div>
-
-          <div className="logo block lg:hidden ">
-            <Link href="/">
-              <Image
-                src="/images/euphoria.webp"
-                alt="Anita Dongre"
-                width={100}
-                height={64}
-                className="object-cover"
-              />
-            </Link>
           </div>
 
           {/* Right Section (Icons) */}
@@ -139,18 +145,22 @@ export default function Navbar() {
                 className="cursor-pointer"
               />
               {dropDown && (
-                <div className="w-64 z-10 shadow-2xl absolute top-[55px] -left-36 bg-white rounded-lg  p-4">
+                <div className="w-64 z-10 shadow-2xl absolute top-[55px] -left-36 bg-white rounded-lg p-4">
                   <div className="flex items-center mb-4">
                     <div className="ml-3 flex gap-4 items-center">
-                      <Image
-                        src="/images/profile.webp"
-                        alt="user"
-                        className="object-cover"
-                        width={30}
-                        height={30}
-                      />
-                      <h3 className="text-sm  text-gray-900 font-bold capitalize">
-                        {session?.user.name}
+                      <div className="rounded-full  overflow-hidden">
+                        <Image
+                          src={
+                            profile?.profileImage || "/images/default-user.png"
+                          }
+                          alt="user"
+                          className="object-cover w-[34px] h-[34px]"
+                          width={100}
+                          height={100}
+                        />
+                      </div>
+                      <h3 className="text-sm text-gray-900 font-bold capitalize">
+                        {profile?.name || "Guest"}
                       </h3>
                     </div>
                   </div>
@@ -158,43 +168,40 @@ export default function Navbar() {
                   <div className="border-t border-gray-200"></div>
 
                   <ul className="mt-4 space-y-2">
-                    <li className="flex items-center justify-between text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                      <Link
-                        href={{
-                          pathname: `/edit/${session?.user.name}`,
-                          query: { id: session?.user.id },
-                        }}
-                        className="flex items-center"
-                      >
-                        <FiUser className="w-5 h-5 mr-2 text-gray-500" />
-                        Edit Profile
-                      </Link>
-                    </li>
+                    <Link
+                      href={`/edit/${session?.user?.name}?id=${session?.user?.id}`}
+                      className="flex items-center"
+                    >
+                      <li className=" w-full flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
+                        <div className="flex items-center">
+                          <FiUser className="w-5 h-5 mr-2 text-gray-500" />
+                          Edit Profile
+                        </div>
+                      </li>
+                    </Link>
 
-                    <li className="flex items-center justify-between text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                      <Link
-                        href={"/cpanel/login"}
-                        className="flex items-center"
-                      >
+                    <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
+                      <Link href="/cpanel/login" className="flex items-center">
                         <MdDashboardCustomize className="w-5 h-5 mr-2 text-gray-500" />
                         Dashboard
                       </Link>
                     </li>
 
-                    <li className="flex items-center justify-between text-gray-700 hover:bg-red-100 p-2 rounded-md cursor-pointer">
-                      <span
-                        className="flex items-center text-red-500"
+                    <li className="flex items-center text-gray-700 hover:bg-red-100 p-2 rounded-md cursor-pointer">
+                      <button
+                        className="flex items-center text-red-500 w-full text-left"
                         onClick={() => signOut()}
                       >
                         <LucideLogOut className="w-5 h-5 mr-2" />
                         Logout
-                      </span>
+                      </button>
                     </li>
                   </ul>
                 </div>
               )}
             </div>
-            {/* Heart Icon */}
+
+            {/* Wishlist Icon */}
             <Image
               src="/images/wishlist-icon.svg"
               alt="Wishlist"
