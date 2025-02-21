@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FiUser } from "react-icons/fi";
-import { MdDashboardCustomize } from "react-icons/md";
+import { MdDashboardCustomize, MdOutlineContactSupport } from "react-icons/md";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function Navbar() {
     };
 
     fetchUserData();
-  }, [session?.user?.id]); 
+  }, [session?.user?.id]);
 
   return (
     <>
@@ -155,7 +155,7 @@ export default function Navbar() {
                 className="cursor-pointer"
               />
               {dropDown && (
-                <div className="w-64 z-10 shadow-2xl absolute top-[55px] -left-36 bg-white rounded-lg p-4">
+                <div className="w-64 z-10 shadow-2xl absolute top-[55px] -left-[12rem] md:-left-36 bg-white rounded-lg p-4">
                   <div className="flex items-center mb-4">
                     <div className="ml-3 flex gap-4 items-center">
                       <div className="rounded-full  overflow-hidden">
@@ -180,9 +180,9 @@ export default function Navbar() {
                   <ul className="mt-4 space-y-2">
                     <Link
                       href={`/edit/${session?.user?.name}?id=${session?.user?.id}`}
-                      className="flex items-center"
+                      className="block"
                     >
-                      <li className=" w-full flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
+                      <li className="w-full flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
                         <div className="flex items-center">
                           <FiUser className="w-5 h-5 mr-2 text-gray-500" />
                           Edit Profile
@@ -190,12 +190,19 @@ export default function Navbar() {
                       </li>
                     </Link>
 
-                    <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                      <Link href="/cpanel/login" className="flex items-center">
+                    <Link href="/cpanel/login" className="block">
+                      <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
                         <MdDashboardCustomize className="w-5 h-5 mr-2 text-gray-500" />
                         Dashboard
-                      </Link>
-                    </li>
+                      </li>
+                    </Link>
+
+                    <Link href="/support" className="block">
+                      <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
+                        <MdOutlineContactSupport className="w-5 h-5 mr-2 text-gray-500" />
+                        Support
+                      </li>
+                    </Link>
 
                     <li className="flex items-center text-gray-700 hover:bg-red-100 p-2 rounded-md cursor-pointer">
                       <button
