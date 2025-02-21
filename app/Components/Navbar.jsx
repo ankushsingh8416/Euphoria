@@ -51,7 +51,7 @@ export default function Navbar() {
         </Link>
       </div>
 
-      <header className="shadow-xl z-50 sticky top-0">
+      <header className="shadow-xl z-40 sticky top-0">
         {/* Main Header Section */}
         <div className="flex items-center justify-between px-4 md:px-6 py-3">
           {/* Left Section */}
