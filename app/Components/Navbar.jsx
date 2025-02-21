@@ -26,6 +26,7 @@ export default function Navbar() {
     }
   };
 
+  useEffect(() => {
     const fetchUserData = async () => {
       if (!session?.user?.id) return;
       try {
@@ -37,7 +38,10 @@ export default function Navbar() {
       }
     };
 
-    fetchUserData();
+    if (session) {
+      fetchUserData();
+    }
+  }, [session?.user?.id]); // Runs on refresh when session updates
 
   return (
     <>
@@ -159,9 +163,7 @@ export default function Navbar() {
                     <div className="ml-3 flex gap-4 items-center">
                       <div className="rounded-full  overflow-hidden">
                         <Image
-                          src={
-                            profile?.profileImage || "/images/default-user.png"
-                          }
+                          src={profile?.profileImage || "/images/profile.webp"}
                           alt="user"
                           className="object-cover w-[34px] h-[34px]"
                           width={100}
@@ -210,7 +212,7 @@ export default function Navbar() {
                     >
                       <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
                         <BiSolidMagicWand className="w-5 h-5 mr-2 text-gray-500" />
-                        Euphoria AI{" "}
+                        Euphoria AI
                       </li>
                     </Link>
 
