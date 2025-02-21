@@ -46,7 +46,7 @@ const Celebrate = () => {
       {loading ? (
         <div className="flex flex-wrap justify-between gap-2 p-2">
           {productGrid === "four" &&
-            [...Array(16)].map((_, index) => (
+            [...Array(4)].map((_, index) => (
               <div
                 key={index}
                 className="mb-8 shimmer-container w-[48%] lg:w-[24%] bg-gray-300 animate-pulse h-60"
@@ -82,11 +82,12 @@ const Celebrate = () => {
                       alt={product.title}
                       className="w-full transition-transform duration-500 group-hover:scale-110"
                     />
+
                     {/* Hover Image */}
                     <img
-                      src={product.images[0]?.hoverImage}
+                      src={product.images[1]?.hoverImage}
                       alt={`${product.title} Hover`}
-                      className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      className="absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                     />
                   </div>
                   <div className="mt-4">

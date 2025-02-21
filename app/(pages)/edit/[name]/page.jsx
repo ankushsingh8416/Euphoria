@@ -11,12 +11,14 @@ import {
   FaCog,
   FaLock,
   FaSignOutAlt,
+  FaCartArrowDown,
 } from "react-icons/fa";
 import Image from "next/image"; // Import Image component
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 import ImageUploading from "react-images-uploading";
+import { signOut } from "next-auth/react";
 
 export default function EditProfile() {
   const [formData, setFormData] = useState({
@@ -46,7 +48,7 @@ export default function EditProfile() {
           email,
           password,
           confirmPassword: password,
-          profileImage: profileImage || null, 
+          profileImage: profileImage || null,
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -144,31 +146,38 @@ export default function EditProfile() {
     <div className="flex min-h-screen bg-white p-10 gap-10">
       <aside className="w-1/4 bg-gray-100 p-6 rounded-lg shadow-md border border-gray-300">
         <ul className="space-y-6 text-gray-800 text-base font-medium">
-          <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
-            <Link href="/dashboard" className="flex items-center gap-4">
-              <FaHome /> <span className="md:block hidden">Dashboard</span>
-            </Link>
-          </li>
-          <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
-            <Link href="/favourites" className="flex items-center gap-4">
+          <Link href="/" className="block">
+            <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
+              <FaHome /> <span className="md:block hidden">Euphoria</span>
+            </li>
+          </Link>
+
+          <Link href="/wishlist" className="block">
+            <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
               <FaHeart /> <span className="md:block hidden">Favourites</span>
-            </Link>
-          </li>
-          <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
-            <Link href="/setting" className="flex items-center gap-4">
-              <FaCog /> <span className="md:block hidden">Setting</span>
-            </Link>
-          </li>
+            </li>
+          </Link>
+
+          <Link href="/cart" className="block">
+            <li className="flex items-center gap-4 p-2 rounded-md transition hover:bg-gray-200">
+              <FaCartArrowDown />
+              <span className="md:block hidden">Cart</span>
+            </li>
+          </Link>
+
           <li className="flex items-center gap-4 p-2 rounded-md bg-gray-300 font-semibold">
             <Link href="/edit-profile" className="flex items-center gap-4">
               <FaUserEdit />{" "}
               <span className="md:block hidden">Edit Profile</span>
             </Link>
           </li>
-          <li className="flex items-center gap-4 p-2 rounded-md text-red-600 transition hover:bg-red-700 hover:text-white">
-            <Link href="/logout" className="flex items-center gap-4">
+          <li
+            onClick={() => signOut()}
+            className="flex cursor-pointer items-center gap-4 p-2 rounded-md text-red-600 transition hover:bg-red-700 hover:text-white"
+          >
+            <div className="flex items-center gap-4">
               <FaSignOutAlt /> <span className="md:block hidden">Log Out</span>
-            </Link>
+            </div>
           </li>
         </ul>
       </aside>

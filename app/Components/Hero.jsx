@@ -10,18 +10,18 @@ import { Pagination, Autoplay } from "swiper/modules";
 const Hero = () => {
   const slides = [
     {
-      desktop: "/images/banner1.webp",
-      mobile: "/images/banner1-mob.webp",
+      desktop: "/images/banner-4.jpg",
+      mobile: "/images/banner-4-mobile.jpg",
       alt: "Banner 1",
     },
     {
-      desktop: "/images/banner2.webp",
-      mobile: "/images/banner2-mob.webp",
+      desktop: "/images/banner5.jpg",
+      mobile: "/images/banner-5-mobile.jpg",
       alt: "Banner 2",
     },
     {
-      desktop: "/images/banner3.webp",
-      mobile: "/images/banner3-mob.webp",
+      desktop: "/images/banner1.webp",
+      mobile: "/images/banner1-mob.webp",
       alt: "Banner 3",
     },
   ];

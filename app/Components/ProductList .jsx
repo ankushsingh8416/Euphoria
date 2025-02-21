@@ -33,14 +33,10 @@ const ProductList = () => {
 
   return (
     <div className="p-4 lg:py-8 lg:px-16">
-      <h2 className="text-center text-3xl md:text-4xl my-10 font-thin crimson green tracking-wider">
-        CELEBS IN EUPHORIA
-      </h2>
-
       {loading ? (
         <div className="flex flex-wrap justify-between gap-2 p-2">
           {productGrid === "four" &&
-            [...Array(16)].map((_, index) => (
+            [...Array(4)].map((_, index) => (
               <div
                 key={index}
                 className="mb-8 shimmer-container w-[48%] lg:w-[24%] bg-gray-300 animate-pulse h-60"
@@ -76,13 +72,15 @@ const ProductList = () => {
                       alt={product.title}
                       className="w-full transition-transform duration-500 group-hover:scale-110"
                     />
+
                     {/* Hover Image */}
                     <img
-                      src={product.images[0]?.hoverImage}
+                      src={product.images[1]?.hoverImage}
                       alt={`${product.title} Hover`}
-                      className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                      className="absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                     />
                   </div>
+
                   <div className="mt-4">
                     <h3 className="text-sm font-medium uppercase truncate overflow-hidden whitespace-nowrap relative">
                       {product.title}
@@ -99,7 +97,10 @@ const ProductList = () => {
 
       {/* Button */}
       <div className="text-center my-6">
-        <Link href={"/women"} className="group inline-flex items-center text-[#1E381E] px-8 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300">
+        <Link
+          href={"/women"}
+          className="group inline-flex items-center text-[#1E381E] px-8 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300"
+        >
           SHOP NOW
           <FaArrowRight className="ml-2 transition-all group-hover:ml-4" />
         </Link>
