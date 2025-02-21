@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import SessionProviderWrapper from "./Components/SessionProviderWrapper";
-import Support from "./Components/Support";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -22,7 +21,6 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <SessionProviderWrapper>
-          <Support />
 
           <Cartprovider>
             <Toaster />
