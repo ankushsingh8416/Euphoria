@@ -26,7 +26,6 @@ export default function Navbar() {
     }
   };
 
-  useEffect(() => {
     const fetchUserData = async () => {
       if (!session?.user?.id) return;
       try {
@@ -39,7 +38,6 @@ export default function Navbar() {
     };
 
     fetchUserData();
-  }, [session?.user?.id]);
 
   return (
     <>

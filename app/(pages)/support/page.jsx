@@ -3,6 +3,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { BiLogOut } from "react-icons/bi";
 
 const Support = () => {
   return (
@@ -12,7 +13,7 @@ const Support = () => {
         href={"/"}
         className="absolute top-4 right-14 flex items-center gap-2 px-3 py-2 bg-white rounded-full shadow-md hover:bg-gray-200 transition"
       >
-        <ArrowLeft size={20} />
+        <BiLogOut size={20} />
         <span className="hidden md:inline font-medium">Back</span>
       </Link>
 
