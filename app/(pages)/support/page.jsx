@@ -1,24 +1,26 @@
 "use client";
-import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 const Support = () => {
-  const { data: session } = useSession();
-  const [chatUserId, setChatUserId] = useState("");
-
-  useEffect(() => {
-    // Generate a unique User ID for each new chat session
-    const newUserId = `user_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
-    setChatUserId(newUserId);
-  }, []);
-
   return (
-    <div className="w-full h-screen fixed top-0 left-0 z-50">
+    <div className="w-full md:w-[80%] shadow-lg h-screen mx-auto relative bg-gray-100">
+      {/* Go Back Button */}
+      <Link
+        href={"/"}
+        className="absolute top-4 right-14 flex items-center gap-2 px-3 py-2 bg-white rounded-full shadow-md hover:bg-gray-200 transition"
+      >
+        <ArrowLeft size={20} />
+        <span className="hidden md:inline font-medium">Back</span>
+      </Link>
+
+      {/* Chatbot Iframe */}
       <iframe
-        key={chatUserId} // Forces iframe to reload on new ID
-        src={`https://www.chatbase.co/chatbot-iframe/dkUPXOI0QtYihjt3OZgmT?user_id=${chatUserId}&random=${Math.random()}`}
+        src="https://www.chatbase.co/chatbot-iframe/dkUPXOI0QtYihjt3OZgmT"
         frameBorder="0"
-        style={{ width: "100%", height: "100%" }}
+        className="w-full h-full rounded-lg shadow-lg"
       ></iframe>
     </div>
   );

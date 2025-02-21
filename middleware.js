@@ -19,5 +19,5 @@ export async function middleware(req) {
 
 // ✅ Fix: Ensure `/cart` and all subpaths are protected
 export const config = {
-  matcher: ["/cart/:path*", "/edit/:path*"],
+  matcher: ["/cart/:path*", "/edit/:path*" , "/wishlist/:path*"],
 };

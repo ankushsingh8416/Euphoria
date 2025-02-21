@@ -11,7 +11,7 @@ import SessionProviderWrapper from "./Components/SessionProviderWrapper";
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  const noHeaderFooterRoutes = ["/cpanel/", "/search"];
+  const noHeaderFooterRoutes = ["/cpanel/", "/search","/support"];
 
   const isNoHeaderFooterRoute = noHeaderFooterRoutes.some((route) =>
     pathname.startsWith(route)

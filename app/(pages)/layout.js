@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
     const pathname = usePathname();
 
     // Check if the current path matches any of the noHeaderFooterRoutes patterns
-    const noHeaderFooterRoutes = ["/productdetails/", "/search" , "/cart","/edit","/support"];
+    const noHeaderFooterRoutes = ["/productdetails/", "/search" , "/cart","/edit","/support","/wishlist"];
     const isNoHeaderFooterRoute = noHeaderFooterRoutes.some(route => pathname.startsWith(route));
 
     return (
