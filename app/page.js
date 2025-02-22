@@ -2,6 +2,7 @@ import Category from "./Components/Category";
 import Celebrate from "./Components/Celebrate";
 import Craft from "./Components/Craft";
 import FooterBanner from "./Components/FooterBanner";
+import Gif from "./Components/Gif";
 import Gifting from "./Components/Gifting";
 import Hero from "./Components/Hero";
 import Mens from "./Components/Mens";
@@ -22,7 +23,7 @@ export default function Home() {
       <Gifting />
       <Celebrate />
       <FooterBanner />
-      
+      <Gif />
     </>
   );
 }
