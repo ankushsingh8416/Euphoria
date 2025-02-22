@@ -8,9 +8,17 @@ const Gif = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 3000);
-    return () => clearTimeout(timer);
+    const isClosed = localStorage.getItem("gifClosed");
+    if (!isClosed) {
+      const timer = setTimeout(() => setVisible(true), 3000);
+      return () => clearTimeout(timer);
+    }
   }, []);
+
+  const handleClose = () => {
+    setVisible(false);
+    localStorage.setItem("gifClosed", "true"); // Store closed state
+  };
 
   return (
     <>
@@ -24,8 +32,8 @@ const Gif = () => {
         >
           {/* Close Button */}
           <button
-            onClick={() => setVisible(false)}
-            className="absolute top-0 right-0 bg-gray-800 text-white opacity-0 p-2 rounded-full"
+            onClick={handleClose}
+            className="absolute opacity-0 top-0 right-0 bg-gray-800 text-white p-2 rounded-full"
           >
             <X size={18} />
           </button>

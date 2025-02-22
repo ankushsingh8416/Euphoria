@@ -135,7 +135,7 @@ export default function Navbar() {
             </Link>
           </div>
           {/* Right Section (Icons) */}
-          <div className="flex items-center space-x-1 lg:space-x-4">
+          <div className="flex items-center space-x-2 lg:space-x-4">
             {/* Search Icon */}
             <Link href="/search">
               <Image

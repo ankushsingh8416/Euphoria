@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
 
   if (status === "loading") {
     return (
-      <div className="w-full h-screen flex items-center justify-center">
+      <div className="w-full bg-[rgba(255,255,255,0.5)] backdrop-blur-sm h-screen flex items-center justify-center">
         <span class="loader"></span>
       </div>
     );
