@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
+import Link from "next/link";
 
 const Gif = () => {
   const [visible, setVisible] = useState(false);
@@ -15,11 +16,11 @@ const Gif = () => {
     <>
       {visible && (
         <motion.div
-          initial={{ x: "-100vw" }} // Starts from right side
-          animate={{ x: 0 }} // Moves to its position
-          exit={{ x: "-100vw" }} // Moves out to the left when closed
+          initial={{ x: "-100vw" }}
+          animate={{ x: 0 }}
+          exit={{ x: "-100vw" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="fixed z-50 h-28 md:h-48 bottom-2 left-4"
+          className="fixed z-50 h-36 md:h-48 bottom-2 left-4"
         >
           {/* Close Button */}
           <button
@@ -30,7 +31,9 @@ const Gif = () => {
           </button>
 
           {/* GIF */}
-          <img src="/images/gif.webp" alt="gif" className="w-full h-full" />
+          <Link href={"/sale"}>
+            <img src="/images/gif.webp" alt="gif" className="w-full h-full" />
+          </Link>
         </motion.div>
       )}
     </>
