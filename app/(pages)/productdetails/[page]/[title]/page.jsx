@@ -21,7 +21,7 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const id = searchParams.get("id");
-  const { addToCart,addToWishlist } = useContext(cartContext);
+  const {  addToCart,addToWishlist } = useContext(cartContext);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

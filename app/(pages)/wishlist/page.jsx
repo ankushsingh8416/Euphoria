@@ -8,19 +8,19 @@ const Page = () => {
   const [quantities, setQuantities] = useState(wishList.map(() => 1));
   const { data: session } = useSession();
 
-  const handleQuantityChange = (index, newQuantity) => {
-    const updatedQuantities = [...quantities];
-    updatedQuantities[index] = parseInt(newQuantity);
-    setQuantities(updatedQuantities);
-  };
-  const calculateTotalPrice = () => {
-    return wishList
-      .reduce(
-        (total, product, index) => total + product.price * quantities[index],
-        0
-      )
-      .toFixed(2);
-  };
+  // const handleQuantityChange = (index, newQuantity) => {
+  //   const updatedQuantities = [...quantities];
+  //   updatedQuantities[index] = parseInt(newQuantity);
+  //   setQuantities(updatedQuantities);
+  // };
+  // const calculateTotalPrice = () => {
+  //   return wishList
+  //     .reduce(
+  //       (total, product, index) => total + product.price * quantities[index],
+  //       0
+  //     )
+  //     .toFixed(2);
+  // };
 
   return (
     <>
@@ -67,7 +67,7 @@ const Page = () => {
                     <div className="flex items-center justify-between pt-5">
                       <div className="flex items-center">
                         <p 
-                        onClick={() => addToCart(index)}
+                        onClick={() => addToCart(product._id)}
                         className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer">
                          Add to Cart
                         </p>
