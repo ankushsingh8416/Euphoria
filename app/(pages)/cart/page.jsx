@@ -4,7 +4,7 @@ import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
 
 const Page = () => {
-  const { cart, removeFromCart } = useContext(cartContext);
+  const { cart, removeFromCart,addToWishlist } = useContext(cartContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const { data: session } = useSession();
 
@@ -43,12 +43,12 @@ const Page = () => {
                   <div className="md:w-2/4 2xl:w-1/4 w-full">
                     <img
                       src={product.images[0]?.defaultImage}
-                      alt={product.title}
+                      alt={product.title || "Product Image" }
                       className="h-[60%] object-center object-cover md:block hidden"
                     />
                     <img
                       src={product.images[0]?.defaultImage}
-                      alt={product.title}
+                      alt={product.title || "Product Image"}
                       className="md:hidden w-full h-full object-center object-cover"
                     />
                   </div>
@@ -80,7 +80,9 @@ const Page = () => {
                     </p>
                     <div className="flex items-center justify-between pt-5">
                       <div className="flex items-center">
-                        <p className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer">
+                        <p 
+                        onClick={() => addToWishlist(index)}
+                        className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer">
                           Add to favorites
                         </p>
                         <p

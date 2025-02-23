@@ -28,6 +28,7 @@ export const Cartprovider = ({ children }) => {
     return [];
   });
   
+  
   const [wishList, setWishlist] = useState(() => {
     if (typeof window !== "undefined") {
       const savedList = localStorage.getItem("wishList");
@@ -61,7 +62,7 @@ export const Cartprovider = ({ children }) => {
       localStorage.setItem("cart", JSON.stringify(updatedCart));
 
       // Send cart to backend
-      sendCartToBackend(updatedCart);
+      // sendCartToBackend(updatedCart);
 
       return updatedCart;
     });
@@ -92,63 +93,63 @@ export const Cartprovider = ({ children }) => {
     localStorage.setItem("wishList", JSON.stringify(updatedList));
 
     // Send list to backend
-    // sendListToBackend(updatedList);
+    // sendWishlistToBackend(updatedList);
 
     return updatedList;
   });
 };
   // Function to send cart data to backend
-  const sendCartToBackend = async (cartData) => {
-    try {
-      const requestBody = {
-        user: cartData[0]?.user || {
-          name: "Guest",
-          email: "guest@example.com",
-        },
-        products: cartData.map((item) => ({
-          productId: item._id, // Ensure your product has an `_id`
-          quantity: item.quantity || 1,
-        })),
-      };
+  // const sendCartToBackend = async (cartData) => {
+  //   try {
+  //     const requestBody = {
+  //       user: cartData[0]?.user || {
+  //         name: "Guest",
+  //         email: "guest@example.com",
+  //       },
+  //       products: cartData.map((item) => ({
+  //         productId: item._id, // Ensure your product has an `_id`
+  //         quantity: item.quantity || 1,
+  //       })),
+  //     };
 
-      const response = await fetch("/api/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
+  //     const response = await fetch("/api/cart", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(requestBody),
+  //     });
 
-      const result = await response.json();
-      console.log("Cart sent to backend:", result);
-    } catch (error) {
-      console.error("Error sending cart data to backend:", error);
-    }
-  };
+  //     const result = await response.json();
+  //     console.log("Cart sent to backend:", result);
+  //   } catch (error) {
+  //     console.error("Error sending cart data to backend:", error);
+  //   }
+  // };
   // Function to send wishList data to backend
-  const sendWishlistToBackend = async (ListData) => {
-    try {
-      const requestBody = {
-        user: ListData[0]?.user || {
-          name: "Guest",
-          email: "guest@example.com",
-        },
-        products: ListData.map((item) => ({
-          productId: item._id, // Ensure your product has an `_id`
-          quantity: item.quantity || 1,
-        })),
-      };
+  // const sendWishlistToBackend = async (ListData) => {
+  //   try {
+  //     const requestBody = {
+  //       user: ListData[0]?.user || {
+  //         name: "Guest",
+  //         email: "guest@example.com",
+  //       },
+  //       products: ListData.map((item) => ({
+  //         productId: item._id, // Ensure your product has an `_id`
+  //         quantity: item.quantity || 1,
+  //       })),
+  //     };
 
-      const response = await fetch("/api/wishlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
+  //     const response = await fetch("/api/wishlist", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(requestBody),
+  //     });
 
-      const result = await response.json();
-      console.log("List sent to backend:", result);
-    } catch (error) {
-      console.error("Error sending list data to backend:", error);
-    }
-  };
+  //     const result = await response.json();
+  //     console.log("List sent to backend:", result);
+  //   } catch (error) {
+  //     console.error("Error sending list data to backend:", error);
+  //   }
+  // };
 //remove item From Cart
   const removeFromCart = (index) => {
     setCart((prevCart) => {
@@ -222,6 +223,7 @@ export const Cartprovider = ({ children }) => {
         addToWishlist,
         wishList,
         removeFromWishlist,
+        addToWishlist
       }}
     >
       {children}
