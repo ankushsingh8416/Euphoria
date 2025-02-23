@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="bg-[#1E381E] text-white text-center py-2">
+      <div className="bg-[#1E381E]  text-white text-center py-2">
         <Link href="#" className="text-sm font-medium">
           Shop At Special Prices |
           <Link href="/" className="underline">

@@ -10,6 +10,7 @@ import SessionProviderWrapper from "./Components/SessionProviderWrapper";
 import Link from "next/link";
 import { RiChatSmile3Line } from "react-icons/ri";
 import { motion } from "framer-motion";
+import SmoothScrollProvider from "./Components/SmoothScroll";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -22,12 +23,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+      <SmoothScrollProvider>
+
         <SessionProviderWrapper>
           <Cartprovider>
             <Toaster />
             {!isNoHeaderFooterRoute && <Navbar />}
             {children}
-
             {/* Hide chatbot icon when on "/support" route */}
             {pathname !== "/support" && (
               <motion.div
@@ -60,10 +62,11 @@ export default function RootLayout({ children }) {
               </motion.div>
             )}
 
-
             {!isNoHeaderFooterRoute && <Footer />}
           </Cartprovider>
         </SessionProviderWrapper>
+        </SmoothScrollProvider>
+
       </body>
     </html>
   );
