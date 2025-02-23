@@ -9,15 +9,13 @@ export default function SmoothScroll({ children }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    // Initialize Locomotive Scroll
     const locoScroll = new LocomotiveScroll({
       el: scrollRef.current,
       smooth: true,
-      lerp: 0.10, // Controls smoothness (0.1 = fast, 0.05 = slow)
-      multiplier: 3.7, // Adjusts scrolling speed
+      lerp: 0.1,
+      multiplier: 3.7,
     });
 
-    // Connect Locomotive Scroll with GSAP
     gsap.registerPlugin(ScrollTrigger);
     locoScroll.on("scroll", ScrollTrigger.update);
 
@@ -34,6 +32,34 @@ export default function SmoothScroll({ children }) {
 
     ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
     ScrollTrigger.refresh();
+
+    gsap.utils.toArray("[data-scroll-speed]").forEach((el) => {
+      gsap.to(el, {
+        y: () => el.getAttribute("data-scroll-speed") * -100,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el,
+          scroller: scrollRef.current,
+          scrub: true,
+        },
+      });
+    });
+
+    gsap.utils.toArray("[data-fade-in]").forEach((el) => {
+      gsap.from(el, {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: el,
+          scroller: scrollRef.current,
+          start: "top 85%",
+          end: "top 50%",
+          scrub: true,
+        },
+      });
+    });
 
     return () => {
       locoScroll.destroy();

@@ -11,6 +11,7 @@ import Hero from "./Components/Hero";
 import Mens from "./Components/Mens";
 import Ship from "./Components/Ship";
 import Spotlight from "./Components/Spotlight";
+import SmoothScroll from "./Components/SmoothScroll";
 import ProductList from "./Components/ProductList ";
 
 // Animation Variants
@@ -21,13 +22,11 @@ const fadeUp = {
 
 export default function Home() {
   return (
-    <>
-      {/* Hero Section - Fade In */}
+    <SmoothScroll>
       <motion.div initial="hidden" animate="visible" variants={fadeUp}>
         <Hero />
       </motion.div>
 
-      {/* Sections with Staggered Animations */}
       {[
         Category,
         Mens,
@@ -49,7 +48,6 @@ export default function Home() {
         </motion.div>
       ))}
 
-      {/* Footer Banner */}
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -59,8 +57,7 @@ export default function Home() {
         <FooterBanner />
       </motion.div>
 
-      {/* GIF (Fixed Position, No Animation Needed) */}
       <Gif />
-    </>
+    </SmoothScroll>
   );
 }
