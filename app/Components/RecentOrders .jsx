@@ -43,37 +43,37 @@ const RecentOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const fetchOrders = async () => {
-  //     try {
-  //       const response = await axios.get("/api/cart");
-  //       const products = response.data;
-  //       console.log(products);
-  //       const mappedOrders = products.map((product, index) => ({
-  //         id: index + 1 || "N/A",
-  //         product: product?.products[0]?.product?.title || "No Title",
-  //         image:
-  //           product?.products[0]?.product?.images[0].defaultImage ||
-  //           "https://via.placeholder.com/50",
-  //         date: new Date(product.createdAt).toLocaleString() || "N/A",
-  //         customer: product?.user?.name || "N/A",
-  //         email: product?.user?.email || "N/A",
-  //         total: `₹${product?.products[0]?.product?.price || "0.00"}`,
-  //         status: product?.products[0]?.product?.readyToShip
-  //           ? "Shipped"
-  //           : "Processing",
-  //       }));
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get("/api/cart");
+        const products = response.data;
+        console.log(products);
+        const mappedOrders = products.map((product, index) => ({
+          id: index + 1 || "N/A",
+          product: product?.products[0]?.product?.title || "No Title",
+          image:
+            product?.products[0]?.product?.images[0].defaultImage ||
+            "https://via.placeholder.com/50",
+          date: new Date(product.createdAt).toLocaleString() || "N/A",
+          customer: product?.user?.name || "N/A",
+          email: product?.user?.email || "N/A",
+          total: `₹${product?.products[0]?.product?.price || "0.00"}`,
+          status: product?.products[0]?.product?.readyToShip
+            ? "Shipped"
+            : "Processing",
+        }));
 
-  //       setOrders(mappedOrders);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error("Error fetching orders:", error);
-  //       setLoading(false);
-  //     }
-  //   };
+        setOrders(mappedOrders);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+        setLoading(false);
+      }
+    };
 
-  //   fetchOrders();
-  // }, []);
+    fetchOrders();
+  }, []);
 
   useEffect(() => {
     const fetchOrders = async () => {

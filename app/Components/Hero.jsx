@@ -6,6 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
+import { RiChatSmileAiLine } from "react-icons/ri";
+import Link from "next/link";
 
 const Hero = () => {
   const slides = [
@@ -74,6 +76,8 @@ const Hero = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+
+     
     </div>
   );
 };

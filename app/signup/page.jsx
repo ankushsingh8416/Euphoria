@@ -50,12 +50,12 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <Toaster /> 
+      <Toaster />
       <div className="bg-white shadow-md w-11/12 my-6 max-w-4xl flex flex-col lg:flex-row rounded-lg overflow-hidden">
         {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
           <img
-            src="/images/signup.webp"
+            src="/images/signup.png"
             alt="Signup Illustration"
             className="object-cover object-top w-full h-52 md:h-64 lg:h-full"
           />

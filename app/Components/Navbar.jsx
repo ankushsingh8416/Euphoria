@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { BiSolidMagicWand } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { MdDashboardCustomize, MdOutlineContactSupport } from "react-icons/md";
 
@@ -37,12 +38,14 @@ export default function Navbar() {
       }
     };
 
-    fetchUserData();
-  }, [session?.user?.id]);
+    if (session) {
+      fetchUserData();
+    }
+  }, [session?.user?.id]); // Runs on refresh when session updates
 
   return (
     <>
-      <div className="bg-[#1E381E] text-white text-center py-2">
+      <div className="bg-[#1E381E]  text-white text-center py-2">
         <Link href="#" className="text-sm font-medium">
           Shop At Special Prices |
           <Link href="/" className="underline">
@@ -51,7 +54,7 @@ export default function Navbar() {
         </Link>
       </div>
 
-      <header className="shadow-xl z-50 sticky top-0">
+      <header className="shadow-xl z-40 sticky top-0">
         {/* Main Header Section */}
         <div className="flex items-center justify-between px-4 md:px-6 py-3">
           {/* Left Section */}
@@ -160,9 +163,7 @@ export default function Navbar() {
                     <div className="ml-3 flex gap-4 items-center">
                       <div className="rounded-full  overflow-hidden">
                         <Image
-                          src={
-                            profile?.profileImage || "/images/default-user.png"
-                          }
+                          src={profile?.profileImage || "/images/profile.webp"}
                           alt="user"
                           className="object-cover w-[34px] h-[34px]"
                           width={100}
@@ -182,7 +183,10 @@ export default function Navbar() {
                       href={`/edit/${session?.user?.name}?id=${session?.user?.id}`}
                       className="block"
                     >
-                      <li className="w-full flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
+                      <li
+                        onClick={() => setdropDown((prevState) => !prevState)}
+                        className="w-full flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+                      >
                         <div className="flex items-center">
                           <FiUser className="w-5 h-5 mr-2 text-gray-500" />
                           Edit Profile
@@ -190,17 +194,25 @@ export default function Navbar() {
                       </li>
                     </Link>
 
-                    <Link href="/cpanel/login" className="block">
+                    <Link
+                      href="/cpanel/login"
+                      className="block"
+                      onClick={() => setdropDown((prevState) => !prevState)}
+                    >
                       <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
                         <MdDashboardCustomize className="w-5 h-5 mr-2 text-gray-500" />
                         Dashboard
                       </li>
                     </Link>
 
-                    <Link href="/support" className="block">
+                    <Link
+                      href="/support"
+                      className="block"
+                      onClick={() => setdropDown((prevState) => !prevState)}
+                    >
                       <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                        <MdOutlineContactSupport className="w-5 h-5 mr-2 text-gray-500" />
-                        Support
+                        <BiSolidMagicWand className="w-5 h-5 mr-2 text-gray-500" />
+                        Euphoria AI
                       </li>
                     </Link>
 
@@ -219,14 +231,15 @@ export default function Navbar() {
             </div>
 
             {/* Wishlist Icon */}
-            <Image
-              src="/images/wishlist-icon.svg"
-              alt="Wishlist"
-              width={24}
-              height={24}
-              className="hidden lg:block cursor-pointer"
-            />
-
+            <Link href="/wishlist">
+              <Image
+                src="/images/wishlist-icon.svg"
+                alt="Wishlist"
+                width={24}
+                height={24}
+                className="hidden lg:block cursor-pointer"
+              />
+            </Link>
             {/* Cart Icon */}
             <Link href="/cart">
               <Image

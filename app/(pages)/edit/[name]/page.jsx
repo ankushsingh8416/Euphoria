@@ -19,6 +19,7 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "react-hot-toast";
 import ImageUploading from "react-images-uploading";
 import { signOut } from "next-auth/react";
+import Loader from "@/app/Components/Loader";
 
 export default function EditProfile() {
   const [formData, setFormData] = useState({
@@ -181,6 +182,10 @@ export default function EditProfile() {
           </li>
         </ul>
       </aside>
+
+
+
+      
       <main className="flex-1 bg-white p-8 rounded-lg shadow-md border border-gray-300">
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Edit Profile</h2>
         <div className="relative w-full  flex justify-center mb-6">
@@ -303,9 +308,14 @@ export default function EditProfile() {
           </div>
           <button
             type="submit"
-            className="px-6 py-3 bg-[#1E381E] text-white rounded-lg shadow-md hover:bg-gray-800"
+            disabled={isLoading}
+            className={`px-6 py-3 rounded-lg shadow-md flex items-center justify-center gap-2 ${
+              isLoading
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-[#1E381E] hover:bg-gray-800 text-white"
+            }`}
           >
-            Save Changes
+            {isLoading ? <Loader /> : "Save Changes"}
           </button>
         </form>
       </main>
