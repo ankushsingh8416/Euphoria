@@ -9,17 +9,17 @@ const SmoothScrollProvider = ({ children }) => {
   const scrollInstanceRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined" || pathname !== "/") return;
 
     import("locomotive-scroll").then((locomotiveModule) => {
       setLocomotiveScroll(() => locomotiveModule.default);
     });
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
-    if (!LocomotiveScroll) return;
+    if (!LocomotiveScroll || pathname !== "/") return;
 
-    // Initialize Locomotive Scroll
+    // Initialize Locomotive Scroll only on "/"
     scrollInstanceRef.current = new LocomotiveScroll({
       el: scrollRef.current,
       smooth: true,
@@ -30,15 +30,21 @@ const SmoothScrollProvider = ({ children }) => {
     return () => {
       scrollInstanceRef.current?.destroy();
     };
-  }, [LocomotiveScroll]);
+  }, [LocomotiveScroll, pathname]);
 
   useEffect(() => {
+    if (pathname !== "/") return;
+
     if (scrollInstanceRef.current) {
       scrollInstanceRef.current.scrollTo(0, { duration: 0, disableLerp: true });
     } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname]); // Runs whenever route changes
+  }, [pathname]);
+
+  if (pathname !== "/") {
+    return <>{children}</>; // Return children without animation on other pages
+  }
 
   return (
     <div ref={scrollRef} data-scroll-container>
