@@ -27,7 +27,7 @@ export const Cartprovider = ({ children }) => {
     }
     return [];
   });
-  
+
   const [wishList, setWishlist] = useState(() => {
     if (typeof window !== "undefined") {
       const savedList = localStorage.getItem("wishList");
@@ -35,15 +35,13 @@ export const Cartprovider = ({ children }) => {
     }
     return [];
   });
-  //cart
+
   const addToCart = (product) => {
     setCart((prevCart) => {
-      // Check if the product is already in the cart
       const isProductInCart = prevCart.some((item) => item._id === product._id);
-
       if (isProductInCart) {
         console.log("Product is already in the cart");
-        return prevCart; // Return the previous cart without adding the product again
+        return prevCart;
       }
 
       const updatedProduct = {
@@ -55,49 +53,12 @@ export const Cartprovider = ({ children }) => {
       };
 
       const updatedCart = [...prevCart, updatedProduct];
-      console.log("data" + updatedCart);
-
-      // Save cart in localStorage
       localStorage.setItem("cart", JSON.stringify(updatedCart));
-
-      // Send cart to backend
       sendCartToBackend(updatedCart);
-
       return updatedCart;
     });
   };
- //wishlist
- const addToWishlist = (product) => {
-  setWishlist((prevList) => {
-    // Check if the product is already in the list
-    const isProductInList = prevList.some((item) => item._id === product._id);
 
-    if (isProductInList) {
-      console.log("Product is already in the wishlist");
-      return prevList; // Return the previous list without adding the product again
-    }
-
-    const updatedProduct = {
-      ...product,
-      user: {
-        name: session?.user?.name || "Guest",
-        email: session?.user?.email || "guest@example.com",
-      },
-    };
-
-    const updatedList = [...prevList, updatedProduct];
-    console.log("data" + updatedList);
-
-    // Save list in localStorage
-    localStorage.setItem("wishList", JSON.stringify(updatedList));
-
-    // Send list to backend
-    // sendListToBackend(updatedList);
-
-    return updatedList;
-  });
-};
-  // Function to send cart data to backend
   const sendCartToBackend = async (cartData) => {
     try {
       const requestBody = {
@@ -106,78 +67,58 @@ export const Cartprovider = ({ children }) => {
           email: "guest@example.com",
         },
         products: cartData.map((item) => ({
-          productId: item._id, // Ensure your product has an `_id`
+          productId: item._id,
           quantity: item.quantity || 1,
         })),
       };
 
-      const response = await fetch("/api/cart", {
+      await fetch("/api/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
       });
-
-      const result = await response.json();
-      console.log("Cart sent to backend:", result);
     } catch (error) {
       console.error("Error sending cart data to backend:", error);
     }
   };
-  // Function to send wishList data to backend
-  const sendWishlistToBackend = async (ListData) => {
-    try {
-      const requestBody = {
-        user: ListData[0]?.user || {
-          name: "Guest",
-          email: "guest@example.com",
-        },
-        products: ListData.map((item) => ({
-          productId: item._id, // Ensure your product has an `_id`
-          quantity: item.quantity || 1,
-        })),
-      };
 
-      const response = await fetch("/api/wishlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
-
-      const result = await response.json();
-      console.log("List sent to backend:", result);
-    } catch (error) {
-      console.error("Error sending list data to backend:", error);
-    }
-  };
-//remove item From Cart
   const removeFromCart = (index) => {
     setCart((prevCart) => {
       const newCart = prevCart.filter((_, i) => i !== index);
-
-      // Update localStorage
       localStorage.setItem("cart", JSON.stringify(newCart));
-
-      // Send updated cart to backend
       sendCartToBackend(newCart);
-
       return newCart;
     });
   };
-//remove item From wishlist
+
+  const addToWishlist = (product) => {
+    setWishlist((prevList) => {
+      const isProductInList = prevList.some((item) => item._id === product._id);
+      if (isProductInList) {
+        console.log("Product is already in the wishlist");
+        return prevList;
+      }
+      const updatedProduct = {
+        ...product,
+        user: {
+          name: session?.user?.name || "Guest",
+          email: session?.user?.email || "guest@example.com",
+        },
+      };
+      const updatedList = [...prevList, updatedProduct];
+      localStorage.setItem("wishList", JSON.stringify(updatedList));
+      return updatedList;
+    });
+  };
 
   const removeFromWishlist = (index) => {
     setWishlist((prevList) => {
       const newList = prevList.filter((_, i) => i !== index);
-
-      // Update localStorage
       localStorage.setItem("wishList", JSON.stringify(newList));
-
-      // Send updated List to backend
-      // sendListToBackend(newList);
-
       return newList;
     });
   };
+
   useEffect(() => {
     setTotalProducts(products.length);
   }, [products]);

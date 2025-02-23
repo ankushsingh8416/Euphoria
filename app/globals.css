@@ -21,6 +21,28 @@ body {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 }
+html.has-scroll-smooth {
+  overflow: hidden;
+}
+
+html.has-scroll-dragging {
+  user-select: none;
+}
+
+[data-scroll-container] {
+  min-height: 100vh;
+  transition: transform 0.4s ease-out; /* 🔥 Faster and responsive */
+}
+
+[data-scroll-section] {
+  will-change: transform;
+}
+
+body {
+  overscroll-behavior: none;
+  scroll-behavior: auto; /* 🔥 No default smooth scroll (handled by Locomotive) */
+}
+
 header {
   background-color: #faf8f0;
 }

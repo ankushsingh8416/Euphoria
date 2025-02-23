@@ -10,6 +10,8 @@ import SessionProviderWrapper from "./Components/SessionProviderWrapper";
 import Link from "next/link";
 import { RiChatSmile3Line } from "react-icons/ri";
 import { motion } from "framer-motion";
+import SmoothScroll from "./Components/SmoothScroll";
+import Gif from "./Components/Gif"; // ✅ Import GIF
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -25,10 +27,17 @@ export default function RootLayout({ children }) {
         <SessionProviderWrapper>
           <Cartprovider>
             <Toaster />
-            {!isNoHeaderFooterRoute && <Navbar />}
-            {children}
 
-            {/* Hide chatbot icon when on "/support" route */}
+            {/* ✅ Keep Navbar & Footer OUTSIDE SmoothScroll */}
+            {!isNoHeaderFooterRoute && <Navbar />}
+
+            {/* ✅ Wrap only the main content in SmoothScroll */}
+            <SmoothScroll>{children}</SmoothScroll>
+
+            {/* ✅ Fixed GIF Component (kept outside to avoid issues) */}
+            <Gif />
+
+            {/* ✅ Chatbot Icon (kept outside to avoid issues) */}
             {pathname !== "/support" && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -50,7 +59,7 @@ export default function RootLayout({ children }) {
                     }}
                     transition={{
                       repeat: Infinity,
-                      duration: [0.8], // Fast → Slow → Fast effect
+                      duration: [0.8],
                       ease: "easeInOut",
                     }}
                   >
@@ -59,7 +68,6 @@ export default function RootLayout({ children }) {
                 </Link>
               </motion.div>
             )}
-
 
             {!isNoHeaderFooterRoute && <Footer />}
           </Cartprovider>

@@ -8,22 +8,19 @@ const Gif = () => {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const isClosed = localStorage.getItem("gifClosed");
-    if (!isClosed) {
-      const timer = setTimeout(() => setVisible(true), 3000);
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => setVisible(true), 3000);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleClose = () => {
     setVisible(false);
-    localStorage.setItem("gifClosed", "true"); // Store closed state
   };
 
   return (
     <>
       {visible && (
         <motion.div
+        data-scroll-ignore // ✅ Prevent Locomotive from modifying this component
           initial={{ x: "-100vw" }}
           animate={{ x: 0 }}
           exit={{ x: "-100vw" }}
