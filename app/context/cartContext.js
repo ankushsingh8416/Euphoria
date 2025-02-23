@@ -1,10 +1,13 @@
 "use client";
-import { useSession } from "next-auth/react";
 import { createContext, useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export const cartContext = createContext();
 
 export const Cartprovider = ({ children }) => {
+  const { data: session } = useSession();
+
+  // States
   const [selectedFilters, setSelectedFilters] = useState({
     Category: [],
     Price: [],
@@ -14,126 +17,107 @@ export const Cartprovider = ({ children }) => {
   });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeView, setActiveView] = useState("grid");
-  const [productGrid, setproductGrid] = useState("four");
+  const [productGrid, setProductGrid] = useState("four");
   const [sortOption, setSortOption] = useState("Price:LowtoHigh");
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
-  const { data: session } = useSession();
 
+  // Cart and Wishlist states (stored in localStorage)
   const [cart, setCart] = useState(() => {
     if (typeof window !== "undefined") {
-      const savedCart = localStorage.getItem("cart");
-      return savedCart ? JSON.parse(savedCart) : [];
-    }
-    return [];
-  });
-  
-  const [wishList, setWishlist] = useState(() => {
-    if (typeof window !== "undefined") {
-      const savedList = localStorage.getItem("wishList");
-      return savedList ? JSON.parse(savedList) : [];
+      return JSON.parse(localStorage.getItem("cart")) || [];
     }
     return [];
   });
 
+  const [wishList, setWishList] = useState(() => {
+    if (typeof window !== "undefined") {
+      return JSON.parse(localStorage.getItem("wishList")) || [];
+    }
+    return [];
+  });
+
+  // Add item to cart
   const addToCart = (product) => {
     setCart((prevCart) => {
-      const isProductInCart = prevCart.some((item) => item._id === product._id);
-      if (isProductInCart) {
+      const exists = prevCart.some((item) => item._id === product._id);
+      if (exists) {
         console.log("Product is already in the cart");
         return prevCart;
       }
 
-      const updatedProduct = {
-        ...product,
-        user: {
-          name: session?.user?.name || "Guest",
-          email: session?.user?.email || "guest@example.com",
-        },
-      };
-
-      const updatedCart = [...prevCart, updatedProduct];
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-      sendCartToBackend(updatedCart);
+      const updatedCart = [
+        ...prevCart,
+        { ...product, quantity: 1, user: getUserInfo() },
+      ];
+      updateLocalStorage("cart", updatedCart);
       return updatedCart;
     });
   };
 
+  // Add item to wishlist
   const addToWishlist = (product) => {
-    setWishlist((prevList) => {
-      const isProductInList = prevList.some((item) => item._id === product._id);
-      if (isProductInList) {
+    setWishList((prevList) => {
+      const exists = prevList.some((item) => item._id === product._id);
+      if (exists) {
         console.log("Product is already in the wishlist");
         return prevList;
       }
-      const updatedProduct = {
-        ...product,
-        user: {
-          name: session?.user?.name || "Guest",
-          email: session?.user?.email || "guest@example.com",
-        },
-      };
-      const updatedList = [...prevList, updatedProduct];
-      localStorage.setItem("wishList", JSON.stringify(updatedList));
+
+      const updatedList = [...prevList, { ...product, user: getUserInfo() }];
+      updateLocalStorage("wishList", updatedList);
       return updatedList;
     });
   };
 
-  const sendCartToBackend = async (cartData) => {
-    try {
-      const requestBody = {
-        user: cartData[0]?.user || {
-          name: "Guest",
-          email: "guest@example.com",
-        },
-        products: cartData.map((item) => ({
-          productId: item._id,
-          quantity: item.quantity || 1,
-        })),
-      };
+  // Remove item from cart
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => {
+      const updatedCart = prevCart.filter((item) => item._id !== productId);
+      updateLocalStorage("cart", updatedCart);
+      return updatedCart;
+    });
+  };
 
-      const response = await fetch("/api/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
+  // Remove item from wishlist
+  const removeFromWishlist = (productId) => {
+    setWishList((prevList) => {
+      const updatedList = prevList.filter((item) => item._id !== productId);
+      updateLocalStorage("wishList", updatedList);
+      return updatedList;
+    });
+  };
 
-      const result = await response.json();
-      console.log("Cart sent to backend:", result);
-    } catch (error) {
-      console.error("Error sending cart data to backend:", error);
+  // Update localStorage
+  const updateLocalStorage = (key, value) => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, JSON.stringify(value));
     }
   };
 
-  const removeFromCart = (index) => {
-    setCart((prevCart) => {
-      const newCart = prevCart.filter((_, i) => i !== index);
-      localStorage.setItem("cart", JSON.stringify(newCart));
-      sendCartToBackend(newCart);
-      return newCart;
-    });
-  };
+  // Get user info
+  const getUserInfo = () => ({
+    name: session?.user?.name || "Guest",
+    email: session?.user?.email || "guest@example.com",
+  });
 
-  const removeFromWishlist = (index) => {
-    setWishlist((prevList) => {
-      const newList = prevList.filter((_, i) => i !== index);
-      localStorage.setItem("wishList", JSON.stringify(newList));
-      return newList;
-    });
-  };
-
+  // Update total products count
   useEffect(() => {
     setTotalProducts(products.length);
   }, [products]);
 
+  // Grid view handlers
   const fourGrid = () => {
     setActiveView("grid");
-    setproductGrid("four");
+    setProductGrid("four");
   };
+
   const twoGrid = () => {
     setActiveView("list");
-    setproductGrid("two");
+    setProductGrid("two");
   };
+
+  // Handle filter change
   const handleFilterChange = (filter, option) => {
     setSelectedFilters((prev) => ({
       ...prev,
