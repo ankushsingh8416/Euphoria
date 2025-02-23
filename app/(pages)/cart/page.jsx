@@ -1,12 +1,17 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const Page = () => {
   const { cart, removeFromCart,addToWishlist } = useContext(cartContext);
-  const [quantities, setQuantities] = useState(cart.map(() => 1));
+  const [quantities, setQuantities] = useState([]);
   const { data: session } = useSession();
+  useEffect(() => {
+    setQuantities(cart.map(() => 1));
+  }, [cart]);
+  console.log("Cart data:", cart);
 
   const handleQuantityChange = (index, newQuantity) => {
     const updatedQuantities = [...quantities];
@@ -80,11 +85,13 @@ const Page = () => {
                     </p>
                     <div className="flex items-center justify-between pt-5">
                       <div className="flex items-center">
+                        <Link href='/wishlist'>
                         <p 
-                        onClick={() => addToWishlist(index)}
+                        onClick={() => addToWishlist(cart[index])}
                         className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer">
                           Add to favorites
                         </p>
+                        </Link>
                         <p
                           onClick={() => removeFromCart(index)}
                           className="md:text-sm text-xs leading-3 underline text-red-500 md:pl-5 pl-2 cursor-pointer"

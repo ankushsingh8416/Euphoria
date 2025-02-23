@@ -1,13 +1,15 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
 
 const Page = () => {
   const { wishList, removeFromWishlist, addToCart } = useContext(cartContext);
-  const [quantities, setQuantities] = useState(wishList.map(() => 1));
+  const [quantities, setQuantities] = useState([]);
   const { data: session } = useSession();
-
+ useEffect(() => {
+    setQuantities(wishList.map(() => 1));
+  }, [wishList]);
   // const handleQuantityChange = (index, newQuantity) => {
   //   const updatedQuantities = [...quantities];
   //   updatedQuantities[index] = parseInt(newQuantity);
