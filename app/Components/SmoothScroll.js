@@ -8,7 +8,7 @@ const SmoothScrollProvider = ({ children }) => {
   const [LocomotiveScroll, setLocomotiveScroll] = useState(null);
 
   useEffect(() => {
-    if (typeof window === "undefined") return; // Ensure it's client-side
+    if (typeof window === "undefined") return;
 
     import("locomotive-scroll").then((locomotiveModule) => {
       setLocomotiveScroll(() => locomotiveModule.default);
@@ -16,12 +16,13 @@ const SmoothScrollProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!LocomotiveScroll || pathname !== "/") return; // Apply only on "/"
+    if (!LocomotiveScroll || pathname !== "/") return;
 
     const scrollInstance = new LocomotiveScroll({
       el: scrollRef.current,
       smooth: true,
-      lerp: 0.45, // Adjust for smoothness
+      lerp: 0.75,
+      multiplier: 3,
     });
 
     return () => {
@@ -29,7 +30,7 @@ const SmoothScrollProvider = ({ children }) => {
         scrollInstance.destroy();
       }
     };
-  }, [LocomotiveScroll, pathname]); // Run when Locomotive is loaded or pathname changes
+  }, [LocomotiveScroll, pathname]);
 
   return (
     <div ref={scrollRef} data-scroll-container>

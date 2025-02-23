@@ -5,7 +5,6 @@ import Category from "./Components/Category";
 import Celebrate from "./Components/Celebrate";
 import Craft from "./Components/Craft";
 import FooterBanner from "./Components/FooterBanner";
-import Gif from "./Components/Gif";
 import Gifting from "./Components/Gifting";
 import Hero from "./Components/Hero";
 import Mens from "./Components/Mens";
@@ -28,7 +27,16 @@ export default function Home() {
       </motion.div>
 
       {/* Sections with Staggered Animations */}
-      {[Category, Mens, Craft, ProductList, Ship, Spotlight, Gifting, Celebrate].map((Component, index) => (
+      {[
+        Category,
+        Mens,
+        Craft,
+        ProductList,
+        Ship,
+        Spotlight,
+        Gifting,
+        Celebrate,
+      ].map((Component, index) => (
         <motion.div
           key={index}
           initial="hidden"
@@ -40,11 +48,15 @@ export default function Home() {
         </motion.div>
       ))}
 
-      <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeUp}
+      >
         <FooterBanner />
       </motion.div>
 
-      <Gif />
     </>
   );
 }
