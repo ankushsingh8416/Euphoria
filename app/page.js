@@ -56,7 +56,6 @@ export default function Home() {
       >
         <FooterBanner />
       </motion.div>
-
     </>
   );
 }

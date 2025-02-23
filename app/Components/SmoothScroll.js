@@ -6,6 +6,7 @@ const SmoothScrollProvider = ({ children }) => {
   const scrollRef = useRef(null);
   const pathname = usePathname();
   const [LocomotiveScroll, setLocomotiveScroll] = useState(null);
+  const scrollInstanceRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -16,21 +17,28 @@ const SmoothScrollProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (!LocomotiveScroll || pathname !== "/") return;
+    if (!LocomotiveScroll) return;
 
-    const scrollInstance = new LocomotiveScroll({
+    // Initialize Locomotive Scroll
+    scrollInstanceRef.current = new LocomotiveScroll({
       el: scrollRef.current,
       smooth: true,
-      lerp: 0.75,
-      multiplier: 3,
+      lerp: 0.075,
+      multiplier: 2,
     });
 
     return () => {
-      if (scrollInstance) {
-        scrollInstance.destroy();
-      }
+      scrollInstanceRef.current?.destroy();
     };
-  }, [LocomotiveScroll, pathname]);
+  }, [LocomotiveScroll]);
+
+  useEffect(() => {
+    if (scrollInstanceRef.current) {
+      scrollInstanceRef.current.scrollTo(0, { duration: 0, disableLerp: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]); // Runs whenever route changes
 
   return (
     <div ref={scrollRef} data-scroll-container>

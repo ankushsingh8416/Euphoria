@@ -25,7 +25,7 @@ const Gif = () => {
           animate={{ x: 0 }}
           exit={{ x: "-100vw" }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="fixed z-50 h-36 md:h-48 bottom-2 left-4"
+          className="fixed z-50 h-44 md:h-52 bottom-2 left-4"
         >
           {/* Close Button */}
           <button
