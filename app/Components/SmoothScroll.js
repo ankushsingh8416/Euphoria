@@ -1,66 +1,49 @@
 "use client";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import "locomotive-scroll/dist/locomotive-scroll.css";
 
-const SmoothScroll = ({ children }) => {
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import LocomotiveScroll from "locomotive-scroll";
+
+export default function SmoothScroll({ children }) {
   const scrollRef = useRef(null);
-  const locomotiveScrollRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      import("locomotive-scroll").then((module) => {
-        const LocomotiveScroll = module.default;
+    // Initialize Locomotive Scroll
+    const locoScroll = new LocomotiveScroll({
+      el: scrollRef.current,
+      smooth: true,
+      lerp: 0.10, // Controls smoothness (0.1 = fast, 0.05 = slow)
+      multiplier: 3.7, // Adjusts scrolling speed
+    });
 
-        if (!locomotiveScrollRef.current) {
-          locomotiveScrollRef.current = new LocomotiveScroll({
-            el: scrollRef.current,
-            smooth: true,
-            smoothMobile: true,
-            multiplier: 5, // ⚡ Faster but smooth
-            inertia: 0.1, // ⚡ Balanced for smooth feel
-          });
+    // Connect Locomotive Scroll with GSAP
+    gsap.registerPlugin(ScrollTrigger);
+    locoScroll.on("scroll", ScrollTrigger.update);
 
-          // ✅ Sync Locomotive Scroll with GSAP ScrollTrigger
-          locomotiveScrollRef.current.on("scroll", ScrollTrigger.update);
-          ScrollTrigger.scrollerProxy(scrollRef.current, {
-            scrollTop(value) {
-              return arguments.length
-                ? locomotiveScrollRef.current.scrollTo(value, 0, 0)
-                : locomotiveScrollRef.current.scroll.instance.scroll.y;
-            },
-            getBoundingClientRect() {
-              return {
-                top: 0,
-                left: 0,
-                width: window.innerWidth,
-                height: window.innerHeight,
-              };
-            },
-          });
+    ScrollTrigger.scrollerProxy(scrollRef.current, {
+      scrollTop(value) {
+        return arguments.length
+          ? locoScroll.scrollTo(value, 0, 0)
+          : locoScroll.scroll.instance.scroll.y;
+      },
+      getBoundingClientRect() {
+        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+      },
+    });
 
-          ScrollTrigger.addEventListener("refresh", () =>
-            locomotiveScrollRef.current.update()
-          );
-          ScrollTrigger.refresh();
-        }
-      });
+    ScrollTrigger.addEventListener("refresh", () => locoScroll.update());
+    ScrollTrigger.refresh();
 
-      return () => {
-        if (locomotiveScrollRef.current) {
-          locomotiveScrollRef.current.destroy();
-          locomotiveScrollRef.current = null;
-        }
-      };
-    }
+    return () => {
+      locoScroll.destroy();
+      ScrollTrigger.removeEventListener("refresh", () => locoScroll.update());
+    };
   }, []);
 
   return (
-    <div ref={scrollRef} data-scroll-container className="relative">
+    <div ref={scrollRef} data-scroll-container>
       {children}
     </div>
   );
-};
-
-export default SmoothScroll;
+}
