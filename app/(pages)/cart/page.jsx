@@ -48,7 +48,7 @@ const Page = () => {
   };
 
   const handleApplyPromo = () => {
-    if (promoCode.trim().toLowerCase() === "euphoria15") {
+    if (promoCode.trim().toLowerCase() === "NEWUSER15") {
       setPromoApplied(true);
     } else {
       alert("Invalid promo code");
