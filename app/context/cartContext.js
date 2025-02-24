@@ -2,8 +2,10 @@
 import { createContext, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
+// Create the Cart Context
 export const cartContext = createContext();
 
+// Cart Provider Component
 export const Cartprovider = ({ children }) => {
   const { data: session } = useSession();
 
@@ -22,7 +24,7 @@ export const Cartprovider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
 
-  // Cart and Wishlist states (stored in localStorage)
+  // Cart and Wishlist states (initialized from localStorage)
   const [cart, setCart] = useState(() => {
     if (typeof window !== "undefined") {
       return JSON.parse(localStorage.getItem("cart")) || [];
@@ -37,20 +39,43 @@ export const Cartprovider = ({ children }) => {
     return [];
   });
 
+  // Update localStorage whenever cart or wishlist changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("wishList", JSON.stringify(wishList));
+    }
+  }, [wishList]);
+
   // Add item to cart
   const addToCart = (product) => {
     setCart((prevCart) => {
-      const exists = prevCart.some((item) => item._id === product._id);
-      if (exists) {
-        console.log("Product is already in the cart");
-        return prevCart;
+      const existingProduct = prevCart.find((item) => item._id === product._id);
+      if (existingProduct) {
+        // If product already exists, update its quantity
+        const updatedCart = prevCart.map((item) =>
+          item._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+        return updatedCart;
+      } else {
+        // If product doesn't exist, add it to the cart with quantity 1
+        const updatedCart = [...prevCart, { ...product, quantity: 1 }];
+        return updatedCart;
       }
+    });
+  };
 
-      const updatedCart = [
-        ...prevCart,
-        { ...product, quantity: 1, user: getUserInfo() },
-      ];
-      updateLocalStorage("cart", updatedCart);
+  // Remove item from cart
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => {
+      const updatedCart = prevCart.filter((item) => item._id !== productId);
       return updatedCart;
     });
   };
@@ -63,19 +88,8 @@ export const Cartprovider = ({ children }) => {
         console.log("Product is already in the wishlist");
         return prevList;
       }
-
-      const updatedList = [...prevList, { ...product, user: getUserInfo() }];
-      updateLocalStorage("wishList", updatedList);
+      const updatedList = [...prevList, { ...product }];
       return updatedList;
-    });
-  };
-
-  // Remove item from cart
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => {
-      const updatedCart = prevCart.filter((item) => item._id !== productId);
-      updateLocalStorage("cart", updatedCart);
-      return updatedCart;
     });
   };
 
@@ -83,23 +97,9 @@ export const Cartprovider = ({ children }) => {
   const removeFromWishlist = (productId) => {
     setWishList((prevList) => {
       const updatedList = prevList.filter((item) => item._id !== productId);
-      updateLocalStorage("wishList", updatedList);
       return updatedList;
     });
   };
-
-  // Update localStorage
-  const updateLocalStorage = (key, value) => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(key, JSON.stringify(value));
-    }
-  };
-
-  // Get user info
-  const getUserInfo = () => ({
-    name: session?.user?.name || "Guest",
-    email: session?.user?.email || "guest@example.com",
-  });
 
   // Update total products count
   useEffect(() => {
@@ -117,42 +117,42 @@ export const Cartprovider = ({ children }) => {
     setProductGrid("two");
   };
 
-  // Handle filter change
+  // Handle filter changes
   const handleFilterChange = (filter, option) => {
     setSelectedFilters((prev) => ({
       ...prev,
-      [filter]: prev[filter].includes(option)
+      [filter]: prev[filter]?.includes(option)
         ? prev[filter].filter((item) => item !== option)
-        : [...prev[filter], option],
+        : [...(prev[filter] || []), option],
     }));
   };
 
+  // Context value
+  const contextValue = {
+    selectedFilters,
+    setSelectedFilters,
+    handleFilterChange,
+    totalProducts,
+    setTotalProducts,
+    activeView,
+    setSortOption,
+    products,
+    setProducts,
+    sortOption,
+    isSearchOpen,
+    setIsSearchOpen,
+    fourGrid,
+    twoGrid,
+    productGrid,
+    cart,
+    addToCart,
+    removeFromCart,
+    addToWishlist,
+    wishList,
+    removeFromWishlist,
+  };
+
   return (
-    <cartContext.Provider
-      value={{
-        selectedFilters,
-        setSelectedFilters,
-        handleFilterChange,
-        totalProducts,
-        activeView,
-        setSortOption,
-        products,
-        setProducts,
-        sortOption,
-        isSearchOpen,
-        setIsSearchOpen,
-        fourGrid,
-        twoGrid,
-        productGrid,
-        cart,
-        addToCart,
-        removeFromCart,
-        addToWishlist,
-        wishList,
-        removeFromWishlist,
-      }}
-    >
-      {children}
-    </cartContext.Provider>
+    <cartContext.Provider value={contextValue}>{children}</cartContext.Provider>
   );
 };

@@ -4,7 +4,7 @@ import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
 
 const Page = () => {
-  const { cart, removeFromCart,addToWishlist } = useContext(cartContext);
+  const { cart, removeFromCart, addToWishlist } = useContext(cartContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const { data: session } = useSession();
 
@@ -13,6 +13,7 @@ const Page = () => {
     updatedQuantities[index] = parseInt(newQuantity);
     setQuantities(updatedQuantities);
   };
+
   const calculateTotalPrice = () => {
     return cart
       .reduce(
@@ -26,79 +27,100 @@ const Page = () => {
     <>
       <div className="container mx-auto mt-10">
         <div className="sm:flex shadow-md my-10">
-          <div className="w-full sm:w-3/4 bg-white px-10 py-10">
+          <div className="w-full sm:w-3/4 bg-red-600 px-10 py-10">
             <div className="flex justify-between border-b pb-8">
               <h1 className="font-semibold text-2xl">Shopping Cart</h1>
               <h2 className="font-semibold text-2xl">{cart.length} Items</h2>
             </div>
 
             {cart.length === 0 ? (
-              <p>Your cart is empty.</p>
+              <div className="flex flex-col items-center justify-center gap-4 py-16">
+                <img
+                  src="/images/cart-empty.png"
+                  alt="Empty Cart"
+                  className="w-96"
+                />
+                <p>Your cart is empty.</p>
+              </div>
             ) : (
-              cart.map((product, index) => (
-                <div
-                  key={index}
-                  className="md:flex items-stretch py-8 md:py-10 lg:py-8 border-t border-b border-gray-50"
-                >
-                  <div className="md:w-2/4 2xl:w-1/4 w-full">
-                    <img
-                      src={product.images[0]?.defaultImage}
-                      alt={product.title || "Product Image" }
-                      className="h-[60%] object-center object-cover md:block hidden"
-                    />
-                    <img
-                      src={product.images[0]?.defaultImage}
-                      alt={product.title || "Product Image"}
-                      className="md:hidden w-full h-full object-center object-cover"
-                    />
-                  </div>
-                  <div className="md:pl-0 pt-5 md:pt-0 md:w-8/12 2xl:w-3/4 flex flex-col justify-start">
-                    <div className="flex items-center justify-between w-full">
-                      <p className="text-base font-black leading-none text-gray-800">
-                        {product.title}
-                      </p>
-                      <select
-                        aria-label="Select quantity"
-                        className="py-2 px-1 border border-gray-200 focus:outline-none"
-                        value={quantities[index]}
-                        onChange={(e) =>
-                          handleQuantityChange(index, e.target.value)
-                        }
-                      >
-                        {[1, 2, 3, 4, 5].map((num) => (
-                          <option key={num} value={num}>
-                            {num}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <p className="md:text-sm text-xs leading-3 text-gray-600 pt-2">
-                      Height: 10 inches
-                    </p>
-                    <p className="md:text-sm text-xs leading-3 text-gray-600 py-4">
-                      Color: {product.color}
-                    </p>
-                    <div className="flex items-center justify-between pt-5">
-                      <div className="flex items-center">
-                        <p 
-                        onClick={() => addToWishlist(index)}
-                        className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer">
-                          Add to favorites
-                        </p>
-                        <p
-                          onClick={() => removeFromCart(index)}
-                          className="md:text-sm text-xs leading-3 underline text-red-500 md:pl-5 pl-2 cursor-pointer"
-                        >
-                          Remove
-                        </p>
+              cart.map((product, index) => {
+                // Defensive check for images
+                const defaultImage =
+                  product?.images?.[0]?.defaultImage ||
+                  "https://via.placeholder.com/150";
+                const hoverImage =
+                  product?.images?.[0]?.hoverImage || defaultImage;
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex flex-col md:flex-row items-center gap-6 p-6 border border-gray-200 rounded-xl shadow-md bg-white transition-all hover:shadow-lg"
+                    >
+                      {/* Product Image */}
+                      <div className="relative md:w-1/4 w-full">
+                        <img
+                          src={defaultImage}
+                          alt={product.title || "Product Image"}
+                          className="w-full h-36 md:h-44 object-cover rounded-lg"
+                        />
+                        <span className="absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded-md">
+                          Bestseller
+                        </span>
                       </div>
-                      <p className="md:text-base text-sm font-black leading-none text-gray-800">
-                        ${(product.price * quantities[index]).toFixed(2)}
-                      </p>
+                  
+                      {/* Product Details */}
+                      <div className="md:w-3/4 w-full flex flex-col justify-between">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h2 className="text-lg font-semibold text-gray-800">{product.title}</h2>
+                            <p className="text-sm text-gray-500 mt-1">
+                              <span className="font-medium">Brand:</span> {product.brand}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              <span className="font-medium">Color:</span> {product.color}
+                            </p>
+                          </div>
+                  
+                          {/* Quantity Selector */}
+                          <select
+                            aria-label="Select quantity"
+                            className="border border-gray-300 rounded-md p-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                            value={quantities[index]}
+                            onChange={(e) => handleQuantityChange(index, e.target.value)}
+                          >
+                            {[1, 2, 3, 4, 5].map((num) => (
+                              <option key={num} value={num}>
+                                {num}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                  
+                        {/* Actions & Price */}
+                        <div className="flex justify-between items-center mt-5">
+                          <div className="flex gap-4">
+                            <button
+                              onClick={() => addToWishlist(product._id)}
+                              className="text-sm text-blue-600 hover:text-blue-800 transition-all hover:scale-105"
+                            >
+                              ⭐ Add to Wishlist
+                            </button>
+                            <button
+                              onClick={() => removeFromCart(product._id)}
+                              className="text-sm text-red-600 hover:text-red-800 transition-all hover:scale-105"
+                            >
+                              ❌ Remove
+                            </button>
+                          </div>
+                          <p className="text-lg font-bold text-gray-900">
+                            ₹{(product.price * quantities[index]).toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))
+                  );
+                  
+              })
             )}
 
             <div className="mt-10">
@@ -118,7 +140,7 @@ const Page = () => {
                 Items {cart.length}
               </span>
               <span className="font-semibold text-sm">
-                ${calculateTotalPrice()}
+                ₹{calculateTotalPrice()}
               </span>
             </div>
             <div>
@@ -126,7 +148,7 @@ const Page = () => {
                 Shipping
               </label>
               <select className="block p-2 text-gray-600 w-full text-sm">
-                <option>Standard shipping - $10.00</option>
+                <option>Standard shipping - ₹10.00</option>
               </select>
             </div>
             <div className="py-10">

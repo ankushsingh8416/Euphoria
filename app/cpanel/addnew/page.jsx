@@ -497,7 +497,7 @@ const AddNew = () => {
             Size
           </label>
           <div className="flex gap-6 mt-4">
-            {["XS", "S", "M", "L", "XL"].map((size) => (
+            {["XS", "S", "M", "L", "XL", "XXL"].map((size) => (
               <div key={size} className="flex items-center gap-3">
                 <input
                   type="checkbox"

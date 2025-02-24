@@ -5,17 +5,20 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidMagicWand } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { MdDashboardCustomize, MdOutlineContactSupport } from "react-icons/md";
+import { cartContext } from "../context/cartContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const [dropDown, setdropDown] = useState(false);
   const [profile, setprofile] = useState({});
+  const { cart, wishList } = useContext(cartContext);
+
   const router = useRouter();
 
   const userClick = () => {
@@ -231,7 +234,7 @@ export default function Navbar() {
             </div>
 
             {/* Wishlist Icon */}
-            <Link href="/wishlist">
+            <Link href="/wishlist" className="relative">
               <Image
                 src="/images/wishlist-icon.svg"
                 alt="Wishlist"
@@ -239,9 +242,15 @@ export default function Navbar() {
                 height={24}
                 className="hidden lg:block cursor-pointer"
               />
+              {wishList.length > 0 && (
+                <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
+                  {wishList.length}
+                </div>
+              )}
             </Link>
+
             {/* Cart Icon */}
-            <Link href="/cart">
+            <Link href="/cart" className="relative">
               <Image
                 src="/images/cart-icon.svg"
                 alt="Cart"
@@ -249,6 +258,11 @@ export default function Navbar() {
                 height={24}
                 className="cursor-pointer"
               />
+              {cart.length > 0 && (
+                <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
+                  {cart.length}
+                </div>
+              )}
             </Link>
           </div>
         </div>

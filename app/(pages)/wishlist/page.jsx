@@ -29,7 +29,9 @@ const Page = () => {
           <div className="w-full  bg-white px-10 py-10">
             <div className="flex justify-between border-b pb-8">
               <h1 className="font-semibold text-2xl">Your Wish Lsit</h1>
-              <h2 className="font-semibold text-2xl">{wishList.length} Items</h2>
+              <h2 className="font-semibold text-2xl">
+                {wishList.length} Items
+              </h2>
             </div>
 
             {wishList.length === 0 ? (
@@ -66,10 +68,11 @@ const Page = () => {
                     </p>
                     <div className="flex items-center justify-between pt-5">
                       <div className="flex items-center">
-                        <p 
-                        onClick={() => addToCart(product._id)}
-                        className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer">
-                         Add to Cart
+                        <p
+                          onClick={() => addToCart(product._id)}
+                          className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer"
+                        >
+                          Add to Cart
                         </p>
                         <p
                           onClick={() => removeFromWishlist(index)}

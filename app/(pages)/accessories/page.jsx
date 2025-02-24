@@ -35,19 +35,25 @@ const Accessories = () => {
                 // Apply filters
                 for (const filter in selectedFilters) {
                     if (selectedFilters[filter].length > 0) {
-                        filteredProducts = filteredProducts.filter((product) => {
-                            if (filter === "Price") {
-                                return selectedFilters[filter].some((range) => {
-                                    const [min, max] = range.split("-").map(Number);
-                                    return product.price >= min && product.price <= max;
-                                });
-                            }
-                            return selectedFilters[filter].includes(
-                                product[filter.toLowerCase()]
-                            );
-                        });
+                      filteredProducts = filteredProducts.filter((product) => {
+                        if (filter === "Price") {
+                          return selectedFilters[filter].some((range) => {
+                            const [min, max] = range.split("-").map(Number);
+                            return product.price >= min && product.price <= max;
+                          });
+                        }
+                        if (filter === "Size") {
+                          return selectedFilters[filter].some((size) =>
+                            product.size.includes(size)
+                          );
+                        }
+          
+                        return selectedFilters[filter].includes(
+                          product[filter.toLowerCase()]
+                        );
+                      });
                     }
-                }
+                  }
 
                 // Apply sorting
                 filteredProducts.sort((a, b) => {
