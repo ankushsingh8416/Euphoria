@@ -6,10 +6,17 @@
 body {
   font-family: "Montserrat", serif;
   font-weight: 600;
-  background-color: #faf8f0;
+  /* background-color: #faf8f0; */
+  background: linear-gradient(117.86deg, #F8ECD7 -6.6%, #FCF9F5 95.63%);
+}
+.site-bg{
+  background: linear-gradient(117.86deg, #F8ECD7 -6.6%, #FCF9F5 95.63%);
 }
 .admin {
   width: calc(100% - 16rem);
+}
+.cart-shadow{
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 .crimson {
   font-family: "Crimson Pro", serif;

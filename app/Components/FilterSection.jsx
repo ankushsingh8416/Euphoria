@@ -242,7 +242,7 @@ export default function FilterSection() {
   }
 
   return (
-    <div className="p-4 relative bg-[#faf8f0] text-[#333]">
+    <div className="p-4 relative  text-[#333]">
       <div className="flex justify-between items-center mb-4">
         <div className="text-sm mb-4">
           <span className="text-gray-500">Home</span> |{" "}
