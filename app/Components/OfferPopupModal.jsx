@@ -40,7 +40,7 @@ const LuxuryOfferPopup = () => {
             <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 via-amber-300 to-yellow-600 rounded-xl opacity-70" />
 
             {/* Inner content with gold border effect */}
-            <div className="relative m-1 bg-gradient-to-br from-gray-50 to-amber-50 rounded-lg p-8">
+            <div className="relative m-1 bg-gradient-to-br from-gray-50 to-amber-50 rounded-lg md:p-8">
               {/* Decorative elements */}
               <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-yellow-300 to-amber-500 opacity-10 rounded-full -translate-x-12 -translate-y-12" />
               <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-300 to-amber-500 opacity-10 rounded-full translate-x-16 translate-y-16" />
@@ -78,16 +78,17 @@ const LuxuryOfferPopup = () => {
                     <div className="h-px w-16 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
                   </div>
 
-                  <h2 className="text-2xl font-bold text-amber-900 mb-3 text-center tracking-wide">
+                  <h2 className=" text-xl md:text-2xl font-bold text-amber-900 mb-3 text-center tracking-wide">
                     EUPHORIA COLLECTIONS
                   </h2>
 
-                  <p className="text-amber-800 text-[15px] mb-8 font-medium text-center  ">
+                  <p className="text-amber-800 text-[10px] md:text-[15px] mb-8 font-medium text-center  ">
                     Elevate your wardrobe with our finest curated pieces.
                     <br />A statement of true elegance awaits.
                   </p>
 
-                  <Link href={"/cart"}
+                  <Link
+                    href={"/cart"}
                     className="w-full bg-gradient-to-r from-amber-700 to-amber-900 hover:from-amber-800 hover:to-amber-950 text-amber-100 font-medium py-3 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
                     onClick={closeModal}
                   >
@@ -95,11 +96,15 @@ const LuxuryOfferPopup = () => {
                     <span className="tracking-wider">COMPLETE PURCHASE</span>
                   </Link>
 
-                  <Link href="/women"
+                  <Link
+                    href="/women"
                     className="w-full mt-4 bg-transparent hover:bg-amber-50
                     text-amber-800 text-sm font-medium py-2 rounded-lg
                     transition-colors duration-300 border text-center"
-                    onClick={closeModal} > Continue Exploring
+                    onClick={closeModal}
+                  >
+                    {" "}
+                    Continue Exploring
                   </Link>
 
                   <div className="mt-6 text-center">

@@ -74,7 +74,9 @@ export default function RootLayout({ children }) {
             </Link>
           </motion.div>
         )}
-        <LuxuryOfferPopup />
+
+        {pathname !== "/cpanel" && <LuxuryOfferPopup />}
+
         {/* Show GIF only on Home Page */}
         {pathname === "/" && <Gif />}
       </body>
