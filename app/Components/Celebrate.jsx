@@ -66,7 +66,7 @@ const Celebrate = () => {
           loop={true}
         >
           {products.map((product) => (
-            <SwiperSlide key={product.id}>
+            <SwiperSlide key={product._id}>
               <Link
                 href={{
                   pathname: `/productdetails/${product.page}/${product.title}`,

@@ -13,6 +13,7 @@ import {
   Crown,
   Check,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Page = () => {
   const { cart, removeFromCart, addToWishlist } = useContext(cartContext);
@@ -48,10 +49,11 @@ const Page = () => {
   };
 
   const handleApplyPromo = () => {
-    if (promoCode.trim().toLowerCase() === "NEWUSER15") {
+    if (promoCode.trim().toLowerCase() === "royal15") {
       setPromoApplied(true);
+      toast.success("Promo code applied successfully");
     } else {
-      alert("Invalid promo code");
+      toast.error("Invalid promo code");
     }
   };
 
@@ -62,7 +64,7 @@ const Page = () => {
         background: "linear-gradient(117.86deg, #F8ECD7 -6.6%, #FCF9F5 95.63%)",
       }}
     >
-      {/* Page Title with Royal Touch */}
+      {/* Page Title  */}
       <div className="max-w-6xl mx-auto mb-8">
         <div className="flex items-center justify-center md:justify-start">
           <Crown size={20} className="mr-2" style={{ color: "#1e381e" }} />
@@ -70,7 +72,7 @@ const Page = () => {
             className="text-2xl md:text-3xl font-bold tracking-tight text-center md:text-left"
             style={{ color: "#1e381e" }}
           >
-            Royal Collection
+            Shopping Cart
           </h1>
         </div>
       </div>

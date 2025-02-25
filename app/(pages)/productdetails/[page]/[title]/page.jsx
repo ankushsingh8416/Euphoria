@@ -14,7 +14,7 @@ import SimilerProduct from "@/app/Components/SimilerProduct";
 import { cartContext } from "@/app/context/cartContext";
 import Link from "next/link";
 // Shimmer effect CSS
-const shimmerClass = "animate-pulse bg-gray-200";
+const shimmerClass = "animate-pulse bg-[#f7e7ce]";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
@@ -45,6 +45,7 @@ const ProductDetails = () => {
 
   return (
     <>
+    
       {loading ? (
         <div className="w-full lg:w-[95%] mx-auto px-4 py-8">
           <div className="flex flex-col gap-10 lg:flex-row">
