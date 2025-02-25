@@ -5,17 +5,21 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidMagicWand } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { MdDashboardCustomize, MdOutlineContactSupport } from "react-icons/md";
+import { cartContext } from "../context/cartContext";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const [dropDown, setdropDown] = useState(false);
   const [profile, setprofile] = useState({});
+  const { cart, wishList } = useContext(cartContext);
+
   const router = useRouter();
 
   const userClick = () => {
@@ -42,15 +46,35 @@ export default function Navbar() {
       fetchUserData();
     }
   }, [session?.user?.id]); // Runs on refresh when session updates
+  const dropDownVariants = {
+    hidden: { opacity: 0, y: -20, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 15,
+      },
+    },
+    exit: { opacity: 0, y: -10, scale: 0.9 },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
 
   return (
     <>
       <div className="bg-[#1E381E]  text-white text-center py-2">
         <Link href="#" className="text-sm font-medium">
-          Shop At Special Prices |
+          Use Code:{" "}
           <Link href="/" className="underline">
-            Discover Now
-          </Link>
+            NEWUSER15
+          </Link>{" "}
+          for Extra Discount
         </Link>
       </div>
 
@@ -157,11 +181,49 @@ export default function Navbar() {
                 height={24}
                 className="cursor-pointer"
               />
+
               {dropDown && (
-                <div className="w-64 z-10 shadow-2xl absolute top-[55px] -left-[12rem] md:-left-36 bg-white rounded-lg p-4">
-                  <div className="flex items-center mb-4">
-                    <div className="ml-3 flex gap-4 items-center">
-                      <div className="rounded-full  overflow-hidden">
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={{
+                    hidden: { opacity: 0, y: -10, scale: 0.97 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      transition: {
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 25,
+                        duration: 0.3,
+                      },
+                    },
+                    exit: {
+                      opacity: 0,
+                      y: -10,
+                      scale: 0.97,
+                      transition: { duration: 0.2 },
+                    },
+                  }}
+                  className="w-64 z-20 shadow-lg absolute top-[55px] -left-[12rem] md:-left-36 bg-white rounded-lg p-3 border border-gray-100"
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.25,
+                      delay: 0.1,
+                    }}
+                    className="flex items-center p-2"
+                  >
+                    <div className="flex gap-3 items-center">
+                      <motion.div
+                        className="rounded-full overflow-hidden border border-gray-200 shadow-sm"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.2 }}
+                      >
                         <Image
                           src={profile?.profileImage || "/images/profile.webp"}
                           alt="user"
@@ -169,79 +231,134 @@ export default function Navbar() {
                           width={100}
                           height={100}
                         />
-                      </div>
-                      <h3 className="text-sm text-gray-900 font-bold capitalize">
+                      </motion.div>
+                      <h3 className="text-sm text-[#1e381e] font-medium capitalize">
                         {profile?.name || "Guest"}
                       </h3>
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="border-t border-gray-200"></div>
+                  <div className="border-t border-gray-200 my-1"></div>
 
-                  <ul className="mt-4 space-y-2">
-                    <Link
-                      href={`/edit/${session?.user?.name}?id=${session?.user?.id}`}
-                      className="block"
-                    >
-                      <li
-                        onClick={() => setdropDown((prevState) => !prevState)}
-                        className="w-full flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer"
+                  <motion.ul
+                    className="p-1.5"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: {
+                          staggerChildren: 0.05,
+                          delayChildren: 0.1,
+                        },
+                      },
+                    }}
+                  >
+                    {[
+                      {
+                        href: `/edit/${session?.user?.name}?id=${session?.user?.id}`,
+                        icon: <FiUser className="text-[#1e381e] w-4 h-4" />,
+                        label: "Edit Profile",
+                      },
+                      {
+                        href: "/cpanel/login",
+                        icon: (
+                          <MdDashboardCustomize className="text-[#1e381e] w-4 h-4" />
+                        ),
+                        label: "Dashboard",
+                      },
+                      {
+                        href: "/support",
+                        icon: (
+                          <BiSolidMagicWand className="text-[#1e381e] w-4 h-4" />
+                        ),
+                        label: "Euphoria AI",
+                      },
+                    ].map((item, index) => (
+                      <motion.li
+                        key={index}
+                        variants={{
+                          hidden: { opacity: 0, x: -5 },
+                          visible: {
+                            opacity: 1,
+                            x: 0,
+                            transition: {
+                              type: "spring",
+                              stiffness: 400,
+                              damping: 30,
+                            },
+                          },
+                        }}
+                        whileHover={{ x: 2 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        <div className="flex items-center">
-                          <FiUser className="w-5 h-5 mr-2 text-gray-500" />
-                          Edit Profile
-                        </div>
-                      </li>
-                    </Link>
+                        <Link
+                          href={item.href}
+                          className="block"
+                          onClick={() => setdropDown((prevState) => !prevState)}
+                        >
+                          <div className="flex items-center text-[#1e381e] hover:bg-gray-50 p-2.5 rounded-md cursor-pointer transition-all duration-200 group">
+                            <div className="p-1.5 rounded-md group-hover:bg-[#1e381e]/5 transition-colors duration-200">
+                              {item.icon}
+                            </div>
+                            <span className="ml-2 text-sm group-hover:text-[#1e381e] group-hover:font-medium transition-all duration-200">
+                              {item.label}
+                            </span>
+                          </div>
+                        </Link>
+                      </motion.li>
+                    ))}
 
-                    <Link
-                      href="/cpanel/login"
-                      className="block"
-                      onClick={() => setdropDown((prevState) => !prevState)}
+                    <motion.li
+                      variants={{
+                        hidden: { opacity: 0, x: -5 },
+                        visible: {
+                          opacity: 1,
+                          x: 0,
+                          transition: {
+                            type: "spring",
+                            stiffness: 400,
+                            damping: 30,
+                          },
+                        },
+                      }}
+                      whileHover={{ x: 2 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                        <MdDashboardCustomize className="w-5 h-5 mr-2 text-gray-500" />
-                        Dashboard
-                      </li>
-                    </Link>
-
-                    <Link
-                      href="/support"
-                      className="block"
-                      onClick={() => setdropDown((prevState) => !prevState)}
-                    >
-                      <li className="flex items-center text-gray-700 hover:bg-gray-100 p-2 rounded-md cursor-pointer">
-                        <BiSolidMagicWand className="w-5 h-5 mr-2 text-gray-500" />
-                        Euphoria AI
-                      </li>
-                    </Link>
-
-                    <li className="flex items-center text-gray-700 hover:bg-red-100 p-2 rounded-md cursor-pointer">
                       <button
-                        className="flex items-center text-red-500 w-full text-left"
+                        className="flex items-center text-red-600 hover:bg-red-50 p-2.5 rounded-md cursor-pointer w-full transition-all duration-200 group"
                         onClick={() => signOut()}
                       >
-                        <LucideLogOut className="w-5 h-5 mr-2" />
-                        Logout
+                        <div className="p-1.5 rounded-md group-hover:bg-red-100/30 transition-colors duration-200">
+                          <LucideLogOut className="w-4 h-4" />
+                        </div>
+                        <span className="ml-2 text-sm group-hover:font-medium transition-all duration-200">
+                          Logout
+                        </span>
                       </button>
-                    </li>
-                  </ul>
-                </div>
+                    </motion.li>
+                  </motion.ul>
+                </motion.div>
               )}
             </div>
 
             {/* Wishlist Icon */}
-            <Link href="/wishlist">
+            <Link href="/wishlist" className="relative hidden lg:block">
               <Image
                 src="/images/wishlist-icon.svg"
                 alt="Wishlist"
                 width={24}
                 height={24}
-                className="hidden lg:block cursor-pointer"
+                className=" cursor-pointer"
               />
+              <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
+                {wishList.length}
+              </div>
             </Link>
+
             {/* Cart Icon */}
-            <Link href="/cart">
+            <Link href="/cart" className="relative">
               <Image
                 src="/images/cart-icon.svg"
                 alt="Cart"
@@ -249,6 +366,9 @@ export default function Navbar() {
                 height={24}
                 className="cursor-pointer"
               />
+              <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
+                {cart.length}
+              </div>
             </Link>
           </div>
         </div>

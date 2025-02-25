@@ -25,7 +25,6 @@ const Celebrate = () => {
         const filteredProducts = response.data
           .filter((product) => product.page === "Wedding")
           .slice(0, 10); // Show only 10 products
-        console.log(filteredProducts);
         setProducts(filteredProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -67,7 +66,7 @@ const Celebrate = () => {
           loop={true}
         >
           {products.map((product) => (
-            <SwiperSlide key={product.id}>
+            <SwiperSlide key={product._id}>
               <Link
                 href={{
                   pathname: `/productdetails/${product.page}/${product.title}`,

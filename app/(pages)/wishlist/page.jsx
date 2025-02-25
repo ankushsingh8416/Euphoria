@@ -1,103 +1,113 @@
 "use client";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { cartContext } from "@/app/context/cartContext";
-import { useSession } from "next-auth/react";
+import { Heart, ShoppingCart, Trash2, ArrowRight, X } from "lucide-react";
 
 const Page = () => {
   const { wishList, removeFromWishlist, addToCart } = useContext(cartContext);
-  const [quantities, setQuantities] = useState([]);
-  const { data: session } = useSession();
- useEffect(() => {
-    setQuantities(wishList.map(() => 1));
-  }, [wishList]);
-  // const handleQuantityChange = (index, newQuantity) => {
-  //   const updatedQuantities = [...quantities];
-  //   updatedQuantities[index] = parseInt(newQuantity);
-  //   setQuantities(updatedQuantities);
-  // };
-  // const calculateTotalPrice = () => {
-  //   return wishList
-  //     .reduce(
-  //       (total, product, index) => total + product.price * quantities[index],
-  //       0
-  //     )
-  //     .toFixed(2);
-  // };
 
   return (
-    <>
-      <div className="container mx-auto mt-10">
-        <div className="sm:flex shadow-md my-10">
-          <div className="w-full  bg-white px-10 py-10">
-            <div className="flex justify-between border-b pb-8">
-              <h1 className="font-semibold text-2xl">Your Wish Lsit</h1>
-              <h2 className="font-semibold text-2xl">{wishList.length} Items</h2>
-            </div>
+    <div className="min-h-screen bg-gradient-to-b from-[#F8ECD7] to-[#FCF9F5]">
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        {/* Wishlist Summary */}
+        <div className="flex justify-between items-center border-b border-[#1e381e]/20 pb-6 mb-8">
+          <h2 className="text-xl md:text-2xl font-medium tracking-wide text-[#1e381e]">
+            Your Curated Collection
+          </h2>
+          <p className="text-sm md:text-base text-[#1e381e]/80 font-medium">
+            {wishList.length} {wishList.length === 1 ? "Item" : "Items"}
+          </p>
+        </div>
 
-            {wishList.length === 0 ? (
-              <p>Your wishlist is empty.</p>
-            ) : (
-              wishList.map((product, index) => (
+        {/* Wishlist Empty State */}
+        {wishList.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 px-4">
+            <div className="w-20 h-20 rounded-full bg-[#F8ECD7] flex items-center justify-center">
+              <Heart size={32} className="text-[#1e381e]" />
+            </div>
+            <p className="text-[#1e381e] mt-6 text-center text-lg font-medium">
+              Your wishlist awaits your discerning selections.
+            </p>
+            <a
+              href="/women"
+              className="mt-6 inline-flex items-center px-8 py-3 bg-[#1e381e] text-white rounded-none hover:bg-[#2a4a2a] transition-all duration-200 tracking-wide font-medium"
+            >
+              Explore Collection <ArrowRight size={16} className="ml-2" />
+            </a>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {wishList.map((product) => {
+              const productImage =
+                product.images?.length > 0
+                  ? product.images[0].defaultImage
+                  : "https://via.placeholder.com/300";
+
+              return (
                 <div
-                  key={index}
-                  className="md:flex items-stretch py-8 md:py-10 lg:py-8 border-t border-b border-gray-50"
+                  key={product._id}
+                  className="group relative overflow-hidden"
                 >
-                  <div className="md:w-2/4 2xl:w-1/4 w-full">
+                  {/* Remove Button - Top Right */}
+                  <button
+                    onClick={() => removeFromWishlist(product._id)}
+                    className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center bg-white bg-opacity-80 rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-[#1e381e] hover:text-white"
+                  >
+                    <X size={16} />
+                  </button>
+
+                  {/* Image Container */}
+                  <div className="relative aspect-[3/4] overflow-hidden bg-[#F8ECD7]/50">
                     <img
-                      src={product.images[0]?.defaultImage}
+                      src={productImage}
                       alt={product.title}
-                      className="h-[60%] object-center object-cover md:block hidden"
+                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                     />
-                    <img
-                      src={product.images[0]?.defaultImage}
-                      alt={product.title}
-                      className="md:hidden w-full h-full object-center object-cover"
-                    />
-                  </div>
-                  <div className="md:pl-0 pt-5 md:pt-0 md:w-8/12 2xl:w-3/4 flex flex-col justify-start">
-                    <div className="flex items-center justify-between w-full">
-                      <p className="text-base font-black leading-none text-gray-800">
-                        {product.title}
-                      </p>
+
+                    {/* Add to Cart Overlay */}
+                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-white bg-opacity-95 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                      <button
+                        onClick={() => addToCart(product)}
+                        className="w-full bg-[#1e381e] text-white py-3 text-sm tracking-wide font-medium hover:bg-[#2a4a2a] transition-colors flex items-center justify-center"
+                      >
+                        <ShoppingCart size={16} className="mr-2" /> Add to Cart
+                      </button>
                     </div>
-                    <p className="md:text-sm text-xs leading-3  text-gray-600 py-4">
-                      Color: {product.color}
-                    </p>
-                    <p className="md:text-sm text-xs leading-3 text-gray-600 pt-2">
-                      Height: 10 inches
-                    </p>
-                    <div className="flex items-center justify-between pt-5">
-                      <div className="flex items-center">
-                        <p 
-                        onClick={() => addToCart(product._id)}
-                        className="md:text-sm text-xs leading-3 underline text-gray-800 cursor-pointer">
-                         Add to Cart
-                        </p>
-                        <p
-                          onClick={() => removeFromWishlist(index)}
-                          className="md:text-sm text-xs leading-3 underline text-red-500 md:pl-5 pl-2 cursor-pointer"
-                        >
-                          Remove
-                        </p>
-                      </div>
-                      <p className="md:text-base text-sm font-black leading-none text-gray-800">
-                        ${(product.price * quantities[index]).toFixed(2)}
+                  </div>
+
+                  {/* Product Info */}
+                  <div className="mt-4 px-1">
+                    <h3 className="text-base font-medium text-[#1e381e] tracking-wide">
+                      {product.title}
+                    </h3>
+                    <div className="mt-1 flex justify-between items-center">
+                      <p className="text-[#1e381e] font-semibold">
+                        ₹{product.price?.toFixed(2) || "0.00"}
+                      </p>
+                      <p className="text-xs text-[#1e381e]/70 font-medium">
+                        {product.color || "Classic"}
                       </p>
                     </div>
                   </div>
                 </div>
-              ))
-            )}
-
-            <div className="mt-10">
-              <a href="/women" className="text-indigo-600 text-sm">
-                Continue Shopping
-              </a>
-            </div>
+              );
+            })}
           </div>
-        </div>
+        )}
+
+        {/* Continue Shopping */}
+        {wishList.length > 0 && (
+          <div className="mt-12 flex justify-center">
+            <a
+              href="/women"
+              className="inline-flex items-center px-6 py-3 text-sm font-medium text-[#1e381e] border-b border-[#1e381e] hover:text-[#2a4a2a] transition-colors tracking-wide"
+            >
+              Continue Exploring <ArrowRight size={16} className="ml-2" />
+            </a>
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

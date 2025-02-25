@@ -14,14 +14,14 @@ import SimilerProduct from "@/app/Components/SimilerProduct";
 import { cartContext } from "@/app/context/cartContext";
 import Link from "next/link";
 // Shimmer effect CSS
-const shimmerClass = "animate-pulse bg-gray-200";
+const shimmerClass = "animate-pulse bg-[#f7e7ce]";
 
 const ProductDetails = () => {
   const searchParams = useSearchParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const id = searchParams.get("id");
-  const {  addToCart,addToWishlist } = useContext(cartContext);
+  const { addToCart, addToWishlist } = useContext(cartContext);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -45,6 +45,7 @@ const ProductDetails = () => {
 
   return (
     <>
+    
       {loading ? (
         <div className="w-full lg:w-[95%] mx-auto px-4 py-8">
           <div className="flex flex-col gap-10 lg:flex-row">
@@ -170,12 +171,13 @@ const ProductDetails = () => {
                 </button>
               </Link>
               <Link href="/wishlist">
-              <button
-              onClick={() => addToWishlist(product)}
-               className="w-full flex items-center justify-center gap-2 border border-transparent py-3 rounded-md text-black transform transition-all duration-300 shadow-lg border-[#1e381e] text-sm lg:text-base">
-                <FaHeart className="text-red-500 text-xl" />
-                <span>Add to Wishlist</span>
-              </button>
+                <button
+                  onClick={() => addToWishlist(product)}
+                  className="w-full flex items-center justify-center gap-2 border border-transparent py-3 rounded-md text-black transform transition-all duration-300 shadow-lg border-[#1e381e] text-sm lg:text-base"
+                >
+                  <FaHeart className="text-red-500 text-xl" />
+                  <span>Add to Wishlist</span>
+                </button>
               </Link>
               <div className="mt-6 border-t pt-4">
                 <p className="text-xs lg:text-sm text-gray-500">
