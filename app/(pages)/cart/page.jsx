@@ -1,5 +1,7 @@
 "use client";
+
 import React, { useContext, useState, useEffect } from "react";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
 import {
@@ -60,6 +62,42 @@ const Page = () => {
       toast.error("Invalid promo code");
     }
   };
+// for payment
+const [orderID, setOrderID] = useState(null);
+const [success, setSuccess] = useState(false);
+const [error, setError] = useState(null);
+
+const createOrder = async () => {
+  try {
+    const response = await fetch("/api/paypal/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ total: calculateTotalPrice() }),
+    });
+    const data = await response.json();
+    setOrderID(data.orderID);
+    return data.orderID;
+  } catch (err) {
+    setError("Failed to create order");
+    return null;
+  }
+};
+
+const onApprove = async (data) => {
+  try {
+    const response = await fetch("/api/paypal/capture-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderID: data.orderID }),
+    });
+    const orderData = await response.json();
+    if (orderData.status === "COMPLETED") {
+      setSuccess(true);
+    }
+  } catch (err) {
+    setError("Payment capture failed");
+  }
+};
 
   return (
     <div
@@ -343,6 +381,7 @@ const Page = () => {
           </div>
 
           {/* Order Summary Section */}
+          <PayPalScriptProvider options={{ "client-id": "PAYPAL_CLIENT_ID" }}>
           <div className="w-full lg:w-1/3">
             <div
               className="bg-white rounded-xl lg:sticky lg:top-20"
@@ -487,7 +526,15 @@ const Page = () => {
                     </p>
                   )}
                 </div>
-
+            {/* PayPal Button */}
+            <div className="mt-6">
+              {success ? (
+                <p className="text-green-600 font-bold">Payment Successful!</p>
+              ) : (
+                <PayPalButtons createOrder={createOrder} onApprove={onApprove} />
+              )}
+              {error && <p className="text-red-600 font-bold">{error}</p>}
+            </div>
                 <button
                   className="w-full py-3.5 rounded-lg text-white font-medium text-center text-sm sm:text-base transition-all relative overflow-hidden"
                   style={{
@@ -496,7 +543,7 @@ const Page = () => {
                   }}
                 >
                   <span className="relative z-10 tracking-wider uppercase">
-                    Complete Purchase
+                    Complete Purchaseee
                   </span>
                   <div
                     className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-300"
@@ -543,6 +590,7 @@ const Page = () => {
               </div>
             </div>
           </div>
+          </PayPalScriptProvider>
         </div>
       </div>
 
