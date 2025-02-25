@@ -14,6 +14,7 @@ import {
   Check,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 const Page = () => {
   const { cart, removeFromCart, addToWishlist } = useContext(cartContext);
@@ -66,12 +67,12 @@ const Page = () => {
     >
       {/* Page Title  */}
       <div className="max-w-6xl mx-auto mb-8">
-          <h1
-            className="text-2xl md:text-3xl font-bold tracking-tight text-center md:text-left"
-            style={{ color: "#1e381e" }}
-          >
-            Shopping Cart
-          </h1>
+        <h1
+          className="text-2xl md:text-3xl font-bold tracking-tight text-center md:text-left"
+          style={{ color: "#1e381e" }}
+        >
+          Shopping Cart
+        </h1>
       </div>
 
       <div className="max-w-6xl mx-auto">
@@ -154,10 +155,14 @@ const Page = () => {
                                   zIndex: 0,
                                 }}
                               ></div>
-                              <div
-                                className="h-full w-full rounded-lg overflow-hidden relative z-10 bg-white border"
+                              <Link
+                                className="h-full w-full block rounded-lg overflow-hidden relative z-10 bg-white border"
                                 style={{
                                   borderColor: "rgba(30, 56, 30, 0.12)",
+                                }}
+                                href={{
+                                  pathname: `/productdetails/${product.page}/${product.title}`,
+                                  query: { id: product._id },
                                 }}
                               >
                                 <img
@@ -165,7 +170,7 @@ const Page = () => {
                                   alt={product.title || "Product Image"}
                                   className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
                                 />
-                              </div>
+                              </Link>
                             </div>
                           </div>
 
@@ -173,12 +178,16 @@ const Page = () => {
                             <div>
                               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                                 <div>
-                                  <h3
+                                  <Link
                                     className="text-base sm:text-lg font-bold tracking-tight text-center sm:text-left"
                                     style={{ color: "#1e381e" }}
+                                    href={{
+                                      pathname: `/productdetails/${product.page}/${product.title}`,
+                                      query: { id: product._id },
+                                    }}
                                   >
                                     {product.title}
-                                  </h3>
+                                  </Link>
 
                                   <div className="mt-2 space-y-1.5 text-center sm:text-left">
                                     <p className="flex items-center gap-2 justify-center sm:justify-start">
