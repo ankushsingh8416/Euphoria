@@ -66,15 +66,12 @@ const Page = () => {
     >
       {/* Page Title  */}
       <div className="max-w-6xl mx-auto mb-8">
-        <div className="flex items-center justify-center md:justify-start">
-          <Crown size={20} className="mr-2" style={{ color: "#1e381e" }} />
           <h1
             className="text-2xl md:text-3xl font-bold tracking-tight text-center md:text-left"
             style={{ color: "#1e381e" }}
           >
             Shopping Cart
           </h1>
-        </div>
       </div>
 
       <div className="max-w-6xl mx-auto">
@@ -89,7 +86,7 @@ const Page = () => {
                 className="p-5 sm:p-6 border-b flex justify-between items-center"
                 style={{ borderColor: "rgba(30, 56, 30, 0.1)" }}
               >
-                <h2 className="text-xl font-bold" style={{ color: "#1e381e" }}>
+                <h2 className="text-xl" style={{ color: "#1e381e" }}>
                   Your Selections
                 </h2>
                 <div
@@ -218,7 +215,7 @@ const Page = () => {
                                 </div>
 
                                 <p
-                                  className="text-lg sm:text-xl font-bold tracking-tight text-center sm:text-right"
+                                  className="text-lg sm:text-xl font-semibold tracking-tight text-center sm:text-right"
                                   style={{ color: "#1e381e" }}
                                 >
                                   ₹
