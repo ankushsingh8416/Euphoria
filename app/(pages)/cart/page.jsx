@@ -73,11 +73,11 @@ const createOrder = async () => {
     const response = await fetch("/api/paypal/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ total: calculateTotalPrice() }),
+      body: JSON.stringify({ totalAmount: calculateTotalPrice() }), // Fix key name
     });
     const data = await response.json();
-    setOrderID(data.orderID);
-    return data.orderID;
+    setOrderID(data.id); // PayPal returns 'id', not 'orderID'
+    return data.id;
   } catch (err) {
     setError("Failed to create order");
     return null;
@@ -99,6 +99,7 @@ const onApprove = async (data) => {
     setError("Payment capture failed");
   }
 };
+
 
   return (
     <div
@@ -390,7 +391,6 @@ const onApprove = async (data) => {
           </div>
 
           {/* Order Summary Section */}
-          <PayPalScriptProvider options={{ "client-id": "PAYPAL_CLIENT_ID" }}>
           <div className="w-full lg:w-1/3">
             <div
               className="bg-white rounded-xl lg:sticky lg:top-20"
@@ -544,7 +544,7 @@ const onApprove = async (data) => {
               )}
               {error && <p className="text-red-600 font-bold">{error}</p>}
             </div>
-                <button
+                {/* <button
                   className="w-full py-3.5 rounded-lg text-white font-medium text-center text-sm sm:text-base transition-all relative overflow-hidden"
                   style={{
                     backgroundColor: "#1e381e",
@@ -552,7 +552,7 @@ const onApprove = async (data) => {
                   }}
                 >
                   <span className="relative z-10 tracking-wider uppercase">
-                    Complete Purchaseee
+                    Complete Purchase
                   </span>
                   <div
                     className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-300"
@@ -562,7 +562,7 @@ const onApprove = async (data) => {
                       animation: "shine 3s ease-in-out infinite",
                     }}
                   ></div>
-                </button>
+                </button> */}
 
                 <div className="mt-6 space-y-4">
                   <div
@@ -599,7 +599,6 @@ const onApprove = async (data) => {
               </div>
             </div>
           </div>
-          </PayPalScriptProvider>
         </div>
       </div>
 
