@@ -50,20 +50,23 @@ export const Cartprovider = ({ children }) => {
       if (storedToken) {
         setAuthToken(storedToken);
         const decodedToken = jwt.decode(storedToken);
-        if (decodedToken?.isAdmin) {
-          router.push("/cpanel/dashboard");
-        } else {
-          router.push("/cpanel/login");
+  
+        // Redirect only if the user is on the login page
+        if (window.location.pathname === "/cpanel/login") {
+          if (decodedToken?.isAdmin) {
+            router.push("/cpanel/dashboard");
+          }
         }
       }
     }
-  }, [router]);
+  }, []);
+  
 
   // Update localStorage whenever cart or wishlist changes
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem("cart", JSON.stringify(cart));
-      console.log(cart)
+      console.log(cart);
     }
   }, [cart]);
 
@@ -89,12 +92,11 @@ export const Cartprovider = ({ children }) => {
               : item
           )
         : [...prevCart, { ...product, quantity: 1 }];
-  
+
       console.log("Cart after adding:", updatedCart);
       return updatedCart;
     });
   };
-  
 
   // Remove item from cart
   const removeFromCart = (productId) => {
@@ -115,7 +117,9 @@ export const Cartprovider = ({ children }) => {
 
   // Remove item from wishlist
   const removeFromWishlist = (productId) => {
-    setWishList((prevList) => prevList.filter((item) => item._id !== productId));
+    setWishList((prevList) =>
+      prevList.filter((item) => item._id !== productId)
+    );
   };
 
   // Update total products count
