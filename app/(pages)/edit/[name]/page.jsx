@@ -168,7 +168,8 @@ export default function EditProfile() {
                 <div
                   className="absolute inset-0 bg-cover bg-top"
                   style={{
-                    backgroundImage: "url('https://assets2.andaazfashion.com/media/images/home-page-creative/home-page-velvet-dresses-banner-04022025.jpg')", // Replace with your image path
+                    backgroundImage:
+                      "url('https://assets2.andaazfashion.com/media/images/home-page-creative/home-page-velvet-dresses-banner-04022025.jpg')", // Replace with your image path
                   }}
                 ></div>
               </div>

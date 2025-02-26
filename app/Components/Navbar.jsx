@@ -352,9 +352,11 @@ export default function Navbar() {
                 height={24}
                 className=" cursor-pointer"
               />
-              <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
-                {wishList.length}
-              </div>
+              {session && (
+                <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
+                  {wishList.length}
+                </div>
+              )}
             </Link>
 
             {/* Cart Icon */}
@@ -366,9 +368,11 @@ export default function Navbar() {
                 height={24}
                 className="cursor-pointer"
               />
-              <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
-                {cart.length}
-              </div>
+              {session && (
+                <div className="bg-[#1e381e] flex items-center justify-center text-white text-[10px] w-[16px] h-[16px] rounded-full absolute -top-1 -right-[0.6rem]">
+                  {cart.length}
+                </div>
+              )}
             </Link>
           </div>
         </div>

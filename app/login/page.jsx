@@ -46,7 +46,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-<Toaster /> 
+      <Toaster />
       <div className="bg-white shadow-md w-11/12 my-6 max-w-4xl flex flex-col lg:flex-row rounded-lg overflow-hidden">
         {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
@@ -128,11 +128,7 @@ export default function Login() {
               }`}
               disabled={loading}
             >
-              {loading ? (
-                <Loader className="animate-spin"  />
-              ) : (
-                "Log In"
-              )}
+              {loading ? <Loader className="animate-spin" /> : "Log In"}
             </button>
           </form>
 

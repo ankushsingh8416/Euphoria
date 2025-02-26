@@ -80,21 +80,23 @@ const RecentOrders = () => {
       try {
         const res = await fetch("/api/orders"); // Fetch orders from API
         const data = await res.json();
-    
+
         if (res.ok) {
           // Map the fetched orders
-          const mappedOrders = data.orders.map(order => ({
+          const mappedOrders = data.orders.map((order) => ({
             _id: order._id,
             productName: order.productName,
             quantity: order.quantity,
             price: order.price,
             date: order.date,
           }));
-    
+
           // Add new products without removing previous ones
-          setOrders(prevOrders => [
-            ...prevOrders, 
-            ...mappedOrders.filter(order => !prevOrders.some(prev => prev._id === order._id))
+          setOrders((prevOrders) => [
+            ...prevOrders,
+            ...mappedOrders.filter(
+              (order) => !prevOrders.some((prev) => prev._id === order._id)
+            ),
           ]);
         } else {
           console.error("Error fetching orders:", data.message);
@@ -103,11 +105,10 @@ const RecentOrders = () => {
         console.error("Failed to fetch orders:", error);
       }
     };
-    
-  
+
     fetchOrders();
   }, []);
-  
+
   return (
     <div className="p-6">
       <header className="mb-8">

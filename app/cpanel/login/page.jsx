@@ -1,45 +1,61 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { useState, useContext } from "react";
 import { useRouter } from "next/navigation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import OtpModal from "@/app/Components/OtpModal";
+import toast from "react-hot-toast";
+import Loader from "@/app/Components/Loader";
+import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
 
 export default function CpanelAuth() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { data: session } = useSession();
-
+  const { setToken } = useContext(cartContext);
+  const [email, setEmail] = useState(session?.user?.email || "");
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    console.log("Session Data:", session);
-  }, [session]);
-
-  const handleLogin = async (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
-
-    if (!session) {
-      alert("Session data is not available.");
+    if (!email) {
+      toast.error("Please enter your email address");
       return;
     }
 
-    const validEmail = session?.user?.email;
-    const validPassword = session?.user?.password;
+    setLoading(true);
 
-    if (email === validEmail && password === validPassword) {
-      router.push("/cpanel/dashboard");
-    } else {
-      alert("Email and password is not correct");
+    try {
+      const response = await fetch("/api/otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "send", email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success("OTP sent to your email!");
+        setShowOtpModal(true);
+      } else {
+        toast.error(data.message || "Failed to send OTP");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleOtpVerified = (token) => {
+    setToken(token);
+    router.push("/cpanel/dashboard");
+  };
   return (
     <div className="h-screen overflow-hidden flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-md w-full max-w-full flex flex-col lg:flex-row rounded-none">
-        {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
           <img
             src="/images/login.webp"
@@ -48,18 +64,24 @@ export default function CpanelAuth() {
           />
         </div>
 
-        {/* Right Side: Login Form */}
+        {showOtpModal && (
+          <OtpModal
+            email={email}
+            onVerified={handleOtpVerified}
+            onClose={() => setShowOtpModal(false)}
+          />
+        )}
+
         <div className="w-full lg:w-1/2 px-6 py-8 md:px-10 flex items-center justify-center">
           <div className="w-full max-w-md">
             <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center lg:text-left text-[#1E381E]">
               Admin Login
             </h1>
             <p className="text-sm text-gray-500 mb-6 text-center lg:text-left">
-              Please log in to access the admin control panel.
+              Please enter your email to receive an OTP for login.
             </p>
 
-            {/* Login Form */}
-            <form className="space-y-4" onSubmit={handleLogin}>
+            <form className="space-y-4" onSubmit={handleEmailSubmit}>
               <div className="relative">
                 <label
                   htmlFor="email"
@@ -80,67 +102,19 @@ export default function CpanelAuth() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#1E381E] focus:border-[#1E381E]"
                     required
-                  />
-                </div>
-              </div>
-
-              <div className="relative">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Password
-                </label>
-                <div className="relative">
-                  <FontAwesomeIcon
-                    icon={faLock}
-                    className="absolute size-4 left-3 top-3 text-gray-500"
-                  />
-                  <input
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-[#1E381E] focus:border-[#1E381E]"
-                    required
+                    disabled={loading}
                   />
                 </div>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f] transition-colors"
+                className="w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f] transition-colors flex justify-center items-center"
+                disabled={loading}
               >
-                Log In
+                {loading ? <Loader /> : "Continue"}
               </button>
-
-              <div className="text-center mt-4">
-                <Link
-                  href="/forgot-password"
-                  className="text-sm text-[#1E381E] hover:underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
             </form>
-
-            <div className="mt-8 text-center">
-              <p className="text-gray-500 text-xs">
-                By logging in, you agree to our{" "}
-                <Link href="/terms" className="text-[#1E381E] hover:underline">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link
-                  href="/privacy"
-                  className="text-[#1E381E] hover:underline"
-                >
-                  Privacy Policy
-                </Link>
-                .
-              </p>
-            </div>
           </div>
         </div>
       </div>
