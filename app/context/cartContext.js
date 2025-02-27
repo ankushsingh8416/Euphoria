@@ -166,6 +166,7 @@ export const Cartprovider = ({ children }) => {
     twoGrid,
     productGrid,
     cart,
+    setCart,
     addToCart,
     removeFromCart,
     addToWishlist,

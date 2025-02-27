@@ -72,7 +72,7 @@ export default function Navbar() {
         <Link href="#" className="text-sm font-medium">
           Use Code:{" "}
           <Link href="/" className="underline">
-            NEWUSER15
+          royal15
           </Link>{" "}
           for Extra Discount
         </Link>

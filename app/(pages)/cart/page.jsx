@@ -15,14 +15,17 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const { cart, removeFromCart, addToWishlist } = useContext(cartContext);
+  const { cart, removeFromCart, addToWishlist, setCart } =
+    useContext(cartContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
   const { data: session } = useSession();
-
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     // Update quantities when cart changes
     setQuantities(cart.map(() => 1));
@@ -56,6 +59,52 @@ const Page = () => {
     } else {
       toast.error("Invalid promo code");
     }
+  };
+
+  // Payment intigration with Razorpay
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  const handlePayment = async () => {
+    setLoading(true);
+    const res = await fetch("/api/razorpay", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: calculateTotalPrice() }),
+    });
+
+    const data = await res.json();
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      amount: data.amount,
+      currency: "INR",
+      name: "Euphoria",
+      description:
+        "At Euphoria, we ensure a seamless and secure payment experience for all our customers. We offer multiple payment options, including Razorpay, which supports UPI, credit/debit cards, net banking, and wallets.",
+      order_id: data.id,
+      handler: (response) => {
+        toast.success("Payment Successful");
+        setLoading(false);
+        setCart([]);
+        router.push("/");
+      },
+      theme: { color: "#1E381E" },
+
+      prefill: {
+        name: "Ankush Kumar",
+        email: "ankush@example.com",
+        contact: "9999999999",
+      },
+    };
+
+    new window.Razorpay(options).open();
+    setLoading(false);
   };
 
   return (
@@ -499,9 +548,11 @@ const Page = () => {
                     backgroundColor: "#1e381e",
                     boxShadow: "0 8px 15px rgba(30, 56, 30, 0.25)",
                   }}
+                  onClick={handlePayment}
+                  disabled={loading}
                 >
                   <span className="relative z-10 tracking-wider uppercase">
-                    Complete Purchase
+                    {loading ? "Processing..." : "Procedd to Pay"}
                   </span>
                   <div
                     className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-300"
