@@ -2,11 +2,11 @@ import Razorpay from "razorpay";
 
 export const POST = async (req) => {
   try {
-    const body = await req.json(); // Parse request body
+    const body = await req.json();
 
     const instance = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
+      key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_1DP5mmOlF5G5aa",
+      key_secret: process.env.RAZORPAY_KEY_SECRET || "h2BVoTwOnWXUnB8hVTVuUyys",
     });
 
     const options = {

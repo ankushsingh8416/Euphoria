@@ -16,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Loader from "@/app/Components/Loader";
 
 const Page = () => {
   const { cart, removeFromCart, addToWishlist, setCart } =
@@ -81,7 +82,7 @@ const Page = () => {
     const data = await res.json();
 
     const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_1DP5mmOlF5G5aa",
       amount: data.amount,
       currency: "INR",
       name: "Euphoria",
@@ -545,14 +546,31 @@ const Page = () => {
                 <button
                   className="w-full py-3.5 rounded-lg text-white font-medium text-center text-sm sm:text-base transition-all relative overflow-hidden"
                   style={{
-                    backgroundColor: "#1e381e",
-                    boxShadow: "0 8px 15px rgba(30, 56, 30, 0.25)",
+                    backgroundColor:
+                      cart.length === 0 ||
+                      parseFloat(calculateTotalPrice()) === 0
+                        ? "rgba(30, 56, 30, 0.5)"
+                        : "#1e381e", // Dimmed background when disabled
+                    boxShadow:
+                      cart.length === 0 ||
+                      parseFloat(calculateTotalPrice()) === 0
+                        ? "none"
+                        : "0 8px 15px rgba(30, 56, 30, 0.25)", // Remove shadow when disabled
+                    opacity:
+                      cart.length === 0 ||
+                      parseFloat(calculateTotalPrice()) === 0
+                        ? 0.7
+                        : 1, // Reduce opacity when disabled
                   }}
                   onClick={handlePayment}
-                  disabled={loading}
+                  disabled={
+                    loading ||
+                    cart.length === 0 ||
+                    parseFloat(calculateTotalPrice()) === 0
+                  }
                 >
                   <span className="relative z-10 tracking-wider uppercase">
-                    {loading ? "Processing..." : "Procedd to Pay"}
+                    {loading ?  <Loader /> : "Proceed to Pay"}
                   </span>
                   <div
                     className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-300"
@@ -560,6 +578,11 @@ const Page = () => {
                       background:
                         "linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.8) 30%, transparent 40%)",
                       animation: "shine 3s ease-in-out infinite",
+                      display:
+                        cart.length === 0 ||
+                        parseFloat(calculateTotalPrice()) === 0
+                          ? "none"
+                          : "block",
                     }}
                   ></div>
                 </button>
