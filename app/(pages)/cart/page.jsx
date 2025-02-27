@@ -17,18 +17,18 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Loader from "@/app/Components/Loader";
 
 const Page = () => {
-  const { cart, removeFromCart, addToWishlist } = useContext(cartContext);
+  const { cart, removeFromCart, addToWishlist, setCart } =
+    useContext(cartContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
   const { data: session } = useSession();
-  useEffect(() => {
-    setQuantities(cart.map(() => 1));
-  }, [cart]);
-  console.log("Cart data:", cart);
-
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     // Update quantities when cart changes
     setQuantities(cart.map(() => 1));
@@ -63,43 +63,52 @@ const Page = () => {
       toast.error("Invalid promo code");
     }
   };
-// for payment
-const [orderID, setOrderID] = useState(null);
-const [success, setSuccess] = useState(false);
-const [error, setError] = useState(null);
 
-const createOrder = async () => {
-  try {
-    const response = await fetch("/api/paypal/create-order", {
+  // Payment intigration with Razorpay
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
+  const handlePayment = async () => {
+    setLoading(true);
+    const res = await fetch("/api/razorpay", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ totalAmount: calculateTotalPrice() }), // Fix key name
+      body: JSON.stringify({ amount: calculateTotalPrice() }),
     });
-    const data = await response.json();
-    setOrderID(data.id); // PayPal returns 'id', not 'orderID'
-    return data.id;
-  } catch (err) {
-    setError("Failed to create order");
-    return null;
-  }
-};
 
-const onApprove = async (data) => {
-  try {
-    const response = await fetch("/api/paypal/capture-order", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ orderID: data.orderID }),
-    });
-    const orderData = await response.json();
-    if (orderData.status === "COMPLETED") {
-      setSuccess(true);
-    }
-  } catch (err) {
-    setError("Payment capture failed");
-  }
-};
+    const data = await res.json();
 
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_R9imru43nM8kiI",
+      amount: data.amount,
+      currency: "INR",
+      name: "Euphoria",
+      description:
+        "At Euphoria, we ensure a seamless and secure payment experience for all our customers. We offer multiple payment options, including Razorpay, which supports UPI, credit/debit cards, net banking, and wallets.",
+      order_id: data.id,
+      handler: (response) => {
+        toast.success("Payment Successful");
+        setLoading(false);
+        setCart([]);
+        router.push("/");
+      },
+      theme: { color: "#1E381E" },
+
+      prefill: {
+        name: "Ankush Kumar",
+        email: "ankush@example.com",
+        contact: "9999999999",
+      },
+    };
+
+    new window.Razorpay(options).open();
+    setLoading(false);
+  };
 
   return (
     <div
@@ -547,12 +556,31 @@ const onApprove = async (data) => {
                 {/* <button
                   className="w-full py-3.5 rounded-lg text-white font-medium text-center text-sm sm:text-base transition-all relative overflow-hidden"
                   style={{
-                    backgroundColor: "#1e381e",
-                    boxShadow: "0 8px 15px rgba(30, 56, 30, 0.25)",
+                    backgroundColor:
+                      cart.length === 0 ||
+                      parseFloat(calculateTotalPrice()) === 0
+                        ? "rgba(30, 56, 30, 0.5)"
+                        : "#1e381e", // Dimmed background when disabled
+                    boxShadow:
+                      cart.length === 0 ||
+                      parseFloat(calculateTotalPrice()) === 0
+                        ? "none"
+                        : "0 8px 15px rgba(30, 56, 30, 0.25)", // Remove shadow when disabled
+                    opacity:
+                      cart.length === 0 ||
+                      parseFloat(calculateTotalPrice()) === 0
+                        ? 0.7
+                        : 1, // Reduce opacity when disabled
                   }}
+                  onClick={handlePayment}
+                  disabled={
+                    loading ||
+                    cart.length === 0 ||
+                    parseFloat(calculateTotalPrice()) === 0
+                  }
                 >
                   <span className="relative z-10 tracking-wider uppercase">
-                    Complete Purchase
+                    {loading ?  <Loader /> : "Proceed to Pay"}
                   </span>
                   <div
                     className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-300"
@@ -560,6 +588,11 @@ const onApprove = async (data) => {
                       background:
                         "linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.8) 30%, transparent 40%)",
                       animation: "shine 3s ease-in-out infinite",
+                      display:
+                        cart.length === 0 ||
+                        parseFloat(calculateTotalPrice()) === 0
+                          ? "none"
+                          : "block",
                     }}
                   ></div>
                 </button> */}

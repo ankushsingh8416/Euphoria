@@ -72,7 +72,7 @@ export default function Navbar() {
         <Link href="#" className="text-sm font-medium">
           Use Code:{" "}
           <Link href="/" className="underline">
-            NEWUSER15
+          royal15
           </Link>{" "}
           for Extra Discount
         </Link>
@@ -127,6 +127,7 @@ export default function Navbar() {
             </button>
             <nav className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-center w-full space-y-4 lg:space-y-0 lg:space-x-8 py-12 lg:py-4 px-4 lg:px-0 text-gray-700">
               {[
+                "Home",
                 "Women",
                 "Men",
                 "Wedding",

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 // In-memory OTP storage
 const otpStore = new Map();
-const JWT_SECRET = "your-secret-key";
+const JWT_SECRET = "adminauthsecret";
 
 // Configure transporter
 const transporter = nodemailer.createTransport({
@@ -96,7 +96,7 @@ const sendOTP = async (email) => {
     <div class="container">
       <div class="header">
       <a href="https://euphoria-cloth.vercel.app/">
-        <img src="https://images.cbazaar.com/pl_images/bannerimages/CB_WP_Feb18.jpg" alt="Company Logo Banner" />
+        <img src="https://images.cbazaar.com/pl_images/bannerimages/CB_WP_Feb18.jpg" alt="Euphoria Banner" />
 
         </a>
       </div>

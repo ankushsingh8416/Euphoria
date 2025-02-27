@@ -131,6 +131,11 @@ const Gifting = () => {
                             alt={`${product.title} Hover`}
                             className="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                         />
+                          <img
+              src="/images/ribbon.webp"
+              alt=""
+              className="absolute  bottom-0 left-0 w-full "
+            />
                     </div>
                     <div className="mt-4">
                         <h3 className="text-sm font-medium uppercase truncate overflow-hidden whitespace-nowrap relative">
