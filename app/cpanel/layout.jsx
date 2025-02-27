@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import CpanelSidebar from "../Components/CpanelSidebar";
 import CpanelNavbar from "../Components/CpanelNavbar";
+import { CpanelProvider } from "./cpanelContext";
 
 const Layout = ({ children }) => {
   const { data: session, status } = useSession();
@@ -29,11 +30,13 @@ const Layout = ({ children }) => {
 
   return (
     <div>
-      {!isCpanelPage && <CpanelNavbar />}
-      <div className="flex">
-        {!isCpanelPage && <CpanelSidebar />}
-        <div className="w-full">{children}</div>
-      </div>
+      <CpanelProvider>
+        {!isCpanelPage && <CpanelNavbar />}
+        <div className="flex">
+          {!isCpanelPage && <CpanelSidebar />}
+          <div className="w-full">{children}</div>
+        </div>
+      </CpanelProvider>
     </div>
   );
 };

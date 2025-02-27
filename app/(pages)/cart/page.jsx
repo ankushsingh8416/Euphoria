@@ -100,9 +100,8 @@ const Page = () => {
       theme: { color: "#1E381E" },
 
       prefill: {
-        name: "Ankush Kumar",
-        email: "ankush@example.com",
-        contact: "9999999999",
+        name: session?.user?.name,
+        email: session?.user?.email,
       },
     };
 
@@ -580,7 +579,7 @@ const Page = () => {
                   }
                 >
                   <span className="relative z-10 tracking-wider uppercase">
-                    {loading ?  <Loader /> : "Proceed to Pay"}
+                    {loading ? <Loader /> : "Proceed to Pay"}
                   </span>
                   <div
                     className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-300"
