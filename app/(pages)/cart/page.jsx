@@ -82,7 +82,7 @@ const Page = () => {
     const data = await res.json();
 
     const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_1DP5mmOlF5G5aa",
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_R9imru43nM8kiI",
       amount: data.amount,
       currency: "INR",
       name: "Euphoria",
