@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import CpanelSidebar from "../Components/CpanelSidebar";
 import CpanelNavbar from "../Components/CpanelNavbar";
-import { CpanelProvider } from "./cpanelContext";
+import { CpanelProvider } from "./context/cpanelContext";
 
 const Layout = ({ children }) => {
   const { data: session, status } = useSession();

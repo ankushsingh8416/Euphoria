@@ -1,5 +1,6 @@
 "use client";
 import { createContext, useState, useEffect } from "react";
+import { OrderProvider } from "./orderContext";
 
 export const CpanelContext = createContext();
 
@@ -17,7 +18,10 @@ export const CpanelProvider = ({ children }) => {
         setPayments(data.payments);
 
         // Calculate total sum of all payments
-        const total = data.payments.reduce((sum, payment) => sum + payment.amount, 0);
+        const total = data.payments.reduce(
+          (sum, payment) => sum + payment.amount,
+          0
+        );
         setTotalPayments(total);
       } catch (error) {
         console.error("Error fetching payments:", error);
@@ -31,7 +35,7 @@ export const CpanelProvider = ({ children }) => {
 
   return (
     <CpanelContext.Provider value={{ payments, totalPayments, isLoading }}>
-      {children}
+      <OrderProvider>{children}</OrderProvider>
     </CpanelContext.Provider>
   );
 };

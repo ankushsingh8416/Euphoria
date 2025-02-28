@@ -1,252 +1,150 @@
 "use client";
-
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { FiMoreVertical } from "react-icons/fi";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { FaEdit, FaExchangeAlt, FaTrashAlt, FaEye } from "react-icons/fa";
-
-// Shimmer component for loading placeholders
-const Shimmer = ({ type }) => {
-  switch (type) {
-    case "id":
-      return <div className="h-4 w-16 bg-gray-300 rounded-md"></div>;
-    case "image":
-      return <div className="h-16 w-16 bg-gray-300 rounded-md"></div>;
-    case "title":
-      return <div className="h-4 w-32 bg-gray-300 rounded-md"></div>;
-    case "date":
-      return <div className="h-4 w-24 bg-gray-300 rounded-md"></div>;
-    case "customer":
-      return <div className="h-4 w-24 bg-gray-300 rounded-md"></div>;
-    case "email":
-      return <div className="h-4 w-32 bg-gray-300 rounded-md"></div>;
-    case "total":
-      return <div className="h-4 w-16 bg-gray-300 rounded-md"></div>;
-    case "status":
-      return <div className="h-4 w-20 bg-gray-300 rounded-md"></div>;
-    case "action":
-      return <div className="h-4 w-12 bg-gray-300 rounded-md"></div>;
-    default:
-      return <div className="h-4 w-16 bg-gray-300 rounded-md"></div>;
-  }
-};
+import React from "react";
+import { useOrders } from "../cpanel/context/orderContext";
+import OrderProduct from "./OrderProduct";
 
 const RecentOrders = () => {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { orders, userOrders, loading, products } = useOrders();
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get("/api/cart");
-        const products = response.data;
-        console.log(products);
-        const mappedOrders = products.map((product, index) => ({
-          id: index + 1 || "N/A",
-          product: product?.products[0]?.product?.title || "No Title",
-          image:
-            product?.products[0]?.product?.images[0].defaultImage ||
-            "https://via.placeholder.com/50",
-          date: new Date(product.createdAt).toLocaleString() || "N/A",
-          customer: product?.user?.name || "N/A",
-          email: product?.user?.email || "N/A",
-          total: `₹${product?.products[0]?.product?.price || "0.00"}`,
-          status: product?.products[0]?.product?.readyToShip
-            ? "Shipped"
-            : "Processing",
-        }));
-
-        setOrders(mappedOrders);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
-  }, []);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await fetch("/api/orders"); // Fetch orders from API
-        const data = await res.json();
-
-        if (res.ok) {
-          // Map the fetched orders
-          const mappedOrders = data.orders.map((order) => ({
-            _id: order._id,
-            productName: order.productName,
-            quantity: order.quantity,
-            price: order.price,
-            date: order.date,
-          }));
-
-          // Add new products without removing previous ones
-          setOrders((prevOrders) => [
-            ...prevOrders,
-            ...mappedOrders.filter(
-              (order) => !prevOrders.some((prev) => prev._id === order._id)
-            ),
-          ]);
-        } else {
-          console.error("Error fetching orders:", data.message);
-        }
-      } catch (error) {
-        console.error("Failed to fetch orders:", error);
-      }
-    };
-
-    fetchOrders();
-  }, []);
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-600 font-medium">Loading orders...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6">
-      <header className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">
-          Order Management Dashboard
-        </h1>
-        <p className="text-gray-600 mt-2">
-          Overview of recent orders and statuses.
-        </p>
-      </header>
+    <div className="bg-gray-50 min-h-screen">
+      <div className="max-w-6xl mx-auto p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-800">Recent Orders</h2>
+          <div className="flex space-x-2">
+            <button className="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Filter
+            </button>
+            <button className="px-4 py-2 bg-blue-600 rounded-md text-sm font-medium text-white hover:bg-blue-700">
+              Export
+            </button>
+          </div>
+        </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full text-sm text-left text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-100">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Order ID
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Image
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Product
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Date
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Customer
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Total
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Status
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {loading
-              ? Array.from({ length: 5 }).map((_, index) => (
-                  <tr key={index} className="bg-white border-b">
-                    <td className="px-6 py-4">
-                      <Shimmer type="id" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <Shimmer type="image" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <Shimmer type="title" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <Shimmer type="date" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <Shimmer type="customer" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <Shimmer type="total" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <Shimmer type="status" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <Shimmer type="action" />
-                    </td>
-                  </tr>
-                ))
-              : orders.map((order) => (
-                  <tr key={order.product.id} className="bg-white border-b">
-                    <td className="px-6 py-4">{order.id}</td>
-                    <td className="px-6 py-4">
-                      <img
-                        src={order?.image ?? "https://via.placeholder.com/100"}
-                        alt={order?.product ?? "No Product"}
-                        className="w-24 rounded-md shadow-lg"
-                      />
-                    </td>
-                    <td className="px-6 py-4">{order.product}</td>
-                    <td className="px-6 py-4">{order.date}</td>
-                    <td className="px-6 py-4 capitalize">
-                      {order.customer}
-                      <br />
-                      <span className="text-xs text-gray-400">
-                        {order.email}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">{order.total}</td>
-                    <td className="px-6 py-4">
+        {orders.length > 0 ? (
+          <div className="space-y-6">
+            {orders.map((order) => (
+              <div
+                key={order._id}
+                className="bg-white shadow rounded-lg overflow-hidden border border-gray-200"
+              >
+                {/* Order Header */}
+                <div className="px-6 py-4 bg-gray-50 border-b">
+                  <div className="flex flex-wrap items-center justify-between">
+                    <div className="mb-2 md:mb-0">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {userOrders[order.user]?.name
+                          ? `${userOrders[order.user]?.name}`
+                          : "Customer"}
+                      </h3>
+                      <p className="text-sm text-gray-500">{order.email}</p>
+                    </div>
+                    <div className="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4">
+                      <div>
+                        <span className="text-xs text-gray-500">ORDER ID</span>
+                        <p className="text-sm font-medium">{order._id.substring(0, 10)}...</p>
+                      </div>
+                      <div>
+                        <span className="text-xs text-gray-500">DATE</span>
+                        <p className="text-sm font-medium">
+                          {new Date(order.createdAt || Date.now()).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Order Details */}
+                <div className="px-6 py-4">
+                  <div className="flex flex-wrap justify-between mb-4 gap-4">
+                    <div>
+                      <span className="text-xs text-gray-500 block mb-1">PAYMENT STATUS</span>
                       <span
-                        className={`px-2 inline-flex whitespace-nowrap text-xs leading-5 font-semibold rounded-full ${
-                          order.status === "Processing"
-                            ? "bg-red-100 text-red-800"
-                            : "bg-green-100 text-green-800"
+                        className={`px-2 py-1 text-xs font-medium rounded ${
+                          order.paymentStatus === "Completed"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                         }`}
                       >
-                        {order.status}
+                        {order.paymentStatus}
                       </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger>
-                          <FiMoreVertical
-                            className="text-gray-700 hover:text-gray-500"
-                            size={20}
-                          />
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="bg-white shadow-lg rounded-lg w-48 py-2">
-                          <DropdownMenuLabel className="px-4 py-2 text-sm font-semibold text-gray-700">
-                            Order Actions
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator className="border-t border-gray-200 my-2" />
-                          <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
-                            <FaEye className="mr-2 text-blue-500" /> View
-                            Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
-                            <FaEdit className="mr-2 text-green-500" /> Edit
-                            Order
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
-                            <FaExchangeAlt className="mr-2 text-yellow-500" />{" "}
-                            Change Status
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
-                            <FaTrashAlt className="mr-2 text-red-500" /> Cancel
-                            Order
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
+                    </div>
+                    <div>
+                      <span className="text-xs text-gray-500 block mb-1">FULFILLMENT</span>
+                      <span className="px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">
+                        {order.fulfillmentStatus || "Processing"}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-xs text-gray-500 block mb-1">TOTAL AMOUNT</span>
+                      <span className="text-lg font-bold text-blue-600">₹{order.totalAmount}</span>
+                    </div>
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <h4 className="text-sm font-semibold text-gray-700 mb-3">Products ({order.products.length})</h4>
+                    <div className="space-y-3">
+                      {order.products.map((product) => {
+                        const productDetails = products[product.productId];
+                        return (
+                          productDetails && (
+                            <OrderProduct
+                              key={product._id}
+                              product={productDetails}
+                              qty={product.quantity}
+                            />
+                          )
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Order Footer */}
+                <div className="bg-gray-50 px-6 py-3 border-t flex justify-end">
+                  <button className="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 mr-2">
+                    View Details
+                  </button>
+                  <button className="px-4 py-2 bg-blue-600 rounded-md text-sm font-medium text-white hover:bg-blue-700">
+                    Update Status
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white shadow rounded-lg p-8 text-center">
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+              />
+            </svg>
+            <h3 className="mt-2 text-lg font-medium text-gray-900">No recent orders</h3>
+            <p className="mt-1 text-sm text-gray-500">
+              No orders have been placed recently.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

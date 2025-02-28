@@ -3,56 +3,52 @@ import User from "@/models/User";
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 
-// Handle POST request - Save cart data
 export async function POST(req) {
   try {
     await dbConnect();
-    const { user, products } = await req.json();
+    const { email, products, totalAmount } = await req.json();
 
-    console.log(user, products);
-    const existingUser = await User.findOneAndUpdate(
-      { email: user.email },
-      { name: user.name },
+    // Find or create the user
+    const user = await User.findOneAndUpdate(
+      { email },
+      { email },
       { new: true, upsert: true }
     );
 
-    // Create a separate cart entry for each product
-    const cartEntries = products.map((item) => ({
-      user: existingUser._id,
-      products: [{ product: item.productId, quantity: item.quantity || 1 }],
-    }));
+    // Create a new cart document
+    const cart = new Cart({
+      user: user._id,
+      email,
+      products,
+      totalAmount,
+    });
 
-    await Cart.insertMany(cartEntries);
+    await cart.save();
 
     return NextResponse.json(
-      { message: "Products added to cart successfully" },
+      { message: "Cart data stored successfully", cart },
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error storing cart data:", error);
     return NextResponse.json(
-      { error: "Failed to save cart data" },
+      { error: "Failed to store cart data" },
       { status: 500 }
     );
   }
 }
 
-// Handle GET request - Retrieve cart data
-export async function GET(req) {
+export async function GET() {
   try {
     await dbConnect();
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId"); // Get user ID from query params
 
-    const query = userId ? { user: userId } : {}; // Filter by user if provided
+    const carts = await Cart.find(); 
 
-    const carts = await Cart.find(query)
-      .populate("user")
-      .populate("products.product");
-
-    return NextResponse.json(carts, { status: 200 });
+    return NextResponse.json(carts);
   } catch (error) {
+    console.error("Error in GET /api/cart:", error);
     return NextResponse.json(
-      { error: "Failed to retrieve cart data" },
+      { error: "Error retrieving carts", details: error.message },
       { status: 500 }
     );
   }

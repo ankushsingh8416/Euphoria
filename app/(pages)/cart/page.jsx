@@ -30,7 +30,6 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   useEffect(() => {
-    // Update quantities when cart changes
     setQuantities(cart.map(() => 1));
   }, [cart.length]);
 
@@ -73,8 +72,23 @@ const Page = () => {
     document.body.appendChild(script);
   }, []);
 
+  // components/PaymentSuccess.js (or wherever your payment logic is)
   const handlePayment = async () => {
     setLoading(true);
+
+    // Prepare cart data for storage
+    const cartData = {
+      email: session.user.email,
+      products: cart.map((item, index) => ({
+        productId: item._id,
+        title: item.title,
+        price: item.price,
+        quantity: quantities[index],
+      })),
+      totalAmount: parseFloat(calculateTotalPrice()),
+    };
+
+    // Call Razorpay API
     const res = await fetch("/api/razorpay", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -88,17 +102,27 @@ const Page = () => {
       amount: data.amount,
       currency: "INR",
       name: "Euphoria",
-      description:
-        "At Euphoria, we ensure a seamless and secure payment experience for all our customers. We offer multiple payment options, including Razorpay, which supports UPI, credit/debit cards, net banking, and wallets.",
+      description: "Payment for your order",
       order_id: data.id,
-      handler: (response) => {
-        toast.success("Payment Successful");
+      handler: async (response) => {
+        // Store cart data in MongoDB after successful payment
+        const storeCartResponse = await fetch("/api/cart", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cartData),
+        });
+
+        if (storeCartResponse.ok) {
+          toast.success("Payment Successful! Cart data stored.");
+          setCart([]); // Clear the cart
+          router.push("/"); // Redirect to home page
+        } else {
+          toast.error("Failed to store cart data.");
+        }
+
         setLoading(false);
-        setCart([]);
-        router.push("/");
       },
       theme: { color: "#1E381E" },
-
       prefill: {
         name: session?.user?.name,
         email: session?.user?.email,

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import React from "react";
+import { FaWallet } from "react-icons/fa";
 import { FiHome, FiBox, FiShoppingCart, FiGrid, FiSettings } from "react-icons/fi";
 
 const CpanelSidebar = () => {
@@ -34,9 +35,9 @@ const CpanelSidebar = () => {
 
           {/* Categories */}
           <li className="rounded-lg hover:bg-gray-700 cursor-pointer transition">
-            <Link href="/cpanel/category" className="flex items-center gap-0 md:gap-4 p-2 md:p-3">
-              <FiGrid className="text-xl" />
-              <span className="text-sm font-medium hidden md:block">Categories</span>
+            <Link href="/cpanel/payments " className="flex items-center gap-0 md:gap-4 p-2 md:p-3">
+              <FaWallet className="text-xl" />
+              <span className="text-sm font-medium hidden md:block">Payments </span>
             </Link>
           </li>
 

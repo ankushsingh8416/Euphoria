@@ -1,9 +1,16 @@
+"use client";
 import Card from "@/app/Components/Card";
 import Graph from "@/app/Components/Graph";
 import RecentOrders from "@/app/Components/RecentOrders ";
 import RoundChart from "@/app/Components/RoundChart";
+import { useContext } from "react";
+import { CpanelContext } from "../context/cpanelContext";
 
 const Dashboard = () => {
+  const { totalPayments } = useContext(CpanelContext);
+  const formatTotalAmount = (amount) => {
+    return `₹${(amount / 100).toLocaleString("en-IN")}`;
+  };
   const icons = {
     revenue: "/images/icon1.png",
     sales: "/images/icon2.png",
@@ -16,7 +23,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <Card
           title="Total Revenue"
-          value="$75,500"
+          value={formatTotalAmount(totalPayments)}
           icon={icons.revenue}
           percentage="+10%"
         />
