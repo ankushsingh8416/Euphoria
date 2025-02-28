@@ -15,7 +15,7 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import { MdOutlineAccountBalance } from "react-icons/md";
-import { CpanelContext } from "../cpanelContext";
+import { CpanelContext } from "../context/cpanelContext";
 
 const PaymentHistory = () => {
   const { payments, isLoading, totalPayments } = useContext(CpanelContext);
