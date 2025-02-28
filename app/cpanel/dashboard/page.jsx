@@ -1,16 +1,20 @@
 "use client";
 import Card from "@/app/Components/Card";
 import Graph from "@/app/Components/Graph";
-import RecentOrders from "@/app/Components/RecentOrders ";
 import RoundChart from "@/app/Components/RoundChart";
 import { useContext } from "react";
 import { CpanelContext } from "../context/cpanelContext";
+import { useOrders } from "../context/orderContext";
+import RecentOrders from "@/app/Components/RecentOrders ";
 
 const Dashboard = () => {
   const { totalPayments } = useContext(CpanelContext);
+  const { orders, products } = useOrders();
+
   const formatTotalAmount = (amount) => {
     return `₹${(amount / 100).toLocaleString("en-IN")}`;
   };
+
   const icons = {
     revenue: "/images/icon1.png",
     sales: "/images/icon2.png",
@@ -18,32 +22,47 @@ const Dashboard = () => {
     balance: "/images/icon4.png",
   };
 
+  // Calculate balance value and percentage change
+  const balanceValue = totalPayments + 2000000;
+  const balancePercentage =
+    totalPayments !== 0
+      ? ((balanceValue - totalPayments) / totalPayments) * 100
+      : 0;
+
+  // Calculate total sales and percentage change
+  const previousSales = 100;
+  const totalSales = (Object.keys(products).length + 1) * 15;
+  const salesPercentage =
+    previousSales !== 0
+      ? ((totalSales - previousSales) / previousSales) * 100
+      : 0;
+
   return (
     <div className="p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         <Card
           title="Total Revenue"
-          value={formatTotalAmount(totalPayments)}
+          value={formatTotalAmount(balanceValue)}
           icon={icons.revenue}
-          percentage="+10%"
+          percentage={`${balancePercentage.toFixed(2)}%`}
         />
         <Card
           title="Total Sales"
-          value="31,500"
+          value={totalSales}
           icon={icons.sales}
-          percentage="+15%"
+          percentage={`${salesPercentage.toFixed(2)}%`}
         />
         <Card
-          title="Product SKU"
-          value="247"
+          title="Total Orders"
+          value={orders.length}
           icon={icons.sku}
           percentage="0%"
         />
         <Card
           title="Balance"
-          value="$24,500"
+          value={formatTotalAmount(balanceValue)}
           icon={icons.balance}
-          percentage="-25%"
+          percentage={`${balancePercentage.toFixed(2)}%`}
         />
       </div>
 
@@ -57,7 +76,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className=" w-full">
+      <div className="my-8 w-full">
         <RecentOrders />
       </div>
     </div>
