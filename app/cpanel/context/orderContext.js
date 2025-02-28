@@ -27,7 +27,9 @@ export const OrderProvider = ({ children }) => {
           response.data.map(async (order) => {
             if (order.user) {
               try {
-                const userResponse = await axios.get(`/api/users/${order.user}`);
+                const userResponse = await axios.get(
+                  `/api/users/${order.user}`
+                );
                 userOrdersData[order.user] = userResponse.data;
               } catch (userError) {
                 console.error(`Error fetching user ${order.user}:`, userError);
@@ -58,9 +60,8 @@ export const OrderProvider = ({ children }) => {
         );
 
         setUserOrders(userOrdersData);
-        setProducts(productData);
-        console.log("User Orders:", userOrdersData);
-        console.log("Product Data:", productData);
+        setProducts(productData); // Store productData in state
+     
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -72,7 +73,9 @@ export const OrderProvider = ({ children }) => {
   }, []);
 
   return (
-    <OrderContext.Provider value={{ orders, userOrders, products, loading }}>
+    <OrderContext.Provider
+      value={{ orders, userOrders, products, setProducts, loading }}
+    >
       {children}
     </OrderContext.Provider>
   );
@@ -80,3 +83,6 @@ export const OrderProvider = ({ children }) => {
 
 // Custom Hook for using OrderContext
 export const useOrders = () => useContext(OrderContext);
+
+// Export productData separately
+export const getProductData = () => products;
