@@ -1,6 +1,6 @@
 "use client";
 
-import { cartContext } from "@/app/context/cartCntext/cartContext";
+
 import React, { useContext, useEffect, useState } from "react";
 import { useOrders } from "../cpanel/context/orderContext"
 import { SlHeart } from "react-icons/sl";

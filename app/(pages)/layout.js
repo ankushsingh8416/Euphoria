@@ -3,7 +3,6 @@
 import React, { useEffect } from "react";
 import FilterSection from "../Components/FilterSection";
 import { usePathname } from "next/navigation";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 const Layout = ({ children }) => {
   const pathname = usePathname();
 
@@ -26,12 +25,10 @@ const Layout = ({ children }) => {
   }, [pathname]);
 
   return (
-        <PayPalScriptProvider options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}>
     <div>
       {!isNoHeaderFooterRoute && <FilterSection />}
       {children}
     </div>
-    </PayPalScriptProvider>
   );
 };
 

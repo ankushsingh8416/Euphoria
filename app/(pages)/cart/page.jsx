@@ -569,59 +569,8 @@ const Page = () => {
                     </p>
                   )}
                 </div>
-            {/* PayPal Button */}
-            <div className="mt-6">
-              {success ? (
-                <p className="text-green-600 font-bold">Payment Successful!</p>
-              ) : (
-                <PayPalButtons createOrder={createOrder} onApprove={onApprove} />
-              )}
-              {error && <p className="text-red-600 font-bold">{error}</p>}
-            </div>
-                {/* <button
-                  className="w-full py-3.5 rounded-lg text-white font-medium text-center text-sm sm:text-base transition-all relative overflow-hidden"
-                  style={{
-                    backgroundColor:
-                      cart.length === 0 ||
-                      parseFloat(calculateTotalPrice()) === 0
-                        ? "rgba(30, 56, 30, 0.5)"
-                        : "#1e381e", // Dimmed background when disabled
-                    boxShadow:
-                      cart.length === 0 ||
-                      parseFloat(calculateTotalPrice()) === 0
-                        ? "none"
-                        : "0 8px 15px rgba(30, 56, 30, 0.25)", // Remove shadow when disabled
-                    opacity:
-                      cart.length === 0 ||
-                      parseFloat(calculateTotalPrice()) === 0
-                        ? 0.7
-                        : 1, // Reduce opacity when disabled
-                  }}
-                  onClick={handlePayment}
-                  disabled={
-                    loading ||
-                    cart.length === 0 ||
-                    parseFloat(calculateTotalPrice()) === 0
-                  }
-                >
-                  <span className="relative z-10 tracking-wider uppercase">
-                    {loading ? <Loader /> : "Proceed to Pay"}
-                  </span>
-                  <div
-                    className="absolute inset-0 opacity-0 hover:opacity-20 transition-opacity duration-300"
-                    style={{
-                      background:
-                        "linear-gradient(45deg, transparent 20%, rgba(255,255,255,0.8) 30%, transparent 40%)",
-                      animation: "shine 3s ease-in-out infinite",
-                      display:
-                        cart.length === 0 ||
-                        parseFloat(calculateTotalPrice()) === 0
-                          ? "none"
-                          : "block",
-                    }}
-                  ></div>
-                </button> */}
-
+          
+               
                 <div className="mt-6 space-y-4">
                   <div
                     className="grid grid-cols-3 gap-2 p-4 rounded-lg"
