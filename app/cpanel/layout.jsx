@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import CpanelSidebar from "../Components/CpanelSidebar";
 import CpanelNavbar from "../Components/CpanelNavbar";
 import { CpanelProvider } from "./context/cpanelContext";
-
+import "./style.css";
 const Layout = ({ children }) => {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <div>
+    <div className="cpanel">
       <CpanelProvider>
         {!isCpanelPage && <CpanelNavbar />}
         <div className="flex">

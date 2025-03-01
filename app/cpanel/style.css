@@ -1,0 +1,19 @@
+.cpanel {
+  background: #f1f6ff;
+}
+.button {
+  background: linear-gradient(180deg, #8c83f7 0, #4136c1 100%);
+  box-shadow: 0 6px 12px #766de880;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 30px;
+  transition: all 300ms 0.05s;
+  border-radius: 5px;
+}
+
+.button:hover {
+  transform: scale(0.96);
+}

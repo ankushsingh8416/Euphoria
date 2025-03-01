@@ -61,15 +61,11 @@ const CpanelNavbar = () => {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
-              className="bg-gray-100 px-3 md:px-5 py-2 rounded-full shadow-md text-gray-700 flex items-center gap-3 hover:bg-gray-200"
+              className="button flex items-center gap-3 px-6 py-3 text-sm "
             >
-              <HiOutlineUserCircle className="text-gray-600 text-xl md:text-2xl" />
+              <HiOutlineUserCircle className=" text-xl md:text-2xl" />
               <span className="hidden md:block font-medium">Admin</span>
-              <FaChevronDown
-                className={`hidden md:block text-sm transition-transform duration-300 ${
-                  showDropdown ? "rotate-180" : ""
-                }`}
-              />
+
             </button>
 
             {showDropdown && (
