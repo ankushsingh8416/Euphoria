@@ -19,15 +19,27 @@ const SmoothScrollProvider = ({ children }) => {
   useEffect(() => {
     if (!LocomotiveScroll || pathname !== "/") return;
 
-    // Initialize Locomotive Scroll only on "/"
     scrollInstanceRef.current = new LocomotiveScroll({
       el: scrollRef.current,
       smooth: true,
-      lerp: 0.075,
+      lerp: 0.1, // Faster & smoother
       multiplier: 2,
+      touchMultiplier: 0.5,
     });
 
+    // Ensure scroll updates dynamically
+    setTimeout(() => {
+      scrollInstanceRef.current?.update();
+    }, 500);
+
+    // Observe DOM changes and update scroll height dynamically
+    const observer = new ResizeObserver(() => {
+      scrollInstanceRef.current?.update();
+    });
+    observer.observe(scrollRef.current);
+
     return () => {
+      observer.disconnect();
       scrollInstanceRef.current?.destroy();
     };
   }, [LocomotiveScroll, pathname]);
@@ -37,17 +49,18 @@ const SmoothScrollProvider = ({ children }) => {
 
     if (scrollInstanceRef.current) {
       scrollInstanceRef.current.scrollTo(0, { duration: 0, disableLerp: true });
+      scrollInstanceRef.current.update(); // Update scroll calculations
     } else {
       window.scrollTo(0, 0);
     }
-  }, [pathname]);
+  }, [pathname, children]);
 
   if (pathname !== "/") {
-    return <>{children}</>; // Return children without animation on other pages
+    return <>{children}</>; // No animation on other pages
   }
 
   return (
-    <div ref={scrollRef} data-scroll-container>
+    <div ref={scrollRef} data-scroll-container style={{ minHeight: "100vh" }}>
       {children}
     </div>
   );
