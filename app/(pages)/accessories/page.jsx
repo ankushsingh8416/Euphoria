@@ -1,22 +1,26 @@
 "use client";
 
-import { cartContext } from "@/app/context/cartContext";
+import { cartContext } from "@/app/context/cartCntext/cartContext";
 import React, { useContext, useEffect, useState } from "react";
+import { useOrders } from "../cpanel/context/orderContext"
 import { SlHeart } from "react-icons/sl";
 import axios from "axios";
 import Link from "next/link";
+import { cartContext } from "@/app/context/CartContext";
+import { filterContext } from "@/app/context/FilterContext";
+import { gridContext } from "@/app/context/GridContext";
+
 
 const Accessories = () => {
     const {
-        selectedFilters,
-        sortOption,
         setProducts,
         totalProducts,
         setTotalProducts,
-        products,
-        productGrid,
-        addToCart
-    } = useContext(cartContext);
+        products
+    } = useContext(useOrders);
+    const { addToCart } = useContext(cartContext);
+    const { selectedFilters, sortOption } = useContext(filterContext);
+    const { productGrid } = useContext(gridContext);
 
     const [loading, setLoading] = useState(false);
 

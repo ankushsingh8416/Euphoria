@@ -2,7 +2,6 @@
 
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import { Cartprovider } from "./context/cartContext";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
@@ -14,6 +13,7 @@ import SmoothScrollProvider from "./Components/SmoothScroll";
 import Gif from "./Components/Gif";
 import EnhancedOfferPopup from "./Components/OfferPopupModal";
 import LuxuryOfferPopup from "./Components/OfferPopupModal";
+import { AppProviders } from "./context";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -28,12 +28,12 @@ export default function RootLayout({ children }) {
       <body>
         <SmoothScrollProvider>
           <SessionProviderWrapper>
-            <Cartprovider>
+          <AppProviders>
               <Toaster />
               {!isNoHeaderFooterRoute && <Navbar />}
               {children}
               {!isNoHeaderFooterRoute && <Footer />}
-            </Cartprovider>
+              </AppProviders>
           </SessionProviderWrapper>
         </SmoothScrollProvider>
 

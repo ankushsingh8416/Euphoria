@@ -10,15 +10,17 @@ import toast from "react-hot-toast";
 import { BiSolidMagicWand } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { MdDashboardCustomize, MdOutlineContactSupport } from "react-icons/md";
-import { cartContext } from "../context/cartContext";
+import { CartContext } from "../context/CartContext";
 import { motion } from "framer-motion";
+import { WishlistContext } from "../context/WishlistContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const [dropDown, setdropDown] = useState(false);
   const [profile, setprofile] = useState({});
-  const { cart, wishList } = useContext(cartContext);
+  const { cart } = useContext(CartContext);
+  const {  wishList } = useContext(WishlistContext);
 
   const router = useRouter();
 

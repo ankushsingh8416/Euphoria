@@ -1,10 +1,13 @@
 "use client";
 import React, { useContext } from "react";
-import { cartContext } from "@/app/context/cartContext";
 import { Heart, ShoppingCart, Trash2, ArrowRight, X } from "lucide-react";
+import { WishlistContext } from "@/app/context/WishlistContext";
+import { CartContext } from "@/app/context/CartContext";
 
 const Page = () => {
-  const { wishList, removeFromWishlist, addToCart } = useContext(cartContext);
+  const { wishList, removeFromWishlist } = useContext(WishlistContext);
+  const { addToCart } = useContext(CartContext);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#F8ECD7] to-[#FCF9F5]">

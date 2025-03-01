@@ -11,8 +11,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import SimilerProduct from "@/app/Components/SimilerProduct";
-import { cartContext } from "@/app/context/cartContext";
 import Link from "next/link";
+import { WishlistContext } from "@/app/context/WishlistContext";
+import { CartContext } from "@/app/context/CartContext";
 // Shimmer effect CSS
 const shimmerClass = "animate-pulse bg-[#f7e7ce]";
 
@@ -21,7 +22,9 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const id = searchParams.get("id");
-  const { addToCart, addToWishlist } = useContext(cartContext);
+  const { addToCart} = useContext(CartContext);
+  const { addToWishlist } = useContext(WishlistContext);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);

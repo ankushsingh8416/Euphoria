@@ -1,22 +1,25 @@
 "use client";
 
-import { cartContext } from "@/app/context/cartContext";
 import React, { useContext, useEffect, useState } from "react";
 import { SlHeart } from "react-icons/sl";
 import axios from "axios";
 import Link from "next/link";
+import { FilterContext } from "@/app/context/FilterContext";
+import { GridContext } from "@/app/context/GridContext";
+import { CartContext } from "@/app/context/CartContext";
+import { useOrders } from "@/app/cpanel/context/orderContext";
 
 const Women = () => {
-  const {
-    selectedFilters,
-    sortOption,
-    setProducts,
-    totalProducts,
-    setTotalProducts,
-    products,
-    productGrid,
-    addToCart,
-  } = useContext(cartContext);
+ const {
+                setProducts,
+                totalProducts,
+                setTotalProducts,
+                products
+            } = useContext(useOrders);
+            const { addToCart } = useContext(CartContext);
+            const { selectedFilters, sortOption } = useContext(FilterContext);
+            const { productGrid } = useContext(GridContext);
+
 
   const [loading, setLoading] = useState(false);
 

@@ -6,10 +6,10 @@ import { HiOutlineUserCircle } from "react-icons/hi";
 import { FaChevronDown } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
-import { cartContext } from "../context/cartContext";
+import { AuthTokenContext } from "../context/AuthTokenContext";
 
 const CpanelNavbar = () => {
-  const { authToken } = useContext(cartContext);
+  const { authToken } = useContext(AuthTokenContext);
   const [userEmail, setUserEmail] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);

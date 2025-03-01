@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useContext, useState, useEffect } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
 import {
   ShoppingBag,
@@ -19,10 +17,14 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/Components/Loader";
+import { CartContext } from "@/app/context/CartContext";
+import { WishlistContext } from "@/app/context/WishlistContext";
 
 const Page = () => {
-  const { cart, removeFromCart, addToWishlist, setCart } =
-    useContext(cartContext);
+  const { cart, removeFromCart, setCart } =
+    useContext(CartContext);
+    const { addToWishlist } =
+    useContext(WishlistContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
