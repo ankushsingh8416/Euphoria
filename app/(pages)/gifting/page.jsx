@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { SlHeart } from "react-icons/sl";
 import axios from "axios";
 import Link from "next/link";
+import { ProductContext } from "@/app/context/ProductContext";
 
 const Gifting = () => {
     const {
@@ -16,7 +17,7 @@ const Gifting = () => {
         products,
         productGrid,
         addToCart
-    } = useContext(cartContext);
+    } = useContext(ProductContext);
 
     const [loading, setLoading] = useState(false);
 

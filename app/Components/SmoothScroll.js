@@ -22,11 +22,17 @@ const SmoothScrollProvider = ({ children }) => {
     scrollInstanceRef.current = new LocomotiveScroll({
       el: scrollRef.current,
       smooth: true,
-      lerp: 0.1, // Faster & smoother
-      multiplier: 2,
-      touchMultiplier: 0.5,
+      lerp: 0.1, // Lower value for smoother scrolling
+      multiplier: 1, // Lower multiplier for slower scrolling
+      touchMultiplier: 0.5, // Adjust touch sensitivity
+      firefoxMultiplier: 10, // Adjust for smoother scrolling on Firefox
+      smartphone: {
+        smooth: true, // Enable smooth scrolling on smartphones
+      },
+      tablet: {
+        smooth: true, // Enable smooth scrolling on tablets
+      },
     });
-
     // Ensure scroll updates dynamically
     setTimeout(() => {
       scrollInstanceRef.current?.update();

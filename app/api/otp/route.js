@@ -122,39 +122,34 @@ const sendOTP = async (email) => {
   </body>
   </html>
     `,
-    text: `Your OTP is ${otp}`, // Plain text version for email clients that don't support HTML
+    text: `Your OTP is ${otp}`, 
   });
   return { success: true, message: "OTP sent successfully" };
 };
 
-// Function to verify OTP
+
+// Verify OTP
 const verifyOTP = (email, otp) => {
   const stored = otpStore.get(email);
   if (!stored) return { success: false, message: "No OTP found" };
-  if (stored.expiresAt < Date.now())
-    return { success: false, message: "OTP expired" };
+  if (stored.expiresAt < Date.now()) return { success: false, message: "OTP expired" };
   if (stored.otp !== otp) return { success: false, message: "Invalid OTP" };
 
   otpStore.delete(email);
+  const token = jwt.sign({ email, isAdmin: true }, JWT_SECRET, { expiresIn: "1d" });
 
-  // Generate JWT token after successful OTP verification
-  const token = jwt.sign({ email, isAdmin: true }, JWT_SECRET, {
-    expiresIn: "1d",
-  });
   return { success: true, message: "OTP verified", token };
 };
 
-// Main API handler
+// API Handler
 export async function POST(req) {
   try {
     const { action, email, otp } = await req.json();
-
     if (action === "send") return Response.json(await sendOTP(email));
     if (action === "verify") return Response.json(verifyOTP(email, otp));
-
     return Response.json({ success: false, message: "Invalid action" });
   } catch (error) {
-    console.error("Server error", error);
+    console.error("Server error:", error);
     return Response.json({ success: false, message: "Server error" });
   }
 }

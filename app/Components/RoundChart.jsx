@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {  useEffect, useState } from "react";
 import { Label, Pie, PieChart, Sector } from "recharts";
 
 import {
@@ -24,6 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useInstantSearchContext } from "react-instantsearch";
+import axios from "axios";
 
 const desktopData = [
   { month: "january", desktop: 186, fill: "var(--color-january)" },
@@ -66,6 +68,24 @@ const chartConfig = {
 };
 
 export default function RoundChart() {
+
+  const [user, setuser] = useState([])
+
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/api/users");
+        setuser(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+
   const id = "pie-interactive";
   const [activeMonth, setActiveMonth] = React.useState(desktopData[0].month);
 
@@ -173,6 +193,7 @@ export default function RoundChart() {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
+                          {user.length}
                           Visitors
                         </tspan>
                       </text>

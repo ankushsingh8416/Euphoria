@@ -1,6 +1,5 @@
 "use client";
 import React, { useContext, useState, useEffect } from "react";
-import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
 import {
   ShoppingBag,
@@ -17,10 +16,14 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/Components/Loader";
+import { CartContext } from "@/app/context/CartContext";
+import { WishlistContext } from "@/app/context/WishlistContext";
 
 const Page = () => {
-  const { cart, removeFromCart, addToWishlist, setCart } =
-    useContext(cartContext);
+  const { cart, removeFromCart, setCart } =
+    useContext(CartContext);
+
+    const {addToWishlist} = useContext(WishlistContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -571,17 +574,17 @@ const Page = () => {
                   style={{
                     backgroundColor:
                       cart.length === 0 ||
-                      parseFloat(calculateTotalPrice()) === 0
+                        parseFloat(calculateTotalPrice()) === 0
                         ? "rgba(30, 56, 30, 0.5)"
                         : "#1e381e", // Dimmed background when disabled
                     boxShadow:
                       cart.length === 0 ||
-                      parseFloat(calculateTotalPrice()) === 0
+                        parseFloat(calculateTotalPrice()) === 0
                         ? "none"
                         : "0 8px 15px rgba(30, 56, 30, 0.25)", // Remove shadow when disabled
                     opacity:
                       cart.length === 0 ||
-                      parseFloat(calculateTotalPrice()) === 0
+                        parseFloat(calculateTotalPrice()) === 0
                         ? 0.7
                         : 1, // Reduce opacity when disabled
                   }}
@@ -603,7 +606,7 @@ const Page = () => {
                       animation: "shine 3s ease-in-out infinite",
                       display:
                         cart.length === 0 ||
-                        parseFloat(calculateTotalPrice()) === 0
+                          parseFloat(calculateTotalPrice()) === 0
                           ? "none"
                           : "block",
                     }}

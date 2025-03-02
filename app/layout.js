@@ -2,7 +2,6 @@
 
 import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
-import { Cartprovider } from "./context/cartContext";
 import { usePathname } from "next/navigation";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
@@ -12,8 +11,8 @@ import { RiChatSmile3Line } from "react-icons/ri";
 import { motion } from "framer-motion";
 import SmoothScrollProvider from "./Components/SmoothScroll";
 import Gif from "./Components/Gif";
-import EnhancedOfferPopup from "./Components/OfferPopupModal";
 import LuxuryOfferPopup from "./Components/OfferPopupModal";
+import { MainProvider } from "./context";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
@@ -28,17 +27,17 @@ export default function RootLayout({ children }) {
       <body>
         <SmoothScrollProvider>
           <SessionProviderWrapper>
-            <Cartprovider>
+            <MainProvider>
               <Toaster />
               {!isNoHeaderFooterRoute && <Navbar />}
               {children}
               {!isNoHeaderFooterRoute && <Footer />}
-            </Cartprovider>
+            </MainProvider>
           </SessionProviderWrapper>
         </SmoothScrollProvider>
 
         {/* Chat Support Button - Hidden on Support Page */}
-        {pathname !== "/support" && (
+        {pathname !== "/support" && !pathname.startsWith("/cpanel") && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,7 +74,9 @@ export default function RootLayout({ children }) {
           </motion.div>
         )}
 
-        {pathname !== "/cpanel" && <LuxuryOfferPopup />}
+        {pathname !== "/support" && !pathname.startsWith("/cpanel") && (
+          <LuxuryOfferPopup />
+        )}
 
         {/* Show GIF only on Home Page */}
         {pathname === "/" && <Gif />}

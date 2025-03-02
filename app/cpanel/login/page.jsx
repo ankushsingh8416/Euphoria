@@ -7,12 +7,12 @@ import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import OtpModal from "@/app/Components/OtpModal";
 import toast from "react-hot-toast";
 import Loader from "@/app/Components/Loader";
-import { cartContext } from "@/app/context/cartContext";
 import { useSession } from "next-auth/react";
+import { AuthContext } from "@/app/context/AuthContext";
 
 export default function CpanelAuth() {
   const { data: session } = useSession();
-  const { setToken } = useContext(cartContext);
+  const { setToken } = useContext(AuthContext);
   const [email, setEmail] = useState(session?.user?.email || "");
   const [showOtpModal, setShowOtpModal] = useState(false);
   const [loading, setLoading] = useState(false);

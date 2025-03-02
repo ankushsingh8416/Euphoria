@@ -138,7 +138,7 @@ const SearchPanel = () => {
 
       {/* Search Panel Content */}
       <div className="p-4 pt-6 md:pt-5 sm:p-6 md:p-8 bg-[#faf8f0]">
-        <InstantSearch indexName="Product_index" searchClient={searchClient}>
+        <InstantSearch indexName="Euphoria" searchClient={searchClient}>
           {/* Custom Search Box with Default Query */}
           <CustomSearchBox query={query} />
 

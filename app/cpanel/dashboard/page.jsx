@@ -22,20 +22,26 @@ const Dashboard = () => {
     balance: "/images/icon4.png",
   };
 
-  // Calculate balance value and percentage change
-  const balanceValue = totalPayments + 2000000;
-  const balancePercentage =
-    totalPayments !== 0
-      ? ((balanceValue - totalPayments) / totalPayments) * 100
-      : 0;
+  const previousData = {
+    totalPayments: 1800000,
+    totalSales: 120,
+    totalOrders: 90,
+  };
 
-  // Calculate total sales and percentage change
-  const previousSales = 100;
-  const totalSales = (Object.keys(products).length + 1) * 15;
-  const salesPercentage =
-    previousSales !== 0
-      ? ((totalSales - previousSales) / previousSales) * 100
-      : 0;
+  // Current Data
+  const balanceValue = totalPayments;
+  const totalSales = (Object.keys(products).length);
+  const totalOrders = orders.length;
+
+  // Percentage change calculations
+  const calculatePercentageChange = (current, previous) => {
+    if (previous === 0) return current > 0 ? 100 : 0;
+    return ((current - previous) / previous) * 100;
+  };
+
+  const balancePercentage = calculatePercentageChange(balanceValue, previousData.totalPayments);
+  const salesPercentage = calculatePercentageChange(totalSales, previousData.totalSales);
+  const ordersPercentage = calculatePercentageChange(totalOrders, previousData.totalOrders);
 
   return (
     <div className="p-4">
@@ -54,9 +60,9 @@ const Dashboard = () => {
         />
         <Card
           title="Total Orders"
-          value={orders.length}
+          value={totalOrders}
           icon={icons.sku}
-          percentage="0%"
+          percentage={`${ordersPercentage.toFixed(2)}%`}
         />
         <Card
           title="Balance"

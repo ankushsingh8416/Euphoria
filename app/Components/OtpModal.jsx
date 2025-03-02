@@ -31,54 +31,48 @@ const OtpModal = ({ email, onVerified, onClose }) => {
   };
 
   const handleSubmit = async () => {
-    if (otp.length === 6) {
-      setIsVerifying(true);
-
-      try {
-        const response = await fetch("/api/otp", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            action: "verify",
-            email,
-            otp,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          // Store JWT token in localStorage or cookies
-          if (data.token) {
-            localStorage.setItem("authToken", data.token);
-            toast.success("Login successful!");
-
-            if (onVerified) {
-              onVerified(data.token);
-            }
-            setIsOpen(false);
-          }
-        } else {
-          toast.error(data.message || "Verification failed");
-        }
-      } catch (error) {
-        console.error("Error verifying OTP:", error);
-        toast.error("Something went wrong");
-      } finally {
-        setIsVerifying(false);
+    if (otp.length !== 6) {
+      toast.error("Please enter a valid 6-digit OTP.");
+      return;
+    }
+  
+    setIsVerifying(true);
+  
+    try {
+      const response = await fetch("/api/otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "verify", email, otp }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Verification failed. Please try again.");
       }
+  
+      // ✅ Success: Store token and show success message
+      if (data.token) {
+        localStorage.setItem("authToken", data.token);
+        toast.success("Login successful!", { id: "otp-verification" });
+  
+        if (onVerified) {
+          onVerified(data.token);
+        }
+        setIsOpen(false);  
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      toast.error(error.message || "Something went wrong", { id: "otp-verification" });
+    } finally {
+      setIsVerifying(false);
     }
   };
+  
 
+  // FIXED: Removed auto-submit when OTP reaches 6 digits
   const handleOtpChange = (value) => {
     setOtp(value);
-
-    // Auto-submit when OTP is complete
-    if (value.length === 6) {
-      handleSubmit();
-    }
   };
 
   const handleResendOtp = async () => {

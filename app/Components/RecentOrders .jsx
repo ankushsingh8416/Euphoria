@@ -12,16 +12,18 @@ const RecentOrders = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="mt-4 text-gray-600 font-medium">Loading orders...</p>
+          <p className="mt-4 text-gray-600 font-medium animate-pulse">
+            Loading orders...
+          </p>
         </div>
       </div>
     );
   }
 
   const renderOrderHeader = (order) => (
-    <div className="px-8 py-6 bg-gradient-to-r from-blue-50 to-gray-50 flex flex-wrap items-center justify-between">
+    <div className="px-8 py-6 bg-gradient-to-r from-blue-50 to-gray-50 flex flex-wrap items-center justify-between rounded-t-lg">
       <div className="flex items-center">
-        <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mr-4">
+        <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mr-4 shadow-sm">
           <span className="text-blue-600 font-bold text-lg">
             {(userOrders[order.user]?.name || "Customer").charAt(0)}
           </span>
@@ -34,11 +36,11 @@ const RecentOrders = () => {
         </div>
       </div>
 
-      <div className="flex items-center mt-4 md:mt-0 space-x-10">
+      <div className="flex items-center mt-4 md:mt-0 space-x-8">
         <div className="flex items-start">
           <FileText className="h-5 w-5 text-blue-600 mt-0.5" />
           <div className="ml-3">
-            <span className="text-xs text-gray-500 uppercase font-medium">
+            <span className="text-xs text-gray-500 uppercase font-medium tracking-wider">
               ORDER ID
             </span>
             <p className="text-sm font-medium text-gray-700">
@@ -50,7 +52,7 @@ const RecentOrders = () => {
         <div className="flex items-start">
           <Calendar className="h-5 w-5 text-blue-600 mt-0.5" />
           <div className="ml-3">
-            <span className="text-xs text-gray-500 uppercase font-medium">
+            <span className="text-xs text-gray-500 uppercase font-medium tracking-wider">
               DATE
             </span>
             <p className="text-sm font-medium text-gray-700">
@@ -69,7 +71,7 @@ const RecentOrders = () => {
         <div className="flex items-start">
           <CreditCard className="h-5 w-5 text-blue-600 mt-0.5" />
           <div className="ml-3">
-            <span className="text-xs text-gray-500 uppercase font-medium">
+            <span className="text-xs text-gray-500 uppercase font-medium tracking-wider">
               TOTAL AMOUNT
             </span>
             <p className="text-lg font-bold text-blue-600">
@@ -82,25 +84,25 @@ const RecentOrders = () => {
   );
 
   const renderOrderDetails = (order) => (
-    <div className="px-8 py-4">
+    <div className="px-8 py-6">
       <div className="mt-2">
         <div className="grid grid-cols-12 gap-4 items-center py-3 border-b border-gray-200">
-          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase">
+          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase tracking-wider">
             PRODUCT
           </div>
-          <div className="col-span-3 font-medium text-xs text-gray-500 uppercase">
+          <div className="col-span-3 font-medium text-xs text-gray-500 uppercase tracking-wider">
             NAME
           </div>
-          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase">
+          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase tracking-wider">
             PRICE
           </div>
-          <div className="col-span-1 font-medium text-xs text-gray-500 uppercase text-center">
+          <div className="col-span-1 font-medium text-xs text-gray-500 uppercase tracking-wider text-center">
             QTY
           </div>
-          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase text-center">
+          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase tracking-wider text-center">
             STATUS
           </div>
-          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase text-center">
+          <div className="col-span-2 font-medium text-xs text-gray-500 uppercase tracking-wider text-center">
             PAYMENT
           </div>
         </div>
@@ -125,11 +127,11 @@ const RecentOrders = () => {
   );
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Recent Orders</h2>
-          <span className="bg-blue-50 text-blue-700 text-sm font-medium px-4 py-1 rounded-full">
+    <div className="bg-gray-50 min-h-screen py-10">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold text-gray-800">Recent Orders</h2>
+          <span className="bg-blue-50 text-blue-700 text-sm font-medium px-4 py-2 rounded-full shadow-sm">
             {orders.length} Orders
           </span>
         </div>
@@ -139,7 +141,7 @@ const RecentOrders = () => {
             {orders.map((order) => (
               <div
                 key={order._id}
-                className="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200"
+                className="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-100 transition-all hover:shadow-xl"
               >
                 {renderOrderHeader(order)}
                 {renderOrderDetails(order)}
@@ -147,10 +149,10 @@ const RecentOrders = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-white shadow rounded-lg p-8 text-center">
-            <div className="mx-auto h-16 w-16 text-gray-400 bg-gray-100 rounded-full flex items-center justify-center">
+          <div className="bg-white shadow rounded-lg p-10 text-center">
+            <div className="mx-auto h-20 w-20 text-gray-400 bg-gray-100 rounded-full flex items-center justify-center shadow-inner">
               <svg
-                className="h-8 w-8"
+                className="h-10 w-10"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -163,7 +165,7 @@ const RecentOrders = () => {
                 />
               </svg>
             </div>
-            <h3 className="mt-4 text-lg font-medium text-gray-900">
+            <h3 className="mt-6 text-xl font-medium text-gray-900">
               No recent orders
             </h3>
             <p className="mt-2 text-sm text-gray-500">

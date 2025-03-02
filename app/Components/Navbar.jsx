@@ -10,15 +10,20 @@ import toast from "react-hot-toast";
 import { BiSolidMagicWand } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
 import { MdDashboardCustomize, MdOutlineContactSupport } from "react-icons/md";
-import { cartContext } from "../context/cartContext";
 import { motion } from "framer-motion";
+import { CartContext } from "../context/CartContext";
+import { WishlistContext } from "../context/WishlistContext";
+import { AuthContext } from "../context/AuthContext";
+import { useUser } from "../context/UserContext"; // Import useUser
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const [dropDown, setdropDown] = useState(false);
-  const [profile, setprofile] = useState({});
-  const { cart, wishList } = useContext(cartContext);
+  const { cart } = useContext(CartContext);
+  const { wishList } = useContext(WishlistContext);
+  const { authToken } = useContext(AuthContext);
+  const { user, loading } = useUser();
 
   const router = useRouter();
 
@@ -30,22 +35,6 @@ export default function Navbar() {
     }
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (!session?.user?.id) return;
-      try {
-        const response = await axios.get(`/api/users/${session.user.id}`);
-        setprofile(response.data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        toast.error("Failed to fetch user data.");
-      }
-    };
-
-    if (session) {
-      fetchUserData();
-    }
-  }, [session?.user?.id]); // Runs on refresh when session updates
   const dropDownVariants = {
     hidden: { opacity: 0, y: -20, scale: 0.8 },
     visible: {
@@ -72,7 +61,7 @@ export default function Navbar() {
         <Link href="#" className="text-sm font-medium">
           Use Code:{" "}
           <Link href="/" className="underline">
-          royal15
+            royal15
           </Link>{" "}
           for Extra Discount
         </Link>
@@ -110,9 +99,8 @@ export default function Navbar() {
 
           {/* Mobile Menu */}
           <div
-            className={`fixed top-0 left-0 bg-[#faf8f0] w-[320px] h-screen z-40 transition-transform duration-300 ${
-              isMenuOpen ? "translate-x-0" : "-translate-x-full"
-            } lg:static lg:translate-x-0 lg:flex lg:h-auto lg:w-auto`}
+            className={`fixed top-0 left-0 bg-[#faf8f0] w-[320px] h-screen z-40 transition-transform duration-300 ${isMenuOpen ? "translate-x-0" : "-translate-x-full"
+              } lg:static lg:translate-x-0 lg:flex lg:h-auto lg:w-auto`}
           >
             <button
               onClick={() => setIsMenuOpen(false)}
@@ -127,7 +115,6 @@ export default function Navbar() {
             </button>
             <nav className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-center w-full space-y-4 lg:space-y-0 lg:space-x-8 py-12 lg:py-4 px-4 lg:px-0 text-gray-700">
               {[
-                "Home",
                 "Women",
                 "Men",
                 "Wedding",
@@ -226,7 +213,7 @@ export default function Navbar() {
                         transition={{ duration: 0.2 }}
                       >
                         <Image
-                          src={profile?.profileImage || "/images/profile.webp"}
+                          src={user?.profileImage || "/images/profile.webp"}
                           alt="user"
                           className="object-cover w-[34px] h-[34px]"
                           width={100}
@@ -234,7 +221,7 @@ export default function Navbar() {
                         />
                       </motion.div>
                       <h3 className="text-sm text-[#1e381e] font-medium capitalize">
-                        {profile?.name || "Guest"}
+                        {user?.name || "Guest"}
                       </h3>
                     </div>
                   </motion.div>

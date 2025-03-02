@@ -1,10 +1,10 @@
 "use client";
 
-import { cartContext } from "@/app/context/cartContext";
 import React, { useContext, useEffect, useState } from "react";
 import { SlHeart } from "react-icons/sl";
 import axios from "axios";
 import Link from "next/link";
+import { ProductContext } from "@/app/context/ProductContext";
 
 const Men = () => {
   const {
@@ -15,7 +15,7 @@ const Men = () => {
     setTotalProducts,
     products,
     productGrid,
-  } = useContext(cartContext);
+  } = useContext(ProductContext);
 
   const [loading, setLoading] = useState(false);
 

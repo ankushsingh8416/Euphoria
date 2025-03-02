@@ -1,12 +1,12 @@
 "use client";
 import { useContext, useState } from "react";
 import { FiGrid, FiList } from "react-icons/fi";
-import { cartContext } from "@/app/context/cartContext";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { IoFilterSharp } from "react-icons/io5";
 import { BiRupee } from "react-icons/bi";
+import { ProductContext } from "../context/ProductContext";
 
 export default function FilterSection() {
   const {
@@ -17,7 +17,7 @@ export default function FilterSection() {
     fourGrid,
     twoGrid,
     activeView,
-  } = useContext(cartContext);
+  } = useContext(ProductContext);
   const [activeFilter, setActiveFilter] = useState(null);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
