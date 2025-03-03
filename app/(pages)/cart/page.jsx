@@ -17,7 +17,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/Components/Loader";
 import { WishlistContext } from "@/app/context/WishlistContext"; 
-import { CartContext } from "@/app/context/CartContext";
+import { CartContext } from "../../context/CartContext";
 
 const Page = () => {
   const { cart, setmessage, removeFromCart, setCart } = useContext(CartContext);

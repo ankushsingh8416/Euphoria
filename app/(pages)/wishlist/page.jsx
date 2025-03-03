@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import { Heart, ShoppingCart, Trash2, ArrowRight, X } from "lucide-react";
 import { WishlistContext } from "@/app/context/WishlistContext";
-import { CartContext } from "@/app/context/CartContext";
+import { CartContext } from "../../context/CartContext";
 
 const Page = () => {
   const { wishList, removeFromWishlist } = useContext(WishlistContext);

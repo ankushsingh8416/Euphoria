@@ -12,8 +12,8 @@ import "swiper/css/pagination";
 import { Pagination, Navigation, Autoplay } from "swiper/modules";
 import SimilerProduct from "@/app/Components/SimilerProduct";
 import Link from "next/link";
-import { CartContext } from "@/app/context/CartContext";
 import { WishlistContext } from "@/app/context/WishlistContext";
+import { CartContext } from "@/app/context/CartContext";
 // Shimmer effect CSS
 const shimmerClass = "animate-pulse bg-[#f7e7ce]";
 
