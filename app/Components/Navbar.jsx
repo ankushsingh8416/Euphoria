@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidMagicWand } from "react-icons/bi";
 import { FiUser } from "react-icons/fi";
-import { MdDashboardCustomize } from "react-icons/md";
+import { MdDashboardCustomize, MdOutlineContactSupport } from "react-icons/md";
 import { motion } from "framer-motion";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";

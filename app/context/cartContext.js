@@ -4,18 +4,26 @@ import { createContext, useState, useEffect } from "react";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [message, setmessage] = useState([]);
-
+  const [message, setMessage] = useState([]);
   const [cart, setCart] = useState(() => {
     if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("cart")) || [];
+      try {
+        return JSON.parse(localStorage.getItem("cart")) || [];
+      } catch (error) {
+        console.error("Error parsing cart from localStorage", error);
+        return [];
+      }
     }
     return [];
   });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem("cart", JSON.stringify(cart));
+      try {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      } catch (error) {
+        console.error("Error saving cart to localStorage", error);
+      }
     }
   }, [cart]);
 
@@ -38,9 +46,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider
-      value={{ message, setmessage, cart, setCart, addToCart, removeFromCart }}
-    >
+    <CartContext.Provider value={{ message, setMessage, cart, setCart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );

@@ -16,8 +16,8 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/Components/Loader";
-import { WishlistContext } from "@/app/context/WishlistContext"; 
-import { CartContext } from "../../context/CartContext";
+import { WishlistContext } from "@/app/context/WishlistContext";
+import { CartContext, CartProvider } from "@/app/context/CartContext";
 
 const Page = () => {
   const { cart, setmessage, removeFromCart, setCart } = useContext(CartContext);
