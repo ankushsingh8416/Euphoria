@@ -7,14 +7,16 @@ import { CartProvider } from "./CartContext";
 
 export const MainProvider = ({ children }) => {
   return (
+    <CartProvider>
+
     <UserProvider>
       <AuthProvider>
         <ProductProvider>
-          <CartProvider>
             <WishlistProvider>{children}</WishlistProvider>
-          </CartProvider>
         </ProductProvider>
       </AuthProvider>
     </UserProvider>
+    </CartProvider>
+
   );
 };
