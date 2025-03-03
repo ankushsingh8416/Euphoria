@@ -1,6 +1,5 @@
 "use client";
 
-import { cartContext } from "@/app/context/cartContext";
 import React, { useContext, useEffect, useState } from "react";
 import { SlHeart } from "react-icons/sl";
 import axios from "axios";
