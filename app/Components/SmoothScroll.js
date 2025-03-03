@@ -23,7 +23,7 @@ const SmoothScrollProvider = ({ children }) => {
       el: scrollRef.current,
       smooth: true,
       lerp: 0.1, // Lower value for smoother scrolling
-      multiplier: 1, // Lower multiplier for slower scrolling
+      multiplier: 2, // Lower multiplier for slower scrolling
       touchMultiplier: 0.5, // Adjust touch sensitivity
       firefoxMultiplier: 10, // Adjust for smoother scrolling on Firefox
       smartphone: {

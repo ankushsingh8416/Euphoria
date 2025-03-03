@@ -105,7 +105,7 @@ const CpanelNavbar = () => {
                   <div className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-full p-1.5 shadow-md">
                     <HiOutlineUserCircle className="text-white text-lg" />
                   </div>
-                  <span className="text-gray-800 text-sm font-medium hidden md:block">Admin Panel</span>
+                  <span className="text-gray-800 text-sm font-medium hidden md:block">Admin</span>
                   <FiChevronDown className={`text-gray-500 transition-transform duration-300 ${showDropdown ? 'rotate-180' : ''}`} />
                 </button>
 

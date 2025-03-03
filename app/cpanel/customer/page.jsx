@@ -1,8 +1,27 @@
 import React from 'react'
 
-const page = () => {
+const Customer = () => {
+  const [users, setusers] = useState([])
+  useEffect(() => {
+    const fetchuser = async () => {
+      const response = await fetch('/api/users')
+      const data = await response.json()
+      setusers(data)
+    }
+    fetchuser()
+
+
+  }, [])
+
+
+
   return (
-    <div>page</div>
+    <div>
+
+
+
+
+    </div>
   )
 }
 
