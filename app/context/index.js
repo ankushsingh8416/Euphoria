@@ -1,9 +1,9 @@
 "use client";
-import { CartProvider } from "./CartContext";
 import { WishlistProvider } from "./WishlistContext";
 import { AuthProvider } from "./AuthContext";
 import { ProductProvider } from "./ProductContext";
 import { UserProvider } from "./UserContext";
+import { CartProvider } from "./CartContext";
 
 export const MainProvider = ({ children }) => {
   return (

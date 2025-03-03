@@ -4,8 +4,7 @@ import { createContext, useState, useEffect } from "react";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-
-const [message, setmessage] = useState([])
+  const [message, setmessage] = useState([]);
 
   const [cart, setCart] = useState(() => {
     if (typeof window !== "undefined") {
@@ -39,7 +38,9 @@ const [message, setmessage] = useState([])
   };
 
   return (
-    <CartContext.Provider value={{message ,setmessage , cart, setCart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ message, setmessage, cart, setCart, addToCart, removeFromCart }}
+    >
       {children}
     </CartContext.Provider>
   );
