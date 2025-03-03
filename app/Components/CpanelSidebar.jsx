@@ -1,13 +1,15 @@
 import Link from "next/link";
 import React from "react";
-import { FaWallet } from "react-icons/fa";
+import { FaUsers, FaWallet } from "react-icons/fa";
 import {
   FiHome,
   FiBox,
   FiShoppingCart,
   FiGrid,
   FiSettings,
+  FiUsers,
 } from "react-icons/fi";
+import { MdOutlinePayment } from "react-icons/md";
 
 const CpanelSidebar = () => {
   return (
@@ -60,22 +62,22 @@ const CpanelSidebar = () => {
               href="/cpanel/payments "
               className="flex items-center gap-0 md:gap-4 p-2 md:p-3"
             >
-              <FaWallet className="text-xl" />
+              <MdOutlinePayment className="text-xl" />
               <span className="text-sm font-medium hidden md:block">
                 Payments{" "}
               </span>
             </Link>
           </li>
 
-          {/* Settings */}
+          {/* customer */}
           <li className="rounded-lg hover:bg-gray-700 cursor-pointer transition">
             <Link
-              href="/cpanel/settings"
+              href="/cpanel/customer"
               className="flex items-center gap-4 p-2 md:p-3"
             >
-              <FiSettings className="text-xl" />
+              <FiUsers className="text-xl" />
               <span className="text-sm font-medium hidden md:block">
-                Settings
+                Customers
               </span>
             </Link>
           </li>

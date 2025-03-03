@@ -11,7 +11,6 @@ export const MainProvider = ({ children }) => {
     <AuthProvider>
       <ProductProvider>
         <CartProvider>
-          
           <WishlistProvider>{children}</WishlistProvider>
         </CartProvider>
       </ProductProvider>

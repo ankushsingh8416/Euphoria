@@ -20,10 +20,10 @@ import { CartContext } from "@/app/context/CartContext";
 import { WishlistContext } from "@/app/context/WishlistContext";
 
 const Page = () => {
-  const { cart, removeFromCart, setCart } =
+  const { cart, setmessage, removeFromCart, setCart } =
     useContext(CartContext);
 
-    const {addToWishlist} = useContext(WishlistContext);
+  const { addToWishlist } = useContext(WishlistContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
@@ -115,7 +115,8 @@ const Page = () => {
 
         if (storeCartResponse.ok) {
           toast.success("Payment Successful! Cart data stored.");
-          setCart([]); // Clear the cart
+          setCart([]);
+          setmessage("New Order from " + session?.user?.name);
           router.push("/"); // Redirect to home page
         } else {
           toast.error("Failed to store cart data.");

@@ -17,7 +17,7 @@ export const OrderProvider = ({ children }) => {
       try {
         // Fetch all cart data
         const response = await axios.get("/api/cart");
-        setOrders(response.data);
+        setOrders(response.data.reverse());
         console.log("Cart Data:", response.data);
 
         const userOrdersData = {}; // Object to store user-specific orders

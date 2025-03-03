@@ -4,6 +4,9 @@ import { createContext, useState, useEffect } from "react";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+
+const [message, setmessage] = useState([])
+
   const [cart, setCart] = useState(() => {
     if (typeof window !== "undefined") {
       return JSON.parse(localStorage.getItem("cart")) || [];
@@ -36,7 +39,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{message ,setmessage , cart, setCart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
