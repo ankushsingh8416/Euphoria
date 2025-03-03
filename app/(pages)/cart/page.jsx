@@ -16,13 +16,11 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/Components/Loader";
-import { CartContext } from "@/app/context/CartContext";
 import { WishlistContext } from "@/app/context/WishlistContext";
+import { CartContext } from "@/app/context/CartContext";
 
 const Page = () => {
-  const { cart, setmessage, removeFromCart, setCart } =
-    useContext(CartContext);
-
+  const { cart, setmessage, removeFromCart, setCart } =useContext(CartContext);
   const { addToWishlist } = useContext(WishlistContext);
   const [quantities, setQuantities] = useState(cart.map(() => 1));
   const [promoCode, setPromoCode] = useState("");

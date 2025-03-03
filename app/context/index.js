@@ -8,13 +8,13 @@ import { UserProvider } from "./UserContext";
 export const MainProvider = ({ children }) => {
   return (
     <UserProvider>
-    <AuthProvider>
-      <ProductProvider>
-        <CartProvider>
-          <WishlistProvider>{children}</WishlistProvider>
-        </CartProvider>
-      </ProductProvider>
-    </AuthProvider>
+      <AuthProvider>
+        <ProductProvider>
+          <CartProvider>
+            <WishlistProvider>{children}</WishlistProvider>
+          </CartProvider>
+        </ProductProvider>
+      </AuthProvider>
     </UserProvider>
   );
 };
