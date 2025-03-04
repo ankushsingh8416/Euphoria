@@ -44,6 +44,7 @@ export default function FilterSection() {
         "Gowns",
         "Dresses & Jumpsuits",
         "Co-Ord Sets",
+        "Vanna Sets",
       ],
       Price: ["1000-10000", "10000-50000", "50000-100000", "100000-200000"],
       Color: [

@@ -13,14 +13,19 @@ import { FaArrowRight } from "react-icons/fa";
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [productGrid, setProductGrid] = useState("four"); // "four" or "two"
+  const [productGrid, setProductGrid] = useState("four");
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const response = await axios.get("/api/products");
-        setProducts(response.data.slice(0, 10)); // Show only 10 products
+
+        // Filter products where category is "Wedding"
+        const filteredProducts = response.data
+          .filter((product) => product.category === "Vanna Sets")
+          .slice(0, 10); // Show only 10 products
+        setProducts(filteredProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -33,6 +38,8 @@ const ProductList = () => {
 
   return (
     <div className="p-4 lg:py-8 lg:px-16">
+  
+
       {loading ? (
         <div className="flex flex-wrap justify-between gap-2 p-2">
           {productGrid === "four" &&
@@ -79,15 +86,14 @@ const ProductList = () => {
                       alt={`${product.title} Hover`}
                       className="absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                     />
-
+                    
                   </div>
-
                   <div className="mt-4">
                     <h3 className="text-sm font-medium uppercase truncate overflow-hidden whitespace-nowrap relative">
                       {product.title}
                       <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-[#B18E35] transition-all duration-500 group-hover:w-full"></span>
                     </h3>
-                    <p className="text-gray-600 mt-1">{product.price}</p>
+                    <p className="text-gray-600 mt-1">₹{product.price}</p>
                   </div>
                 </div>
               </Link>

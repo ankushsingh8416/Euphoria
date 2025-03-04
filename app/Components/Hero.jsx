@@ -12,6 +12,11 @@ import Link from "next/link";
 const Hero = () => {
   const slides = [
     {
+      desktop: "/images/banner-3.jpg",
+      mobile: "/images/banner-3-mobile.jpg",
+      alt: "Banner 1",
+    },
+    {
       desktop: "/images/banner-4.jpg",
       mobile: "/images/banner-4-mobile.jpg",
       alt: "Banner 1",
@@ -19,12 +24,7 @@ const Hero = () => {
     {
       desktop: "/images/banner5.jpg",
       mobile: "/images/banner-5-mobile.jpg",
-      alt: "Banner 2",
-    },
-    {
-      desktop: "/images/banner1.webp",
-      mobile: "/images/banner1-mob.webp",
-      alt: "Banner 3",
+      alt: "Banner 1",
     },
   ];
 
@@ -35,7 +35,7 @@ const Hero = () => {
           clickable: true,
         }}
         autoplay={{
-          delay: 3000,
+          delay: 5000,
           disableOnInteraction: false,
         }}
         modules={[Pagination, Autoplay]}
@@ -77,7 +77,7 @@ const Hero = () => {
         ))}
       </Swiper>
 
-     
+
     </div>
   );
 };

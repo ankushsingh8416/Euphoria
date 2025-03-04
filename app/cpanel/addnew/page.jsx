@@ -19,6 +19,7 @@ const AddNew = () => {
       "Co-Ord Sets",
       "Gowns",
       "Kaftans",
+      "Vanna Sets",
     ],
     Men: [
       "Kurtas & Shirts",
