@@ -39,9 +39,12 @@ export default function Login() {
     // Clear input fields after successful login
     setFormData({ email: "", password: "" });
 
-    setTimeout(() => {
-      router.replace("/");
-    }, 1500);
+    router.push("/").then(() => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    });
+
   };
 
   return (
