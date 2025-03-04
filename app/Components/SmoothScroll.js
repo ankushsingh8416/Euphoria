@@ -23,15 +23,10 @@ const SmoothScrollProvider = ({ children }) => {
       el: scrollRef.current,
       smooth: true,
       lerp: 0.1, // Lower value for smoother scrolling
-      multiplier: 2, // Lower multiplier for slower scrolling
-      touchMultiplier: 0.5, // Adjust touch sensitivity
-      firefoxMultiplier: 10, // Adjust for smoother scrolling on Firefox
-      smartphone: {
-        smooth: true, // Enable smooth scrolling on smartphones
-      },
-      tablet: {
-        smooth: true, // Enable smooth scrolling on tablets
-      },
+      multiplier: 1.8, // Lower multiplier for slower scrolling
+      touchMultiplier: 5, // Adjust touch sensitivity
+      firefoxMultiplier: 5, // Adjust for smoother scrolling on Firefox
+     
     });
     // Ensure scroll updates dynamically
     setTimeout(() => {

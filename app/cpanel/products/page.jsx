@@ -64,7 +64,7 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get("/api/products");
-        setProducts(response.data);
+        setProducts(response.data.reverse());
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -73,6 +73,19 @@ const Products = () => {
     };
     fetchProducts();
   }, []);
+
+  // Handle delete product
+  const handleDeleteProduct = async (productId) => {
+    try {
+      const response = await axios.delete(`/api/products/${productId}`);
+      if (response.status === 200) {
+        // Remove the deleted product from the state
+        setProducts(products.filter((product) => product._id !== productId));
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
 
   // Calculate pagination
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -225,10 +238,17 @@ const Products = () => {
                                   Order Actions
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator className="border-t border-gray-200 my-2" />
-                                <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
-                                  <FaEye className="mr-2 text-blue-500" /> View
-                                  Details
-                                </DropdownMenuItem>
+                                <Link
+                                  href={{
+                                    pathname: `/productdetails/${product.page}/${product.title}`,
+                                    query: { id: product._id },
+                                  }}
+                                >
+                                  <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
+                                    <FaEye className="mr-2 text-blue-500" /> View
+                                    Details
+                                  </DropdownMenuItem>
+                                </Link>
                                 <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
                                   <FaEdit className="mr-2 text-green-500" /> Edit
                                   Order
@@ -237,19 +257,22 @@ const Products = () => {
                                   <FaExchangeAlt className="mr-2 text-yellow-500" />{" "}
                                   Change Status
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer">
+                                <DropdownMenuItem
+                                  onClick={() => handleDeleteProduct(product._id)}
+                                  className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer"
+                                >
                                   <FaTrashAlt className="mr-2 text-red-500" />{" "}
-                                  Cancel Order
+                                  Delete Product
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
-                            </DropdownMenu>{" "}
+                            </DropdownMenu>
                           </button>
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-                
+
                 {/* Simple Pagination */}
                 {totalPages > 1 && (
                   <div className="flex justify-center items-center py-4 border-t border-gray-200">
@@ -260,11 +283,11 @@ const Products = () => {
                     >
                       <FaArrowLeft className="text-gray-700" />
                     </button>
-                    
+
                     <span className="mx-4 text-gray-700">
                       Page {currentPage} of {totalPages}
                     </span>
-                    
+
                     <button
                       onClick={nextPage}
                       disabled={currentPage === totalPages}
@@ -284,7 +307,7 @@ const Products = () => {
 
           {/* Footer */}
           <footer className="mt-16 text-center text-sm text-gray-600">
-            © 2023 - pulistron Dashboard | About | Careers | Policy | Contact
+            © 2025 - pulistron Dashboard | About | Careers | Policy | Contact
           </footer>
         </>
       )}

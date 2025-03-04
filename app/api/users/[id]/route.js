@@ -33,7 +33,7 @@ export async function PUT(req, { params }) {
     const { id } = params;
     const { fullName, email, password, profileImage } = await req.json();
 
-    console.log("Received profileImage:", profileImage); // Check if the image URL is received correctly
+    console.log("Received profileImage:", profileImage); 
 
     const updateData = { name: fullName, email, profileImage };
 
@@ -65,4 +65,32 @@ export async function PUT(req, { params }) {
   }
 }
 
+
+export async function DELETE(req, { params }) {
+  try {
+    console.log("Connecting to the database...");
+    await dbConnect();
+    console.log("Connected to the database.");
+
+    const { id } = params;
+
+    // Delete the user by ID
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      message: "User deleted successfully",
+      user: deletedUser,
+    });
+  } catch (error) {
+    console.error("Error in DELETE /api/users/[id]:", error);
+    return NextResponse.json(
+      { error: "Error deleting user", details: error.message },
+      { status: 500 }
+    );
+  }
+}
 

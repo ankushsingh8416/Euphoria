@@ -28,3 +28,34 @@ export async function GET(req, { params }) {
         );
     }
 }
+
+export async function DELETE(req, { params }) {
+    try {
+        console.log('Connecting to the database...');
+        await dbConnect();
+        console.log('Connected to the database.');
+
+        const { id } = params;
+
+        // Delete the product by ID
+        const deletedProduct = await Product.findByIdAndDelete(id);
+
+        if (!deletedProduct) {
+            return NextResponse.json(
+                { error: 'Product not found' },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(
+            { message: 'Product deleted successfully', product: deletedProduct },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error('Error in DELETE /api/products/[id]:', error);
+        return NextResponse.json(
+            { error: 'Error deleting product', details: error.message },
+            { status: 500 }
+        );
+    }
+}
