@@ -29,7 +29,6 @@ export default function Mens() {
             width={500}
             height={600}
             objectFit="cover"
-            priority
           />
         </div>
       </div>

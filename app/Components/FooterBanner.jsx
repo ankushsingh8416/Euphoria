@@ -12,7 +12,6 @@ const FooterBanner = () => {
                     alt="ship"
                     layout="fill"
                     objectFit="cover"
-                    priority
                 />
             </div>
             <div className="relative w-full  h-full mob__img footer-banner-mob block md:hidden">
@@ -21,7 +20,6 @@ const FooterBanner = () => {
                     alt="ship"
                     layout="fill"
                     objectFit="cover"
-                    priority
                 />
             </div>
 

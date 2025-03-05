@@ -23,7 +23,6 @@ export default function Category() {
                     alt={category.name}
                     layout="fill"
                     objectFit="cover"
-                    priority
                     className="rounded-lg"
                   />
                 </div>

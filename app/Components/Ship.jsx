@@ -12,7 +12,6 @@ const Ship = () => {
             alt="ship"
             layout="fill"
             objectFit="cover"
-            priority
           />
         </div>
         <div className="relative w-full h-full mob__img block md:hidden">
@@ -21,7 +20,6 @@ const Ship = () => {
             alt="ship"
             layout="fill"
             objectFit="cover"
-            priority
           />
         </div>
       </Link>

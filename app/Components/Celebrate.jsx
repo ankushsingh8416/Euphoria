@@ -82,7 +82,6 @@ const Celebrate = () => {
                       alt={product.title}
                       width={500}
                       height={600}
-                      priority
                       className="w-full transition-transform duration-500 group-hover:scale-110"
                     />
 
