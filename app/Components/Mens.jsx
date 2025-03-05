@@ -18,6 +18,7 @@ export default function Mens() {
             width={500}
             height={600}
             objectFit="cover"
+            priority
           />
         </div>
         <div className="w-full sm:w-[48%] overflow-hidden shadow-md">
@@ -28,6 +29,7 @@ export default function Mens() {
             width={500}
             height={600}
             objectFit="cover"
+            priority
           />
         </div>
       </div>

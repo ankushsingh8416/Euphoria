@@ -43,6 +43,7 @@ const Gif = () => {
               alt="gif" 
               width={300} 
               height={200} 
+              priority 
               className="w-full h-full" 
             />
           </Link>

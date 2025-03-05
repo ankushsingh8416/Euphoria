@@ -24,6 +24,7 @@ export default function Spotlight() {
                   alt={spotlight.name}
                   layout="fill"
                   objectFit="cover"
+                  priority
                   className="transition-transform duration-500 group-hover:scale-110"
                 />
                 {/* Overlay */}

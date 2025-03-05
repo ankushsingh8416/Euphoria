@@ -12,6 +12,7 @@ const Gifting = () => {
           alt="Thoughtfully Crafted Gifts"
           width={500}
           height={500}
+          priority
           className="w-full" 
         />
       </div>

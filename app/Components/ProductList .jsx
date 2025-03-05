@@ -95,6 +95,7 @@ const ProductList = () => {
                         alt={`${product.title} Hover`}
                         width={500}
                         height={600}
+                        priority
                         className="absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                       />
                     )}
