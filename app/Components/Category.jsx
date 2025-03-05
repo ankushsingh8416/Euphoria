@@ -3,10 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const categories = [
-  { id: 1, name: 'SAREES', imagePath: '/images/cat1.jpg' },
-  { id: 2, name: 'LEHENGA SETS', imagePath: '/images/cat2.jpg' },
-  { id: 3, name: 'KURTA SETS', imagePath: '/images/category3.webp' },
-  { id: 4, name: 'CO-ORD SETS', imagePath: '/images/category4.avif' },
+  { id: 1, name: 'SAREES', imagePath: 'https://res.cloudinary.com/dvucqewfn/image/upload/v1741139432/cat1_uzqw8p.webp' },
+  { id: 2, name: 'LEHENGA SETS', imagePath: 'https://res.cloudinary.com/dvucqewfn/image/upload/v1741139432/cat2_jhzr4b.jpg' },
+  { id: 3, name: 'KURTA SETS', imagePath: 'https://res.cloudinary.com/dvucqewfn/image/upload/v1741139432/category3_dqfach.webp' },
+  { id: 4, name: 'CO-ORD SETS', imagePath: 'https://res.cloudinary.com/dvucqewfn/image/upload/v1741139432/category4_bjzkbk.avif' },
 ];
 export default function Category() {
   return (
@@ -14,7 +14,7 @@ export default function Category() {
       <h2 className="text-center text-3xl md:text-4xl my-10 font-thin  crimson green tracking-wider">SHOP BY CATEGORY</h2>
       <div className="flex flex-wrap justify-center gap-4 md:gap-6">
         {categories.map((category) => (
-            <Link key={category.id} href="/women" passHref legacyBehavior>
+          <Link key={category.id} href="/women" passHref legacyBehavior>
             <a className="w-[46%] lg:w-[23%] block">
               <div className="shadow-md hover:shadow-lg transition-shadow duration-300 rounded-lg text-center overflow-hidden">
                 <div className="relative w-full aspect-[3/4]">

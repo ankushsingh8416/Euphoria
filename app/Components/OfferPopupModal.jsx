@@ -62,7 +62,7 @@ const LuxuryOfferPopup = () => {
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
                   <div className="w-full h-full relative">
                     <img
-                      src="/images/modal.webp"
+                      src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741140071/modal_fwfyqi.webp"
                       alt="Exclusive Offer"
                       className="w-full h-full object-cover"
                     />

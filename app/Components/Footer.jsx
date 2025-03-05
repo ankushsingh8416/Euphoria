@@ -80,7 +80,7 @@ const Footer = () => {
                             <Image src="/images/email.svg" width={24} height={24} alt="location" /> Email Us
                             </li>
                             <li className="flex items-center my-2 text-[.8rem] hover:underline transition-all cursor-pointer hover:text-[#1E381E] gap-2">
-                            <Image src="/images/call.svg" width={24} height={24} alt="location" />  WhatsApp / Call Us: +91 99993 13366
+                            <Image src="/images/call.svg" width={24} height={24} alt="location" />  WhatsApp / Call Us: +91 98015 16770
                             </li>
                         </ul>
                     </div>
@@ -91,7 +91,7 @@ const Footer = () => {
             <div className="bg-[#F5F5F5] text-gray-700 py-4">
                 <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
                     <p className="text-sm text-center md:text-left mb-6 md:mb-0">
-                        © 2024 House of Euphoria Private Limited. | All Rights Reserved.
+                        © 2025 House of Euphoria Private Limited. | All Rights Reserved.
                     </p>
                     <div className="flex space-x-4">
                         <FaFacebookF className="hover:text-[#1E381E] cursor-pointer" />

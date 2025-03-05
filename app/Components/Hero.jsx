@@ -12,18 +12,18 @@ import Link from "next/link";
 const Hero = () => {
   const slides = [
     {
-      desktop: "/images/banner-3.jpg",
-      mobile: "/images/banner-3-mobile.jpg",
+      desktop: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139139/banner-3_jvshvh.jpg",
+      mobile: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139139/banner-3-mobile_q1ywdk.jpg",
       alt: "Banner 1",
     },
     {
-      desktop: "/images/banner-4.jpg",
-      mobile: "/images/banner-4-mobile.jpg",
+      desktop: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139140/banner-4_v8ptco.jpg",
+      mobile: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139140/banner-4-mobile_dfyjcu.jpg",
       alt: "Banner 1",
     },
     {
-      desktop: "/images/banner5.jpg",
-      mobile: "/images/banner-5-mobile.jpg",
+      desktop: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139142/banner5_apybcj.jpg",
+      mobile: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139142/banner-5-mobile_xqtnyv.jpg",
       alt: "Banner 1",
     },
   ];

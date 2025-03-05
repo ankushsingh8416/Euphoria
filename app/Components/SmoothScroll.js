@@ -22,7 +22,7 @@ const SmoothScrollProvider = ({ children }) => {
     scrollInstanceRef.current = new LocomotiveScroll({
       el: scrollRef.current,
       smooth: true,
-      lerp: 0.1, // Lower value for smoother scrolling
+      lerp: 0.3, // Lower value for smoother scrolling
       multiplier: 1.8, // Lower multiplier for slower scrolling
       touchMultiplier: 5, // Adjust touch sensitivity
       firefoxMultiplier: 5, // Adjust for smoother scrolling on Firefox

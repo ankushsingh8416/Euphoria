@@ -12,7 +12,7 @@ export default function Mens() {
         {/* Menswear Images */}
         <div className="w-full sm:w-[48%] overflow-hidden shadow-md">
           <Image
-            src="/images/men1.webp"
+            src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741139960/men1_rpidkn.webp"
             alt="Menswear 1"
             layout="responsive"
             width={500}
@@ -22,7 +22,7 @@ export default function Mens() {
         </div>
         <div className="w-full sm:w-[48%] overflow-hidden shadow-md">
           <Image
-            src="/images/men2.webp"
+            src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741139961/men2_q5p3z4.webp"
             alt="Menswear 2"
             layout="responsive"
             width={500}

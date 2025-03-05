@@ -8,7 +8,7 @@ const Craft = () => {
             <div className="flex flex-wrap justify-center gap-6">
                 {/* Video for web */}
                 <video 
-                    src="/images/video_web.mp4" 
+                    src="https://res.cloudinary.com/dvucqewfn/video/upload/v1741138984/video_web_pbb8j4.mp4" 
                     autoPlay 
                     muted 
                     loop 
@@ -17,7 +17,7 @@ const Craft = () => {
 
                 {/* Video for mobile and smaller screens */}
                 <video 
-                    src="/images/video_mob.mp4" 
+                    src="https://res.cloudinary.com/dvucqewfn/video/upload/v1741138982/video_mob_subkyg.mp4" 
                     autoPlay 
                     muted 
                     loop 
