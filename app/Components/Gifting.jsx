@@ -8,7 +8,7 @@ const Gifting = () => {
       {/* Image Section */}
       <div className="w-full md:w-1/2 px-4 mb-6 md:mb-0">
         <Image
-          src="/images/gift.png"
+          src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741142485/gift_pqdgsv.png"
           alt="Thoughtfully Crafted Gifts"
           width={500}
           height={500}

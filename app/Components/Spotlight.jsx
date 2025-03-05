@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const categories = [
-  { id: 1, name: "READY TO SHIP", imagePath: "/images/spotlight1.webp", route: "/women" },
-  { id: 2, name: "MODERN HEIRLOOMS", imagePath: "/images/spotlight2.webp", route: "/jewellery" },
-  { id: 3, name: "TIMELESS REDS", imagePath: "/images/spotlight3.webp", route: "/wedding" },
-  { id: 4, name: "VEGAN ACCESSORIES", imagePath: "/images/spotlight4.webp", route: "/accessories" },
+  { id: 1, name: "READY TO SHIP", imagePath: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741142366/spotlight1_zcnp3e.webp", route: "/women" },
+  { id: 2, name: "MODERN HEIRLOOMS", imagePath: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741142366/spotlight2_j5dzsd.webp", route: "/jewellery" },
+  { id: 3, name: "TIMELESS REDS", imagePath: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741142367/spotlight3_ewitdd.webp", route: "/wedding" },
+  { id: 4, name: "VEGAN ACCESSORIES", imagePath: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741142368/spotlight4_e2udgt.webp", route: "/accessories" },
 ];
 
 export default function Spotlight() {

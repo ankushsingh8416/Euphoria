@@ -21,10 +21,7 @@ const fadeUp = {
 export default function Home() {
   return (
     <>
-      {/* Hero Section - Fade In */}
-      <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-        <Hero />
-      </motion.div>
+      <Hero />
 
       {/* Sections with Staggered Animations */}
       {[

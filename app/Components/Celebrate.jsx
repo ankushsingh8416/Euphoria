@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -76,19 +77,22 @@ const Celebrate = () => {
                 <div className="group mb-8 cursor-pointer">
                   <div className="relative overflow-hidden">
                     {/* Default Image */}
-                    <img
+                    <Image
                       src={product.images[0]?.defaultImage}
                       alt={product.title}
+                      width={500}
+                      height={600}
                       className="w-full transition-transform duration-500 group-hover:scale-110"
                     />
 
                     {/* Hover Image */}
-                    <img
+                    <Image
                       src={product.images[1]?.hoverImage}
                       alt={`${product.title} Hover`}
+                      width={500}
+                      height={600}
                       className="absolute top-0 left-0 w-full h-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                     />
-                    
                   </div>
                   <div className="mt-4">
                     <h3 className="text-sm font-medium uppercase truncate overflow-hidden whitespace-nowrap relative">

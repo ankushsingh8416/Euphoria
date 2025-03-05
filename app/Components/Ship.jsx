@@ -8,7 +8,7 @@ const Ship = () => {
       <Link href={"/sale"}>
         <div className="relative w-full h-full desktop__img hidden md:block">
           <Image
-            src="/images/ship_web.webp"
+            src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741142256/ship_web_bdkygn.webp"
             alt="ship"
             layout="fill"
             objectFit="cover"
@@ -17,7 +17,7 @@ const Ship = () => {
         </div>
         <div className="relative w-full h-full mob__img block md:hidden">
           <Image
-            src="/images/ship_mob.webp"
+            src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741142256/ship_mob_jlagsm.webp"
             alt="ship"
             layout="fill"
             objectFit="cover"
