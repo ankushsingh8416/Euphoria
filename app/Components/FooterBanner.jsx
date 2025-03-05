@@ -25,7 +25,7 @@ const FooterBanner = () => {
                 />
             </div>
 
-          
+
 
         </div>
     )

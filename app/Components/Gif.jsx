@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Gif = () => {
   const [visible, setVisible] = useState(false);
@@ -20,7 +21,7 @@ const Gif = () => {
     <>
       {visible && (
         <motion.div
-        data-scroll-ignore // ✅ Prevent Locomotive from modifying this component
+          data-scroll-ignore // ✅ Prevent Locomotive from modifying this component
           initial={{ x: "-100vw" }}
           animate={{ x: 0 }}
           exit={{ x: "-100vw" }}
@@ -37,7 +38,13 @@ const Gif = () => {
 
           {/* GIF */}
           <Link href={"/sale"}>
-            <img src="/images/gif.webp" alt="gif" className="w-full h-full" />
+            <Image 
+              src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741142756/gif_bkcasc.webp" 
+              alt="gif" 
+              width={300} 
+              height={200} 
+              className="w-full h-full" 
+            />
           </Link>
         </motion.div>
       )}

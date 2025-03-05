@@ -14,17 +14,17 @@ const Hero = () => {
     {
       desktop: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139139/banner-3_jvshvh.jpg",
       mobile: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139139/banner-3-mobile_q1ywdk.jpg",
-      alt: "Banner 1",
+      alt: "Banner1",
     },
     {
       desktop: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139140/banner-4_v8ptco.jpg",
       mobile: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139140/banner-4-mobile_dfyjcu.jpg",
-      alt: "Banner 2",
+      alt: "Banner2",
     },
     {
       desktop: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139142/banner5_apybcj.jpg",
       mobile: "https://res.cloudinary.com/dvucqewfn/image/upload/v1741139142/banner-5-mobile_xqtnyv.jpg",
-      alt: "Banner 3",
+      alt: "Banner3",
     },
   ];
 
