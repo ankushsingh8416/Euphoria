@@ -135,7 +135,7 @@ export default function Navbar() {
               ))}
             </nav>
 
-            <div className=" m-4">
+            <div className=" block md:hidden m-4">
               <Link
                 href={"/wishList"}
                 className="group inline-flex gap-2 text-[#1E381E] font-medium px-8 py-3 border border-[#1E381E] rounded-md hover:bg-[#1E381E] hover:text-white transition-all duration-300 ease-in-out shadow-sm hover:shadow-md"
