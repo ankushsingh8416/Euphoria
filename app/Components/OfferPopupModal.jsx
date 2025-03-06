@@ -49,7 +49,7 @@ const LuxuryOfferPopup = () => {
               {/* Close button */}
               <button
                 onClick={closeModal}
-                className="absolute top-4 right-4 text-amber-800 hover:text-black bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg z-10 transition-all duration-300 border border-amber-200"
+                className="absolute md:top-4 md:right-4 top-2 right-2 text-amber-800 hover:text-black bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-2 shadow-lg z-10 transition-all duration-300 border border-amber-200"
                 aria-label="Close"
               >
                 <X size={20} />
@@ -86,9 +86,10 @@ const LuxuryOfferPopup = () => {
                     EUPHORIA COLLECTIONS
                   </h2>
 
-                  <p className="text-amber-800 text-[10px] md:text-[15px] mb-8 font-medium text-center  ">
-                    Elevate your wardrobe with our finest curated pieces.
-                    <br />A statement of true elegance awaits.
+                  <p className="text-amber-800 text-[10px] md:text-[15px] mb-8 font-medium text-center">
+                    Enjoy an exclusive <span className="font-bold">15% OFF</span> on your next purchase!
+                    <br />
+                    Use code <span className="text-amber-900 font-semibold">"royal15"</span> at checkout.
                   </p>
 
                   <Link

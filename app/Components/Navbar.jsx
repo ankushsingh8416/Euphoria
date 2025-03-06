@@ -8,13 +8,13 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BiSolidMagicWand } from "react-icons/bi";
-import { FiUser } from "react-icons/fi";
+import { FiHeart, FiUser } from "react-icons/fi";
 import { MdDashboardCustomize } from "react-icons/md";
 import { motion } from "framer-motion";
 import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import { AuthContext } from "../context/AuthContext";
-import { useUser } from "../context/UserContext"; 
+import { useUser } from "../context/UserContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,7 +40,7 @@ export default function Navbar() {
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,   
+      scale: 1,
       transition: {
         type: "spring",
         stiffness: 500,
@@ -126,7 +126,7 @@ export default function Navbar() {
                 <Link
                   key={index}
                   href={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="relative group hover:text-[#B18E35] transition-all duration-300"
+                  className="relative group  hover:text-[#B18E35] transition-all duration-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item}
@@ -134,6 +134,16 @@ export default function Navbar() {
                 </Link>
               ))}
             </nav>
+
+            <div className=" m-4">
+              <Link
+                href={"/wishList"}
+                className="group inline-flex gap-2 text-[#1E381E] font-medium px-8 py-3 border border-[#1E381E] rounded-md hover:bg-[#1E381E] hover:text-white transition-all duration-300 ease-in-out shadow-sm hover:shadow-md"
+              >
+                Wishlist <FiHeart className="transition-transform group-hover:scale-110" />
+              </Link>
+            </div>
+
           </div>
           <div className="logo block lg:hidden ">
             <Link href="/">
