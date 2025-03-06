@@ -40,7 +40,7 @@ export default function Navbar() {
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
+      scale: 1,   
       transition: {
         type: "spring",
         stiffness: 500,

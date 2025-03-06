@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Crown } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const LuxuryOfferPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -61,10 +62,13 @@ const LuxuryOfferPopup = () => {
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
                   <div className="w-full h-full relative">
-                    <img
+                    <Image
                       src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741140071/modal_fwfyqi.webp"
                       alt="Exclusive Offer"
-                      className="w-full h-full object-cover"
+                      width={500}
+                      height={500}
+                      className="w-full h-full hidden md:block object-cover"
+
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-30" />
                   </div>
