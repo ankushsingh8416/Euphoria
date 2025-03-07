@@ -55,7 +55,7 @@ export default function SignUp() {
         {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
           <img
-            src="/images/signup.png"
+            src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741364086/modal_mc4pst.png"
             alt="Signup Illustration"
             className="object-cover object-top w-full h-52 md:h-64 lg:h-full"
           />

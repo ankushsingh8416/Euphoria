@@ -53,7 +53,7 @@ export default function Login() {
         {/* Left Side: Image */}
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50">
           <img
-            src="/images/login.webp"
+            src="https://res.cloudinary.com/dvucqewfn/image/upload/v1741364085/login_yinaxy.webp"
             alt="Login Illustration"
             className="object-cover object-top w-full h-52 md:h-64 lg:h-full"
           />
