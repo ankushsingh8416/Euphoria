@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 
@@ -12,7 +13,7 @@ const Gifting = () => {
           alt="Thoughtfully Crafted Gifts"
           width={500}
           height={500}
-          className="w-full" 
+          className="w-full"
         />
       </div>
 
@@ -28,10 +29,10 @@ const Gifting = () => {
 
         {/* Button Section */}
         <div className="mt-6 lg:mt-8">
-          <button className="group inline-flex items-center text-[#1E381E] px-6 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300">
+          <Link href={"/gifting"} className="group inline-flex items-center text-[#1E381E] px-6 py-3 border border-[#1E381E] hover:bg-[#1E381E] hover:text-white transition duration-300">
             SHOP NOW
             <FaArrowRight className="ml-2 transition-all group-hover:ml-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </div>
