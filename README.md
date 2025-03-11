@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Euphoria - The Future of AI-Powered E-Commerce 🚀
 
-## Getting Started
+Welcome to **Euphoria**, a cutting-edge AI-driven e-commerce platform that redefines online shopping with advanced search, AI assistance, secure transactions, and seamless user experience. Built with **Next.js, Tailwind CSS, MongoDB, NextAuth, and Razorpay**, Euphoria offers a **fast, smart, and secure** shopping environment.
 
-First, run the development server:
+## 🌟 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 🔍 Smart & Instant Search (Powered by Algolia)
+Experience ultra-fast and precise product searches with **real-time filtering, autocomplete, and category-based recommendations**, making product discovery effortless.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🤖 AI-Powered Shopping Assistant
+Our AI chatbot enhances user experience by providing **instant product recommendations, answering queries, and guiding users through their shopping journey.**
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 🛒 Wishlist & Add to Cart
+- **Wishlist:** Save your favorite products and purchase them later.
+- **Add to Cart:** Easily select products and proceed to checkout smoothly.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 💳 Secure & Flexible Payments (Powered by Razorpay)
+Enjoy secure transactions with multiple payment options, including **UPI, credit/debit cards, net banking, and digital wallets.**
 
-## Learn More
+### 🎟️ Exclusive Discounts (Coupon Code: "ROYAL15")
+As a special offer for our social media users, use **"ROYAL15"** at checkout to get **15% OFF** on your purchase! 🎉
 
-To learn more about Next.js, take a look at the following resources:
+### 🔐 NextAuth-Based Secure Authentication
+Euphoria ensures a **secure and encrypted login system** with multiple authentication methods, including email/password and social logins.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📊 Admin Dashboard with Sales Insights
+A powerful **OTP-secured** admin panel featuring:
+- **Total Sales Overview** with graphical analysis
+- **Real-time income, loss, and profit tracking**
+- **User, order, and product management** in one place
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 🛍️ AI-Generated Product Descriptions
+Automatically create **engaging and SEO-friendly product descriptions**, saving time while improving search visibility.
 
-## Deploy on Vercel
+### 🎯 Advanced Product Filters & Sorting
+Users can refine searches with:
+✔️ Category  
+✔️ Price Range  
+✔️ Color  
+✔️ Size  
+✔️ Brand  
+✔️ Sort by Popularity, Price, and New Arrivals  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 📤 One-Click Product Sharing
+Easily **share your favorite products** with friends and family via **social media, email, or direct links.**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### ✨ Profile Management
+Users can **update their profile picture, email, name, and password** seamlessly for a personalized experience.
+
+### 📥 Easy Product Upload for Admins
+Admins can **add new products with images, descriptions, and categories** in a simple and intuitive interface.
+
+## 🛠️ Tech Stack
+Euphoria is built with modern web technologies:
+- **Frontend:** Next.js, Tailwind CSS, ShadCN
+- **Backend:** Node.js, Express.js, MongoDB
+- **Authentication:** NextAuth
+- **Search Engine:** Algolia
+- **Payments:** Razorpay
+- **Hosting & Images:** Cloudinary
+
+## 🚀 Live Demo & Video
+🌐 **Live Site:** [Your Website URL]  
+🎥 **Demo Video:** [Your Video URL]  
+
+## 📢 Follow Us & Stay Updated
+For the latest updates, offers, and announcements, follow us on social media!  
+#Euphoria #AIShopping #SmartCommerce #SeamlessExperience #NextGenEcommerce #ShopNow 🚀
+
