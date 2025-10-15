@@ -7,20 +7,20 @@ const Craft = () => {
 
             <div className="flex flex-wrap justify-center gap-6">
                 {/* Video for web */}
-                <video 
-                    src="https://res.cloudinary.com/dvucqewfn/video/upload/v1741138984/video_web_pbb8j4.mp4" 
-                    autoPlay 
-                    muted 
-                    loop 
+                <video
+                    src="https://res.cloudinary.com/dvucqewfn/video/upload/v1741138984/video_web_pbb8j4.mp4"
+                    autoPlay
+                    muted
+                    loop
                     className="hidden lg:block w-full lg:w-[100%] lg:h-[650px] object-cover"
                 />
 
                 {/* Video for mobile and smaller screens */}
-                <video 
-                    src="https://res.cloudinary.com/dvucqewfn/video/upload/v1741138982/video_mob_subkyg.mp4" 
-                    autoPlay 
-                    muted 
-                    loop 
+                <video
+                    src="https://res.cloudinary.com/dvucqewfn/video/upload/v1741138982/video_mob_subkyg.mp4"
+                    autoPlay
+                    muted
+                    loop
                     className="block lg:hidden w-full sm:w-[80%] h-[500px] object-cover"
                 />
             </div>

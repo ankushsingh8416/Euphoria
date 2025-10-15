@@ -1,0 +1,72 @@
+[
+  {
+    "question": "Do you offer cash on delivery?",
+    "answer": "Yes! We offer Cash on Delivery (COD) for orders up to ₹10,000 across India.",
+    "tags": ["payment", "cod", "cash"]
+  },
+  {
+    "question": "How long does delivery take?",
+    "answer": "Standard delivery takes 3–7 business days depending on your location. Express shipping is also available.",
+    "tags": ["shipping", "delivery", "timeline"]
+  },
+  {
+    "question": "What is your return policy?",
+    "answer": "You can return items within 7 days of delivery. The product should be unused, with tags and in original packaging.",
+    "tags": ["returns", "refunds"]
+  },
+  {
+    "question": "Can I return a lehenga after wearing it?",
+    "answer": "Unfortunately, we only accept returns if the product is unworn, with tags intact. Worn products are non-returnable.",
+    "tags": ["lehenga", "return"]
+  },
+  {
+    "question": "How do I track my order?",
+    "answer": "Go to the 'My Orders' section in your account and click 'Track Order'. You’ll see real-time shipping updates.",
+    "tags": ["order", "tracking", "track"]
+  },
+  {
+    "question": "Do you have XXL or plus sizes?",
+    "answer": "Yes, we offer sizes up to 3XL for most products. Use the size filter on product pages to find your fit.",
+    "tags": ["size", "plus", "XXL"]
+  },
+  {
+    "question": "Can I customize a bridal lehenga?",
+    "answer": "Yes, we offer customization options on select bridal lehengas. Chat with our stylist or call customer care for details.",
+    "tags": ["custom", "bridal", "lehenga"]
+  },
+  {
+    "question": "Are your products handmade?",
+    "answer": "Many of our collections, especially bridal and festive wear, feature handcrafted embroidery and detailing.",
+    "tags": ["handmade", "embroidered", "craft"]
+  },
+  {
+    "question": "Where is Euphoria based?",
+    "answer": "Euphoria is based in India, and we ship pan-India from our main fulfillment centers in Delhi and Jaipur.",
+    "tags": ["location", "india", "warehouse"]
+  },
+  {
+    "question": "Do you offer international shipping?",
+    "answer": "Currently, we do not offer international shipping. We are planning to launch it soon. Stay tuned!",
+    "tags": ["shipping", "international"]
+  },
+  {
+    "question": "What payment methods are accepted?",
+    "answer": "We accept UPI, credit/debit cards, net banking, and COD (cash on delivery).",
+    "tags": ["payment", "options", "methods"]
+  },
+  {
+    "question": "Can I cancel my order?",
+    "answer": "You can cancel the order within 24 hours or before it is shipped by visiting 'My Orders' section.",
+    "tags": ["cancel", "order", "refund"]
+  },
+  {
+    "question": "Do you offer gift wrapping?",
+    "answer": "Yes! You can select gift wrap at checkout for a small fee, along with a custom message.",
+    "tags": ["gift", "wrap", "message"]
+  },
+  {
+    "question": "How do I know my size?",
+    "answer": "Every product page has a size chart. Use your measurements and match with our chart to pick the right fit.",
+    "tags": ["size", "chart", "fit"]
+  }
+]

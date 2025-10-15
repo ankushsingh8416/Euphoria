@@ -54,7 +54,7 @@ header {
   background-color: #faf8f0;
 }
 .hero {
-  height: 510px !important;
+  height: 100vh !important;
 }
 .ship {
   height: 100vh !important;

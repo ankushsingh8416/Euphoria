@@ -125,9 +125,8 @@ export default function Login() {
             {/* Login Button */}
             <button
               type="submit"
-              className={`w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f] flex justify-center ${
-                loading ? "opacity-50 cursor-not-allowed" : "opacity-100"
-              }`}
+              className={`w-full bg-[#1f6b1f] text-white py-2 rounded-lg hover:bg-[#1f771f] flex justify-center ${loading ? "opacity-50 cursor-not-allowed" : "opacity-100"
+                }`}
               disabled={loading}
             >
               {loading ? <Loader className="animate-spin" /> : "Log In"}
